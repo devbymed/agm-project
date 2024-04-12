@@ -1,0 +1,13 @@
+server:
+  port: ${CONTAINER_PORT:8080}
+
+spring:
+  profiles:
+    active: ${ACTIVE_PROFILE:dev}
+  datasource:
+    url: jdbc:sqlserver://${MSSQL_HOST}:${MSSQL_PORT};encrypt=true;trustServerCertificate=true;databaseName=${MSSQL_DATABASE}
+    username: ${MSSQL_USERNAME}
+    password: ${MSSQL_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: create
