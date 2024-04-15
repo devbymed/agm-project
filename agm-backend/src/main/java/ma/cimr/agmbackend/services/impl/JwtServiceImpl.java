@@ -1,11 +1,11 @@
 package ma.cimr.agmbackend.services.impl;
 
-import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +17,9 @@ import ma.cimr.agmbackend.services.JwtService;
 
 @Service
 public class JwtServiceImpl implements JwtService {
+
+	@Value("${jwt.secret}")
+	private String secret;
 
 	public String generateToken(UserDetails userDetails) {
 		return Jwts.builder().subject(userDetails.getUsername()).issuedAt(new Date(System.currentTimeMillis()))
@@ -34,7 +37,7 @@ public class JwtServiceImpl implements JwtService {
 	}
 
 	private SecretKey getSignInKey() {
-		byte[] key = Decoders.BASE64.decode("2c8374962100bce9a1bf947a6f93df8d3fc49fba83d519d60fbf0bf75965c39e");
+		byte[] key = Decoders.BASE64.decode(secret);
 		return Keys.hmacShaKeyFor(key);
 	}
 
