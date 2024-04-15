@@ -1,9 +1,36 @@
-POST http://localhost:8080/api/v1/users/create HTTP/1.1
+### Login Exisiting User
+
+POST http://localhost:8080/api/v1/auth/login HTTP/1.1
 content-type: application/json
 
 {
-  "firstName": "John",
+	"email": "lamrani@cimr.com",
+	"password": "admin"
+}
+
+### Create User (only accessible by Admin)
+
+POST http://localhost:8080/api/v1/users/create HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJsYW1yYW5pQGNpbXIuY29tIiwiaWF0IjoxNzEzMjI0MjU4LCJleHAiOjE3MTMyMjU2OTh9.4f85XfUrUx5TdEod_oJZv6E1ERuwH2xg2HbT1B1yfWPVH5dt5bKYzfW7SU_tCDtI
+
+{
+  "firstName": "Michael",
 	"lastName": "Doe",
-	"email": "jane.doe@gmail.com",
+	"email": "michael.doe@gmail.com",
 	"password": "password"
 }
+
+### Get All Users (only accessible by Admin)
+
+GET http://localhost:8080/api/v1/users/all HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJsYW1yYW5pQGNpbXIuY29tIiwiaWF0IjoxNzEzMjI0MjU4LCJleHAiOjE3MTMyMjU2OTh9.4f85XfUrUx5TdEod_oJZv6E1ERuwH2xg2HbT1B1yfWPVH5dt5bKYzfW7SU_tCDtI
+
+### Refresh Token
+
+POST http://localhost:8080/api/v1/auth/refresh-token HTTP/1.1
+content-type: application/json
+
+{
+	"refreshToken": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJsYW1yYW5pQGNpbXIuY29tIiwiaWF0IjoxNzEzMjIzNzAwLCJleHAiOjE3MTM4Mjg1MDB9.xX_ywOCky42W8Tyz11ShFWTtkw1lR_xUB-QXJpNvRee96Zs2SF72Owven1IFc_gH"
+}	

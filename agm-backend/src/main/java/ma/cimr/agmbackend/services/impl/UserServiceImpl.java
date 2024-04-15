@@ -45,4 +45,5 @@ public class UserServiceImpl implements UserService {
 		user.setCreatedAt(LocalDateTime.now());
 		return userRepository.save(user);
 	}
+
 }

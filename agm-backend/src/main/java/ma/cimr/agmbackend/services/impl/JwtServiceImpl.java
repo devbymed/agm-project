@@ -1,6 +1,7 @@
 package ma.cimr.agmbackend.services.impl;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.function.Function;
 
 import javax.crypto.SecretKey;
@@ -24,6 +25,13 @@ public class JwtServiceImpl implements JwtService {
 	public String generateToken(UserDetails userDetails) {
 		return Jwts.builder().subject(userDetails.getUsername()).issuedAt(new Date(System.currentTimeMillis()))
 				.expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+				.signWith(getSignInKey()).compact();
+	}
+
+	public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+		return Jwts.builder().claims(extraClaims).subject(userDetails.getUsername())
+				.issuedAt(new Date(System.currentTimeMillis()))
+				.expiration(new Date(System.currentTimeMillis() + 604800000))
 				.signWith(getSignInKey()).compact();
 	}
 
