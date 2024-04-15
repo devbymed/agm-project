@@ -31,8 +31,8 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(AbstractHttpConfigurer::disable)
-				.authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**").permitAll()
-						.requestMatchers("/api/v1/admin").hasAnyAuthority(Role.ADMIN.name()).requestMatchers("/api/v1/user")
+				.authorizeHttpRequests(request -> request.requestMatchers("/api/v1/users/**").permitAll()
+						.requestMatchers("/api/v1/admin").hasAnyAuthority(Role.ADMIN.name()).requestMatchers("/api/v1/roles")
 						.hasAnyAuthority(Role.USER.name()).anyRequest().authenticated())
 				.sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authenticationProvider(authenticationProvider())

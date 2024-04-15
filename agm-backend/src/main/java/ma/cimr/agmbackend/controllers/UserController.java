@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import ma.cimr.agmbackend.dto.UserCreationRequestDTO;
+import ma.cimr.agmbackend.dto.UserCreationReqDTO;
 import ma.cimr.agmbackend.models.User;
 import ma.cimr.agmbackend.services.UserService;
 
@@ -19,7 +19,7 @@ public class UserController {
 	private final UserService userService;
 
 	@PostMapping("/create")
-	public ResponseEntity<User> createUser(@RequestBody UserCreationRequestDTO userCreationRequest) {
+	public ResponseEntity<User> createUser(@RequestBody UserCreationReqDTO userCreationRequest) {
 		return ResponseEntity.ok(userService.createUser(userCreationRequest));
 	}
 }
