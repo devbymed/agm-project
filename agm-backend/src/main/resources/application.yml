@@ -1,7 +1,13 @@
 server:
+  error:
+    # path: /user/error
+    whitelabel:
+      enabled: false
   port: ${CONTAINER_PORT:8080}
 
 spring:
+  main:
+    allow-circular-references: true
   profiles:
     active: ${ACTIVE_PROFILE:dev}
   datasource:
@@ -9,5 +15,21 @@ spring:
     username: ${MSSQL_USERNAME}
     password: ${MSSQL_PASSWORD}
   jpa:
+    show-sql: true
+    generate-ddl: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        "[show_sql]": false
+        "[globally_quoted_identifiers]": true
+        # "[format_sql]": true
+
+  sql:
+    init:
+      mode: never
+      continue-on-error: true
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION:86400000}
