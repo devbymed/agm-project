@@ -1,9 +1,10 @@
-package ma.cimr.agmbackend.dto;
+package ma.cimr.agmbackend.dto.response;
 
 import lombok.Data;
 
 @Data
-public class UserLoginResDTO {
+public class UserLoginResponse {
+
 	private String accessToken;
 	private String refreshToken;
 }

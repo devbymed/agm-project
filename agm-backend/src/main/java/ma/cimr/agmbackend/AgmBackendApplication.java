@@ -5,14 +5,16 @@ import java.time.LocalDateTime;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import lombok.RequiredArgsConstructor;
-import ma.cimr.agmbackend.models.User;
-import ma.cimr.agmbackend.models.enums.Role;
-import ma.cimr.agmbackend.repositories.UserRepository;
+import ma.cimr.agmbackend.model.User;
+import ma.cimr.agmbackend.repository.UserRepository;
+import ma.cimr.agmbackend.model.Role;
 
 @SpringBootApplication
+@EnableJpaAuditing
 @RequiredArgsConstructor
 public class AgmBackendApplication implements CommandLineRunner {
 

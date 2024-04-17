@@ -2,6 +2,7 @@ package ma.cimr.agmbackend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -16,8 +17,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
-import ma.cimr.agmbackend.models.enums.Role;
-import ma.cimr.agmbackend.services.UserService;
+import ma.cimr.agmbackend.security.JwtAuthFilter;
+import ma.cimr.agmbackend.service.UserService;
+import ma.cimr.agmbackend.model.Role;
 
 @Configuration
 @EnableWebSecurity

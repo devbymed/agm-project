@@ -1,3 +1,4 @@
+package ma.cimr.agmbackend.model;
 // package ma.cimr.agmbackend.models;
 
 // import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package ma.cimr.agmbackend.config;
+package ma.cimr.agmbackend.security;
 
 import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
@@ -17,8 +17,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import ma.cimr.agmbackend.services.JwtService;
-import ma.cimr.agmbackend.services.UserService;
+import ma.cimr.agmbackend.service.JwtService;
+import ma.cimr.agmbackend.service.UserService;
 
 @Component
 @RequiredArgsConstructor
@@ -50,7 +50,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 				SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
 				UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, null,
 						userDetails.getAuthorities());
-
 				token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				securityContext.setAuthentication(token);
 				SecurityContextHolder.setContext(securityContext);

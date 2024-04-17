@@ -1,4 +1,4 @@
-package ma.cimr.agmbackend.services.impl;
+package ma.cimr.agmbackend.service.impl;
 
 import java.util.Date;
 import java.util.Map;
@@ -14,13 +14,16 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import ma.cimr.agmbackend.services.JwtService;
+import ma.cimr.agmbackend.service.JwtService;
 
 @Service
 public class JwtServiceImpl implements JwtService {
 
 	@Value("${jwt.secret}")
 	private String secret;
+
+	@Value("${jwt.expiration}")
+	private int expiration;
 
 	public String generateToken(UserDetails userDetails) {
 		return Jwts.builder().subject(userDetails.getUsername()).issuedAt(new Date(System.currentTimeMillis()))
@@ -31,7 +34,7 @@ public class JwtServiceImpl implements JwtService {
 	public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails) {
 		return Jwts.builder().claims(extraClaims).subject(userDetails.getUsername())
 				.issuedAt(new Date(System.currentTimeMillis()))
-				.expiration(new Date(System.currentTimeMillis() + 604800000))
+				.expiration(new Date(System.currentTimeMillis() + expiration))
 				.signWith(getSignInKey()).compact();
 	}
 

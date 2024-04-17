@@ -1,4 +1,4 @@
-package ma.cimr.agmbackend.models;
+package ma.cimr.agmbackend.model;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -6,12 +6,14 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
@@ -27,14 +29,15 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ma.cimr.agmbackend.models.enums.Role;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
+@EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -48,6 +51,7 @@ public class User implements UserDetails {
 	private String lastName;
 
 	@Column(nullable = false, unique = true)
+	@NotBlank(message = "L'email est obligatoire")
 	@Email(message = "L'email doit être valide")
 	private String email;
 

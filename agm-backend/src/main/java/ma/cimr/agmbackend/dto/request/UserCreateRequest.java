@@ -1,11 +1,10 @@
-package ma.cimr.agmbackend.dto;
+package ma.cimr.agmbackend.dto.request;
 
 import lombok.Data;
 
 @Data
-public class UserCreationReqDTO {
+public class UserCreateRequest {
 	private String firstName;
 	private String lastName;
 	private String email;
-	private String password;
 }

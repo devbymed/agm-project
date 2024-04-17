@@ -1,11 +1,11 @@
-package ma.cimr.agmbackend.repositories;
+package ma.cimr.agmbackend.repository;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import ma.cimr.agmbackend.models.User;
-import ma.cimr.agmbackend.models.enums.Role;
+import ma.cimr.agmbackend.model.User;
+import ma.cimr.agmbackend.model.Role;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 

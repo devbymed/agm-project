@@ -1,4 +1,4 @@
-package ma.cimr.agmbackend.services.impl;
+package ma.cimr.agmbackend.service.impl;
 
 import java.util.HashMap;
 
@@ -7,45 +7,43 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import ma.cimr.agmbackend.dto.TokenRefreshReqDTO;
-import ma.cimr.agmbackend.dto.UserLoginReqDTO;
-import ma.cimr.agmbackend.dto.UserLoginResDTO;
-import ma.cimr.agmbackend.models.User;
-import ma.cimr.agmbackend.repositories.UserRepository;
-import ma.cimr.agmbackend.services.AuthService;
-import ma.cimr.agmbackend.services.JwtService;
+import ma.cimr.agmbackend.dto.request.TokenRefreshRequest;
+import ma.cimr.agmbackend.dto.request.UserLoginRequest;
+import ma.cimr.agmbackend.dto.response.UserLoginResponse;
+import ma.cimr.agmbackend.model.User;
+import ma.cimr.agmbackend.repository.UserRepository;
+import ma.cimr.agmbackend.service.AuthService;
+import ma.cimr.agmbackend.service.JwtService;
 
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
 	private final UserRepository userRepository;
-
 	private final AuthenticationManager authenticationManager;
-
 	private final JwtService jwtService;
 
-	public UserLoginResDTO login(UserLoginReqDTO userLoginRequest) {
+	public UserLoginResponse login(UserLoginRequest userLoginRequest) {
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginRequest.getEmail(),
 				userLoginRequest.getPassword()));
 		var user = userRepository.findByEmail(userLoginRequest.getEmail())
 				.orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
 		var accessToken = jwtService.generateToken(user);
 		var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
-		UserLoginResDTO userLoginResponse = new UserLoginResDTO();
+		UserLoginResponse userLoginResponse = new UserLoginResponse();
 		userLoginResponse.setAccessToken(accessToken);
 		userLoginResponse.setRefreshToken(refreshToken);
 		return userLoginResponse;
 	}
 
-	public UserLoginResDTO refreshToken(TokenRefreshReqDTO tokenRefreshReqDTO) {
-		String userEmail = jwtService.extractUsername(tokenRefreshReqDTO.getRefreshToken());
+	public UserLoginResponse renewAccessTokenUsingRefreshToken(TokenRefreshRequest tokenRefreshRequest) {
+		String userEmail = jwtService.extractUsername(tokenRefreshRequest.getRefreshToken());
 		User user = userRepository.findByEmail(userEmail).orElseThrow();
-		if (jwtService.isTokenValid(tokenRefreshReqDTO.getRefreshToken(), user)) {
+		if (jwtService.isTokenValid(tokenRefreshRequest.getRefreshToken(), user)) {
 			var accessToken = jwtService.generateToken(user);
-			UserLoginResDTO userLoginResponse = new UserLoginResDTO();
+			UserLoginResponse userLoginResponse = new UserLoginResponse();
 			userLoginResponse.setAccessToken(accessToken);
-			userLoginResponse.setRefreshToken(tokenRefreshReqDTO.getRefreshToken());
+			userLoginResponse.setRefreshToken(tokenRefreshRequest.getRefreshToken());
 			return userLoginResponse;
 		}
 		return null;
