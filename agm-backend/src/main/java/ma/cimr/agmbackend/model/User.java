@@ -27,11 +27,16 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
@@ -43,30 +48,29 @@ public class User implements UserDetails {
 	private Long id;
 
 	@Column(name = "first_name")
-	@NotBlank(message = "Le prénom est obligatoire")
+	// @NotBlank(message = "Le prénom est obligatoire")
 	private String firstName;
 
 	@Column(name = "last_name")
-	@NotBlank(message = "Le nom est obligatoire")
+	// @NotBlank(message = "Le nom est obligatoire")
 	private String lastName;
 
 	@Column(nullable = false, unique = true)
-	@NotBlank(message = "L'email est obligatoire")
-	@Email(message = "L'email doit être valide")
+	// @NotBlank(message = "L'email est obligatoire")
+	// @Email(message = "L'email doit être valide")
 	private String email;
 
 	@Column(nullable = false)
 	private String password;
 
-	private Role role;
+	// private Role role;
 
 	// @Column(name = "is_first_login", nullable = false)
 	// private boolean isFirstLogin;
 
-	// @ManyToOne(fetch = FetchType.LAZY)
-	// @JoinColumn(name = "profile_id")
-	// @NotNull(message = "L'affectation du profil est obligatoire")
-	// private Profile profile;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "profile_id")
+	private Profile profile;
 
 	@CreatedDate
 	@Column(name = "created_at", nullable = false, updatable = false)
@@ -78,7 +82,7 @@ public class User implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority(role.name()));
+		return List.of(new SimpleGrantedAuthority(profile.getName()));
 	}
 
 	@Override

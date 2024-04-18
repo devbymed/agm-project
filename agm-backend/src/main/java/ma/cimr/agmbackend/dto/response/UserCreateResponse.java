@@ -1,9 +1,15 @@
 package ma.cimr.agmbackend.dto.response;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@Builder
 public class UserCreateResponse {
 	private String firstName;
 	private String lastName;
+	private String createdAt;
+	private String message;
 }

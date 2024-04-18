@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
 		};
 	}
 
-	public UserCreateResponse createUser(UserCreateRequest userCreateRequest) {
+	public User createUser(UserCreateRequest userCreateRequest) {
 		// User user = new User();
 		// user.setFirstName(userCreateRequest.getFirstName());
 		// user.setLastName(userCreateRequest.getLastName());
@@ -51,12 +51,21 @@ public class UserServiceImpl implements UserService {
 		// user.setEmail(userCreateRequest.getEmail());
 		// user.setPassword(passwordEncoder.encode(userCreateRequest.getPassword()));Ou
 		// return userRepository.save(user);
+
+		// String generatedPassword = RandomStringGenerator.generateSecurePassword(12);
+		// LOGGER.info(String.format("*Generated password for %s %s: %s",
+		// userCreateRequest.getFirstName(), userCreateRequest.getLastName(),
+		// generatedPassword));
+		// User user = userMapper.toUser(userCreateRequest);
+		// user.setPassword(passwordEncoder.encode(generatedPassword));
+		// User userSaved = userRepository.save(user);
+		// return userMapper.toUserCreateResponse(userSaved);
+
 		String generatedPassword = RandomStringGenerator.generateSecurePassword(12);
-		LOGGER.info(String.format("* Generated password for %s %s: %s",
+		LOGGER.info(String.format("*Generated password for %s %s: %s",
 				userCreateRequest.getFirstName(), userCreateRequest.getLastName(), generatedPassword));
 		User user = userMapper.toUser(userCreateRequest);
 		user.setPassword(passwordEncoder.encode(generatedPassword));
-		User userSaved = userRepository.save(user);
-		return userMapper.toUserCreateResponse(userSaved);
+		return userRepository.save(user);
 	}
 }

@@ -1,4 +1,6 @@
 server:
+  servlet:
+    context-path: /api/v1/
   error:
     # path: /user/error
     whitelabel:
@@ -6,30 +8,50 @@ server:
   port: ${CONTAINER_PORT:8080}
 
 spring:
-  main:
-    allow-circular-references: true
   profiles:
     active: ${ACTIVE_PROFILE:dev}
+  main:
+    allow-circular-references: true
+  servlet:
+    multipart:
+      max-file-size: 50MB
   datasource:
     url: jdbc:sqlserver://${MSSQL_HOST}:${MSSQL_PORT};encrypt=true;trustServerCertificate=true;databaseName=${MSSQL_DATABASE}
     username: ${MSSQL_USERNAME}
     password: ${MSSQL_PASSWORD}
   jpa:
     show-sql: true
+    open-in-view: false
     generate-ddl: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     properties:
       hibernate:
         "[show_sql]": false
         "[globally_quoted_identifiers]": true
         # "[format_sql]": true
-
   sql:
     init:
       mode: never
       continue-on-error: true
-
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          trust: "*"
+        auth: true
+        starttls:
+          enable: true
+        connectiontimeout: 5000
+        timeout: 3000
+        writetimeout: 5000
 jwt:
   secret: ${JWT_SECRET}
-  expiration: ${JWT_EXPIRATION:86400000}
+  expiration: ${JWT_EXPIRATION:604800000}
+
+springdoc:
+  default-produces-media-type: application/json
