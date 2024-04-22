@@ -28,16 +28,18 @@ public class AgmBackendApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		if (profileRepository.findByName("ADMIN") != null) {
-			Profile profile = new Profile();
-			profile.setName("ADMIN");
-			profile = profileRepository.save(profile);
-			User admin = new User();
-			admin.setFirstName("Imad");
-			admin.setLastName("Lamrani");
-			admin.setEmail("lamrani@cimr.com");
-			admin.setProfile(profile);
-			admin.setPassword(passwordEncoder.encode("admin"));
-			userRepository.save(admin);
+			Profile defaultProfile = Profile.builder().name("ADMIN").build();
+			defaultProfile = profileRepository.save(defaultProfile);
+
+			User adminAccount = User.builder()
+					.firstName("Imad")
+					.lastName("Lamrani")
+					.email("lamrani@cimr.com")
+					.profile(defaultProfile)
+					.password(passwordEncoder.encode("admin"))
+					.build();
+
+			userRepository.save(adminAccount);
 		}
 	}
 }

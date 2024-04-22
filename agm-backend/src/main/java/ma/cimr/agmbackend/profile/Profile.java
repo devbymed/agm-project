@@ -23,20 +23,22 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+import ma.cimr.agmbackend.common.BaseEntity;
 import ma.cimr.agmbackend.user.User;
 
 @Getter
 @Setter
 @Entity
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "profiles")
-@EntityListeners(AuditingEntityListener.class)
-public class Profile {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+// @EntityListeners(AuditingEntityListener.class)
+public class Profile extends BaseEntity {
+	// @Id
+	// @GeneratedValue(strategy = GenerationType.IDENTITY)
+	// private Long id;
 
 	@Column(nullable = false, unique = true)
 	private String name;
@@ -45,11 +47,11 @@ public class Profile {
 	@JsonIgnore
 	private List<User> users;
 
-	@CreatedDate
-	@Column(name = "created_at", nullable = false, updatable = false)
-	private LocalDateTime createdAt;
+	// @CreatedDate
+	// @Column(name = "created_at", nullable = false, updatable = false)
+	// private LocalDateTime createdAt;
 
-	@LastModifiedDate
-	@Column(name = "updated_at", insertable = false)
-	private LocalDateTime updatedAt;
+	// @LastModifiedDate
+	// @Column(name = "updated_at", insertable = false)
+	// private LocalDateTime updatedAt;
 }

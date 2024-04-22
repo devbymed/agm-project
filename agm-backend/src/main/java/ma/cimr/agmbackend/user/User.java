@@ -26,21 +26,23 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+import ma.cimr.agmbackend.common.BaseEntity;
 import ma.cimr.agmbackend.profile.Profile;
 
 @Getter
 @Setter
 @Entity
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
-@EntityListeners(AuditingEntityListener.class)
-public class User implements UserDetails {
+// @EntityListeners(AuditingEntityListener.class)
+public class User extends BaseEntity implements UserDetails {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	// @Id
+	// @GeneratedValue(strategy = GenerationType.IDENTITY)
+	// private Long id;
 
 	@Column(name = "first_name")
 	private String firstName;
@@ -58,13 +60,13 @@ public class User implements UserDetails {
 	@JoinColumn(name = "profile_id")
 	private Profile profile;
 
-	@CreatedDate
-	@Column(name = "created_at", nullable = false, updatable = false)
-	private LocalDateTime createdAt;
+	// @CreatedDate
+	// @Column(name = "created_at", nullable = false, updatable = false)
+	// private LocalDateTime createdAt;
 
-	@LastModifiedDate
-	@Column(name = "updated_at", insertable = false)
-	private LocalDateTime updatedAt;
+	// @LastModifiedDate
+	// @Column(name = "updated_at", insertable = false)
+	// private LocalDateTime updatedAt;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
