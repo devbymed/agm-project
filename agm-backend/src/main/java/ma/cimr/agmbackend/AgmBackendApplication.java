@@ -27,8 +27,8 @@ public class AgmBackendApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		if (profileRepository.findByName("ADMIN") != null) {
-			Profile defaultProfile = Profile.builder().name("ADMIN").build();
+		if (profileRepository.findByName("Gestionnaire") != null) {
+			Profile defaultProfile = Profile.builder().name("Gestionnaire").build();
 			defaultProfile = profileRepository.save(defaultProfile);
 
 			User adminAccount = User.builder()
@@ -36,7 +36,7 @@ public class AgmBackendApplication implements CommandLineRunner {
 					.lastName("Lamrani")
 					.email("lamrani@cimr.com")
 					.profile(defaultProfile)
-					.password(passwordEncoder.encode("admin"))
+					.password(passwordEncoder.encode("gestionnaire"))
 					.build();
 
 			userRepository.save(adminAccount);

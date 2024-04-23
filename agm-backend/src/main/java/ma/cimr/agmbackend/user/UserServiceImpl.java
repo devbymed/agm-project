@@ -1,5 +1,9 @@
 package ma.cimr.agmbackend.user;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
@@ -10,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.validation.Validator;
-import ma.cimr.agmbackend.exception.ApiExceptionCodes;
 import ma.cimr.agmbackend.profile.ProfileNotFoundException;
 import ma.cimr.agmbackend.profile.ProfileRepository;
 import ma.cimr.agmbackend.util.SecurePasswordGenerator;
@@ -44,6 +47,18 @@ public class UserServiceImpl implements UserService {
 		};
 	}
 
+	@Override
+	public List<UserResponse> getUsers() {
+		return userRepository.findAll().stream().map(userMapper::toUserResponse).collect(Collectors.toList());
+	}
+
+	public UserResponse getUser(Long id) {
+		return userRepository.findById(id)
+				.map(userMapper::toUserResponse)
+				.orElseThrow(UserNotFoundException::new);
+	}
+
+	@Override
 	public UserResponse createUser(UserAddRequest userCreateRequest) {
 		String generatedPassword = SecurePasswordGenerator.generateSecurePassword(12);
 		LOGGER.info(String.format("* Generated password for %s %s: %s", userCreateRequest.getFirstName(),
@@ -56,20 +71,21 @@ public class UserServiceImpl implements UserService {
 		return userMapper.toUserResponse(user);
 	}
 
+	@Override
 	public UserResponse updateUser(Long id, UserEditRequest userEditRequest) {
 		User user = userRepository.findById(id)
-				.orElseThrow(() -> new UserNotFoundException(ApiExceptionCodes.USER_NOT_FOUND));
-		if (userEditRequest.getFirstName() != null) {
-			user.setFirstName(userEditRequest.getFirstName());
-		}
-		if (userEditRequest.getLastName() != null) {
-			user.setLastName(userEditRequest.getLastName());
-		}
-		if (userEditRequest.getProfileId() != null) {
-			user.setProfile(profileRepository.findById(userEditRequest.getProfileId())
-					.orElseThrow(() -> new ProfileNotFoundException(ApiExceptionCodes.PROFILE_NOT_FOUND)));
-		}
+				.orElseThrow(UserNotFoundException::new);
+		Optional.ofNullable(userEditRequest.getFirstName()).ifPresent(user::setFirstName);
+		Optional.ofNullable(userEditRequest.getLastName()).ifPresent(user::setLastName);
+		Optional.ofNullable(userEditRequest.getProfileId())
+				.ifPresent(profileId -> user.setProfile(profileRepository.findById(profileId)
+						.orElseThrow(ProfileNotFoundException::new)));
 		userRepository.save(user);
 		return userMapper.toUserResponse(user);
+	}
+
+	@Override
+	public void deleteUser(Long id) {
+		userRepository.deleteById(id);
 	}
 }

@@ -2,7 +2,7 @@ package ma.cimr.agmbackend.auth;
 
 public interface AuthService {
 
-	AuthResponse login(AuthRequest authRequest);
+	AuthResponse authenticateUser(AuthRequest authRequest);
 
 	AuthResponse renewAccessToken(TokenRefreshRequest tokenRefreshRequest);
 }

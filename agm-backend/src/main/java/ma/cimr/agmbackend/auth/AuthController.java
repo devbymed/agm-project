@@ -5,12 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import ma.cimr.agmbackend.util.ApiResponse;
+import ma.cimr.agmbackend.util.ApiResponseFormatter;
 
 @RestController
 @RequestMapping("auth")
@@ -21,14 +22,13 @@ public class AuthController {
 	private final AuthService authService;
 
 	@PostMapping("/login")
-	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<AuthResponse> login(@RequestBody @Valid AuthRequest authRequest) {
-		return ResponseEntity.status(HttpStatus.OK).body(authService.login(authRequest));
+	public ResponseEntity<ApiResponse> authenticateUser(@Valid @RequestBody AuthRequest authRequest) {
+		return ApiResponseFormatter.generateResponse(HttpStatus.OK, authService.authenticateUser(authRequest));
 	}
 
 	@PostMapping("/refresh-token")
-	public ResponseEntity<AuthResponse> renewAccessToken(
+	public ResponseEntity<ApiResponse> renewAccessToken(
 			@RequestBody TokenRefreshRequest tokenRefreshRequest) {
-		return ResponseEntity.ok(authService.renewAccessToken(tokenRefreshRequest));
+		return ApiResponseFormatter.generateResponse(HttpStatus.OK, authService.renewAccessToken(tokenRefreshRequest));
 	}
 }

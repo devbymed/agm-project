@@ -18,7 +18,7 @@ public class AuthServiceImpl implements AuthService {
 	private final AuthenticationManager authenticationManager;
 	private final JwtService jwtService;
 
-	public AuthResponse login(AuthRequest authRequest) {
+	public AuthResponse authenticateUser(AuthRequest authRequest) {
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmail(),
 				authRequest.getPassword()));
 		var user = userRepository.findByEmail(authRequest.getEmail())

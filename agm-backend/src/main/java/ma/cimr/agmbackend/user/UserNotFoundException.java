@@ -6,7 +6,7 @@ import ma.cimr.agmbackend.exception.ApiExceptionCodes;
 
 @Getter
 public class UserNotFoundException extends ApiException {
-	public UserNotFoundException(ApiExceptionCodes apiExceptionCodes) {
-		super(apiExceptionCodes);
+	public UserNotFoundException() {
+		super(ApiExceptionCodes.USER_NOT_FOUND);
 	}
 }

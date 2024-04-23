@@ -1,0 +1,67 @@
+### POST /auth/login - Login
+POST {{baseUrl}}/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+	"email": "lamrani@cimr.com",
+	"password": "gestionnaire"
+}
+
+### POST /auth/refresh-token - Refresh Token
+POST {{baseUrl}}/auth/refresh-token HTTP/1.1
+Content-Type: application/json
+
+{
+	"refreshToken": "{{refreshToken}}"
+}
+
+### GET /users - Get All Users
+GET {{baseUrl}}/users HTTP/1.1
+Authorization: Bearer {{accessToken}}
+
+### GET /users/{id} - Get User By Id
+GET {{baseUrl}}/users/1 HTTP/1.1
+Authorization: Bearer {{accessToken}}
+
+### POST /users - Create User
+POST {{baseUrl}}/users HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+	"firstName": "Jane",
+	"lastName": "Doe",
+	"profileId": 1,
+	"email": "jane.doe@gmail.com"
+}
+
+### PATCH /users/{id} - Update User
+PATCH {{baseUrl}}/users/3 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+	"firstName": "Johnathan",
+	"profileId": 2
+}
+
+### DELETE /users/{id} - Delete User
+DELETE {{baseUrl}}/users/2 HTTP/1.1
+Authorization: Bearer {{accessToken}}
+
+### GET /profiles - Get All Profiles
+GET {{baseUrl}}/profiles HTTP/1.1
+Authorization: Bearer {{accessToken}}
+
+### GET /profiles/{id} - Get Profile By Id
+GET {{baseUrl}}/profiles/2 HTTP/1.1
+Authorization: Bearer {{accessToken}}
+
+### POST /profiles - Create Profile
+POST {{baseUrl}}/profiles HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+	"name": "Agent de relance"
+}

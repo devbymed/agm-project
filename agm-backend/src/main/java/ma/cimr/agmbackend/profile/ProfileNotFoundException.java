@@ -6,7 +6,7 @@ import ma.cimr.agmbackend.exception.ApiExceptionCodes;
 
 @Getter
 public class ProfileNotFoundException extends ApiException {
-	public ProfileNotFoundException(ApiExceptionCodes apiExceptionCodes) {
-		super(apiExceptionCodes);
+	public ProfileNotFoundException() {
+		super(ApiExceptionCodes.PROFILE_NOT_FOUND);
 	}
 }
