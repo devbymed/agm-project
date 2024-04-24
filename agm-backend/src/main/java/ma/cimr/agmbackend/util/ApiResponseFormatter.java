@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class ApiResponseFormatter {
+
 	public static ResponseEntity<ApiResponse> generateResponse(HttpStatus status, String message) {
 		ApiResponse response = ApiResponse.builder()
 				.status(status)

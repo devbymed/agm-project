@@ -16,6 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonInclude(value = Include.NON_NULL)
 public class ProfileResponse {
+
 	private Long id;
 	private String name;
 }

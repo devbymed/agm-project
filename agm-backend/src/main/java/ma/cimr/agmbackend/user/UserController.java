@@ -44,7 +44,7 @@ public class UserController {
 
 	@PatchMapping("/{id}")
 	public ResponseEntity<ApiResponse> updateUser(@PathVariable Long id,
-			@RequestBody UserEditRequest userEditRequest) {
+			@Valid @RequestBody UserEditRequest userEditRequest) {
 		UserResponse updatedUser = userService.updateUser(id, userEditRequest);
 		return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Utilisateur mis à jour avec succès", updatedUser);
 	}

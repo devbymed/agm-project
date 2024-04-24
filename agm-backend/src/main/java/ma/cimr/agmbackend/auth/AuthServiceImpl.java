@@ -22,7 +22,7 @@ public class AuthServiceImpl implements AuthService {
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmail(),
 				authRequest.getPassword()));
 		var user = userRepository.findByEmail(authRequest.getEmail())
-				.orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
+				.orElseThrow(BadCredentialsApiException::new);
 		var accessToken = jwtService.generateToken(user);
 		var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
 		AuthResponse authResponse = new AuthResponse();
@@ -32,8 +32,8 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	public AuthResponse renewAccessToken(TokenRefreshRequest tokenRefreshRequest) {
-		String userEmail = jwtService.extractUsername(tokenRefreshRequest.getRefreshToken());
-		User user = userRepository.findByEmail(userEmail).orElseThrow();
+		String email = jwtService.extractUsername(tokenRefreshRequest.getRefreshToken());
+		User user = userRepository.findByEmail(email).orElseThrow();
 		if (jwtService.isTokenValid(tokenRefreshRequest.getRefreshToken(), user)) {
 			var accessToken = jwtService.generateToken(user);
 			AuthResponse authResponse = new AuthResponse();

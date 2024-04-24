@@ -4,7 +4,6 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 
@@ -23,9 +22,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonInclude(NON_EMPTY)
 public class ApiExceptionResponse {
+
 	private LocalDateTime timestamp;
 	private HttpStatus status;
 	private String message;
-	private Set<String> validationErrors;
+	private Map<String, String> validationErrors;
 	private Map<String, Object> additionalDetails;
 }

@@ -17,6 +17,7 @@ import ma.cimr.agmbackend.profile.ProfileResponse;
 @AllArgsConstructor
 @JsonInclude(value = Include.NON_NULL)
 public class UserResponse {
+
 	private Long id;
 	private String firstName;
 	private String lastName;

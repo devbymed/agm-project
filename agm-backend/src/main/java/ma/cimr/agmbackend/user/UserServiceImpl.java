@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import jakarta.validation.Validator;
 import ma.cimr.agmbackend.profile.ProfileNotFoundException;
 import ma.cimr.agmbackend.profile.ProfileRepository;
 import ma.cimr.agmbackend.util.SecurePasswordGenerator;
@@ -28,8 +27,11 @@ public class UserServiceImpl implements UserService {
 	private final PasswordEncoder passwordEncoder;
 	private final UserMapper userMapper;
 
-	public UserServiceImpl(UserRepository userRepository, ProfileRepository profileRepository,
-			@Lazy PasswordEncoder passwordEncoder, UserMapper userMapper, Validator validator) {
+	public UserServiceImpl(
+			UserRepository userRepository,
+			ProfileRepository profileRepository,
+			@Lazy PasswordEncoder passwordEncoder,
+			UserMapper userMapper) {
 		this.userRepository = userRepository;
 		this.profileRepository = profileRepository;
 		this.passwordEncoder = passwordEncoder;
@@ -66,7 +68,7 @@ public class UserServiceImpl implements UserService {
 		User user = userMapper.toUser(userCreateRequest);
 		user.setPassword(passwordEncoder.encode(generatedPassword));
 		user.setProfile(profileRepository.findById(userCreateRequest.getProfileId())
-				.orElseThrow(() -> new IllegalArgumentException("Profile not found")));
+				.orElseThrow(ProfileNotFoundException::new));
 		userRepository.save(user);
 		return userMapper.toUserResponse(user);
 	}
@@ -86,6 +88,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void deleteUser(Long id) {
-		userRepository.deleteById(id);
+		User user = userRepository.findById(id)
+				.orElseThrow(UserNotFoundException::new);
+		userRepository.delete(user);
 	}
 }

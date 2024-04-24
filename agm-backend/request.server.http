@@ -20,7 +20,7 @@ GET {{baseUrl}}/users HTTP/1.1
 Authorization: Bearer {{accessToken}}
 
 ### GET /users/{id} - Get User By Id
-GET {{baseUrl}}/users/1 HTTP/1.1
+GET {{baseUrl}}/users/2 HTTP/1.1
 Authorization: Bearer {{accessToken}}
 
 ### POST /users - Create User
@@ -31,7 +31,7 @@ Authorization: Bearer {{accessToken}}
 {
 	"firstName": "Jane",
 	"lastName": "Doe",
-	"profileId": 1,
+	"profileId": 2,
 	"email": "jane.doe@gmail.com"
 }
 

@@ -5,16 +5,14 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
 
 	private final ProfileRepository profileRepository;
 	private final ProfileMapper profileMapper;
-
-	public ProfileServiceImpl(ProfileRepository profileRepository, ProfileMapper profileMapper) {
-		this.profileRepository = profileRepository;
-		this.profileMapper = profileMapper;
-	}
 
 	@Override
 	public List<ProfileResponse> getProfiles() {
