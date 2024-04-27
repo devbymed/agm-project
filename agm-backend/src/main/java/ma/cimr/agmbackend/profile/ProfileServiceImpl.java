@@ -26,8 +26,8 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 
 	@Override
-	public ProfileResponse createProfile(ProfileAddRequest request) {
-		Profile profile = profileMapper.toProfile(request);
+	public ProfileResponse createProfile(ProfileAddRequest profileAddRequest) {
+		Profile profile = profileMapper.toProfile(profileAddRequest);
 		profile = profileRepository.save(profile);
 		return profileMapper.toProfileResponse(profile);
 	}

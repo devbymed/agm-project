@@ -23,12 +23,14 @@ public class AuthController {
 
 	@PostMapping("/login")
 	public ResponseEntity<ApiResponse> authenticateUser(@Valid @RequestBody AuthRequest authRequest) {
-		return ApiResponseFormatter.generateResponse(HttpStatus.OK, authService.authenticateUser(authRequest));
+		AuthResponse response = authService.authenticateUser(authRequest);
+		return ApiResponseFormatter.generateResponse(HttpStatus.OK, response);
 	}
 
 	@PostMapping("/refresh-token")
 	public ResponseEntity<ApiResponse> renewAccessToken(
 			@RequestBody TokenRefreshRequest tokenRefreshRequest) {
-		return ApiResponseFormatter.generateResponse(HttpStatus.OK, authService.renewAccessToken(tokenRefreshRequest));
+		AuthResponse response = authService.renewAccessToken(tokenRefreshRequest);
+		return ApiResponseFormatter.generateResponse(HttpStatus.OK, response);
 	}
 }

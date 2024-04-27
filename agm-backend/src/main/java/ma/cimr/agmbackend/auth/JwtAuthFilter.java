@@ -39,7 +39,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		final String jwt;
 		final String email;
 
-		if (StringUtils.isEmpty(authHeader) || !org.apache.commons.lang3.StringUtils.startsWith(authHeader, "Bearer ")) {
+		if (StringUtils.isEmpty(authHeader) || !StringUtils.startsWith(authHeader, "Bearer ")) {
 			filterChain.doFilter(request, response);
 			return;
 		}

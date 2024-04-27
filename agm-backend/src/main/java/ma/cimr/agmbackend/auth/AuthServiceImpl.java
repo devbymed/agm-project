@@ -14,33 +14,27 @@ import ma.cimr.agmbackend.user.UserRepository;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-	private final UserRepository userRepository;
-	private final AuthenticationManager authenticationManager;
-	private final JwtService jwtService;
+    private final UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
-	public AuthResponse authenticateUser(AuthRequest authRequest) {
-		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmail(),
-				authRequest.getPassword()));
-		var user = userRepository.findByEmail(authRequest.getEmail())
-				.orElseThrow(BadCredentialsApiException::new);
-		var accessToken = jwtService.generateToken(user);
-		var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
-		AuthResponse authResponse = new AuthResponse();
-		authResponse.setAccessToken(accessToken);
-		authResponse.setRefreshToken(refreshToken);
-		return authResponse;
-	}
+    public AuthResponse authenticateUser(AuthRequest authRequest) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.email(),
+                authRequest.password()));
+        var user = userRepository.findByEmail(authRequest.email())
+                .orElseThrow(BadCredentialsApiException::new);
+        var accessToken = jwtService.generateToken(user);
+        var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
+        return new AuthResponse(accessToken, refreshToken);
+    }
 
-	public AuthResponse renewAccessToken(TokenRefreshRequest tokenRefreshRequest) {
-		String email = jwtService.extractUsername(tokenRefreshRequest.getRefreshToken());
-		User user = userRepository.findByEmail(email).orElseThrow();
-		if (jwtService.isTokenValid(tokenRefreshRequest.getRefreshToken(), user)) {
-			var accessToken = jwtService.generateToken(user);
-			AuthResponse authResponse = new AuthResponse();
-			authResponse.setAccessToken(accessToken);
-			authResponse.setRefreshToken(tokenRefreshRequest.getRefreshToken());
-			return authResponse;
-		}
-		return null;
-	}
+    public AuthResponse renewAccessToken(TokenRefreshRequest tokenRefreshRequest) {
+        String email = jwtService.extractUsername(tokenRefreshRequest.refreshToken());
+        User user = userRepository.findByEmail(email).orElseThrow();
+        if (jwtService.isTokenValid(tokenRefreshRequest.refreshToken(), user)) {
+            var accessToken = jwtService.generateToken(user);
+            return new AuthResponse(accessToken, tokenRefreshRequest.refreshToken());
+        }
+        throw new InvalidTokenException();
+    }
 }

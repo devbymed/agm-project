@@ -6,26 +6,27 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @JsonInclude(NON_EMPTY)
 public class ApiExceptionResponse {
 
-	private LocalDateTime timestamp;
-	private HttpStatus status;
-	private String message;
-	private Map<String, String> validationErrors;
-	private Map<String, Object> additionalDetails;
+	private final LocalDateTime timestamp;
+	private final HttpStatus status;
+
+	@Nullable
+	private final String message;
+
+	@Nullable
+	private final Map<String, String> validationErrors;
+
+	@Nullable
+	private final Map<String, Object> additionalDetails;
 }

@@ -1,5 +1,7 @@
 package ma.cimr.agmbackend.profile;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,18 +27,19 @@ public class ProfileController {
 
 	@GetMapping
 	public ResponseEntity<ApiResponse> getProfiles() {
-		return ApiResponseFormatter.generateResponse(HttpStatus.OK, profileService.getProfiles());
+		List<ProfileResponse> response = profileService.getProfiles();
+		return ApiResponseFormatter.generateResponse(HttpStatus.OK, response);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse> getProfile(@PathVariable Long id) {
-		ProfileResponse profile = profileService.getProfile(id);
-		return ApiResponseFormatter.generateResponse(HttpStatus.OK, profile);
+		ProfileResponse response = profileService.getProfile(id);
+		return ApiResponseFormatter.generateResponse(HttpStatus.OK, response);
 	}
 
 	@PostMapping
 	public ResponseEntity<ApiResponse> createProfile(@Valid @RequestBody ProfileAddRequest profileAddRequest) {
-		ProfileResponse createdProfile = profileService.createProfile(profileAddRequest);
-		return ApiResponseFormatter.generateResponse(HttpStatus.CREATED, "Profil créé avec succès", createdProfile);
+		ProfileResponse response = profileService.createProfile(profileAddRequest);
+		return ApiResponseFormatter.generateResponse(HttpStatus.CREATED, "Profil créé avec succès", response);
 	}
 }
