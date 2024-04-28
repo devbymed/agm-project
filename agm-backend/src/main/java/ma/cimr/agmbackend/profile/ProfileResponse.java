@@ -1,8 +1,9 @@
 package ma.cimr.agmbackend.profile;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
-@JsonInclude(value = Include.NON_NULL)
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(value = NON_NULL)
 public record ProfileResponse(Long id, String name) {
 }
