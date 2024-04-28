@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ApiExceptionCodes {
+
 	BAD_CREDENTIALS(1000, "Identifiant et/ou mot de passe incorrect(s)", HttpStatus.UNAUTHORIZED),
 	INVALID_TOKEN(1001, "Token invalide", HttpStatus.UNAUTHORIZED),
 	USER_NOT_FOUND(2000, "Utilisateur non trouvé", HttpStatus.NOT_FOUND),

@@ -23,8 +23,8 @@ import ma.cimr.agmbackend.user.UserService;
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-	private final JwtService jwtService;
 	private final UserService userService;
+	private final JwtService jwtService;
 
 	@Override
 	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
@@ -36,8 +36,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		}
 
 		final String authHeader = request.getHeader("Authorization");
-		final String jwt;
 		final String email;
+		final String jwt;
 
 		if (StringUtils.isEmpty(authHeader) || !StringUtils.startsWith(authHeader, "Bearer ")) {
 			filterChain.doFilter(request, response);

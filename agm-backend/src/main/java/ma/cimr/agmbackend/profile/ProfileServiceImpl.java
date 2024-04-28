@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import ma.cimr.agmbackend.exception.ApiException;
+import ma.cimr.agmbackend.exception.ApiExceptionCodes;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +24,7 @@ public class ProfileServiceImpl implements ProfileService {
 	@Override
 	public ProfileResponse getProfile(Long id) {
 		return profileRepository.findById(id).map(profileMapper::toProfileResponse)
-				.orElseThrow(ProfileNotFoundException::new);
+				.orElseThrow(() -> new ApiException(ApiExceptionCodes.PROFILE_NOT_FOUND));
 	}
 
 	@Override

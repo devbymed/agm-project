@@ -27,8 +27,8 @@ import ma.cimr.agmbackend.user.UserService;
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
-	private final UserService userService;
 	private final JwtAuthFilter jwtAuthenticationFilter;
+	private final UserService userService;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

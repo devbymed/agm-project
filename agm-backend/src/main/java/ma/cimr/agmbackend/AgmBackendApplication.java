@@ -11,22 +11,4 @@ public class AgmBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AgmBackendApplication.class, args);
 	}
-
-	// @Override
-	// public void run(String... args) throws Exception {
-	// if (profileRepository.findByName("Gestionnaire").isEmpty()) {
-	// Profile defaultProfile = Profile.builder().name("Gestionnaire").build();
-	// defaultProfile = profileRepository.save(defaultProfile);
-
-	// User adminAccount = User.builder()
-	// .firstName("Imad")
-	// .lastName("Lamrani")
-	// .email("lamrani@cimr.ma")
-	// .profile(defaultProfile)
-	// .password(passwordEncoder.encode("gestionnaire"))
-	// .build();
-
-	// userRepository.save(adminAccount);
-	// }
-	// }
 }

@@ -7,6 +7,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import ma.cimr.agmbackend.exception.ApiException;
+import ma.cimr.agmbackend.exception.ApiExceptionCodes;
 import ma.cimr.agmbackend.user.User;
 import ma.cimr.agmbackend.user.UserRepository;
 
@@ -14,17 +16,17 @@ import ma.cimr.agmbackend.user.UserRepository;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
     private final JwtService jwtService;
 
     public AuthResponse authenticateUser(AuthRequest authRequest) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.email(),
                 authRequest.password()));
-        var user = userRepository.findByEmail(authRequest.email())
-                .orElseThrow(BadCredentialsApiException::new);
-        var accessToken = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
+        User user = userRepository.findByEmail(authRequest.email())
+                .orElseThrow(() -> new ApiException(ApiExceptionCodes.BAD_CREDENTIALS));
+        String accessToken = jwtService.generateToken(user);
+        String refreshToken = jwtService.generateRefreshToken(new HashMap<String, Object>(), user);
         return new AuthResponse(accessToken, refreshToken);
     }
 
@@ -32,9 +34,9 @@ public class AuthServiceImpl implements AuthService {
         String email = jwtService.extractUsername(tokenRefreshRequest.refreshToken());
         User user = userRepository.findByEmail(email).orElseThrow();
         if (jwtService.isTokenValid(tokenRefreshRequest.refreshToken(), user)) {
-            var accessToken = jwtService.generateToken(user);
+            String accessToken = jwtService.generateToken(user);
             return new AuthResponse(accessToken, tokenRefreshRequest.refreshToken());
         }
-        throw new InvalidTokenException();
+        throw new ApiException(ApiExceptionCodes.INVALID_TOKEN);
     }
 }
