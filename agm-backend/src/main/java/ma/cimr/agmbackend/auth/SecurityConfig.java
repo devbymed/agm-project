@@ -37,7 +37,8 @@ public class SecurityConfig {
 						request -> request
 								.requestMatchers("/auth/**", "/v3/api-docs", "/v3/api-docs/**", "/swagger-resources",
 										"/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui/**",
-										"/webjars/**", "/swagger-ui.html")
+										"/webjars/**", "/swagger-ui.html",
+										"/new-user")
 								.permitAll()
 								.requestMatchers("/api/v1/users/**").hasAnyAuthority("Gestionnaire")
 								.requestMatchers("/api/v1/profiles/**").hasAnyAuthority("Gestionnaire")

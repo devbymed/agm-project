@@ -27,7 +27,7 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-        "[show_sql]": true
+        "[show_sql]": false
         "[globally_quoted_identifiers]": true
         # "[format_sql]": true
   sql:
@@ -49,6 +49,9 @@ spring:
         connectiontimeout: 5000
         timeout: 3000
         writetimeout: 5000
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
 jwt:
   secret: ${JWT_SECRET}
   expiration: ${JWT_EXPIRATION:604800000}

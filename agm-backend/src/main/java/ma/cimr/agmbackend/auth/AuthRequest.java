@@ -1,8 +1,21 @@
 package ma.cimr.agmbackend.auth;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public record AuthRequest(
-		@NotBlank(message = "Veillez saisir votre identifiant") String email,
-		@NotBlank(message = "Veillez saisir votre mot de passe") String password) {
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class AuthRequest {
+	@NotBlank(message = "Veillez saisir votre identifiant")
+	private String email;
+
+	@NotBlank(message = "Veillez saisir votre mot de passe")
+	private String password;
 }

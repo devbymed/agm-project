@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import ma.cimr.agmbackend.util.ApiResponse;
@@ -37,7 +38,8 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<ApiResponse> createUser(@Valid @RequestBody UserAddRequest userAddRequest) {
+	public ResponseEntity<ApiResponse> createUser(@Valid @RequestBody UserAddRequest userAddRequest)
+			throws MessagingException {
 		UserResponse createdUser = userService.createUser(userAddRequest);
 		return ApiResponseFormatter.generateResponse(HttpStatus.CREATED, "Utilisateur créé avec succès", createdUser);
 	}

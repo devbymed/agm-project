@@ -23,9 +23,9 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
 
     public AuthResponse authenticateUser(AuthRequest authRequest) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.email(),
-                authRequest.password()));
-        User user = userRepository.findByEmail(authRequest.email())
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmail(),
+                authRequest.getPassword()));
+        User user = userRepository.findByEmail(authRequest.getEmail())
                 .orElseThrow(() -> new ApiException(BAD_CREDENTIALS));
         String accessToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(new HashMap<String, Object>(), user);
