@@ -1,16 +1,17 @@
 package ma.cimr.agmbackend.auth;
 
 import static ma.cimr.agmbackend.exception.ApiExceptionCodes.BAD_CREDENTIALS;
-import static ma.cimr.agmbackend.exception.ApiExceptionCodes.INVALID_TOKEN;
-
-import java.util.HashMap;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import ma.cimr.agmbackend.exception.ApiException;
+import ma.cimr.agmbackend.exception.ApiExceptionCodes;
 import ma.cimr.agmbackend.user.User;
 import ma.cimr.agmbackend.user.UserRepository;
 
@@ -19,6 +20,7 @@ import ma.cimr.agmbackend.user.UserRepository;
 public class AuthServiceImpl implements AuthService {
 
     private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final JwtService jwtService;
 
@@ -27,18 +29,37 @@ public class AuthServiceImpl implements AuthService {
                 authRequest.getPassword()));
         User user = userRepository.findByEmail(authRequest.getEmail())
                 .orElseThrow(() -> new ApiException(BAD_CREDENTIALS));
-        String accessToken = jwtService.generateToken(user);
-        String refreshToken = jwtService.generateRefreshToken(new HashMap<String, Object>(), user);
-        return new AuthResponse(accessToken, refreshToken);
+        String token = jwtService.generateToken(user);
+        boolean mustChangePassword = user.isFirstLogin();
+        return AuthResponse.builder()
+                .accessToken(token)
+                .mustChangePassword(mustChangePassword)
+                .build();
     }
 
-    public AuthResponse renewAccessToken(TokenRefreshRequest tokenRefreshRequest) {
-        String email = jwtService.extractUsername(tokenRefreshRequest.refreshToken());
-        User user = userRepository.findByEmail(email).orElseThrow();
-        if (jwtService.isTokenValid(tokenRefreshRequest.refreshToken(), user)) {
-            String accessToken = jwtService.generateToken(user);
-            return new AuthResponse(accessToken, tokenRefreshRequest.refreshToken());
+    public void changePassword(ChangePasswordRequest changePasswordRequest) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String email;
+        if (principal instanceof UserDetails) {
+            email = ((UserDetails) principal).getUsername();
+        } else {
+            email = principal.toString();
         }
-        throw new ApiException(INVALID_TOKEN);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ApiException(ApiExceptionCodes.USER_NOT_FOUND));
+        if (!passwordEncoder.matches(changePasswordRequest.getTemporaryPassword(), user.getPassword())) {
+            throw new ApiException(ApiExceptionCodes.OLD_PASSWORD_INCORRECT);
+        }
+        if (!isValidPassword(changePasswordRequest.getNewPassword())) {
+            throw new ApiException(ApiExceptionCodes.INVALID_NEW_PASSWORD);
+        }
+        user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+        user.setFirstLogin(false);
+        userRepository.save(user);
+    }
+
+    private boolean isValidPassword(String password) {
+        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&*()_+\\-=\\[\\]?]).{8,20}$";
+        return password.matches(passwordRegex);
     }
 }

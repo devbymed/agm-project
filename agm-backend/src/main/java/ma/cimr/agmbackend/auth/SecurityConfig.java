@@ -35,10 +35,10 @@ public class SecurityConfig {
 		http.cors(withDefaults()).csrf(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(
 						request -> request
+								.requestMatchers("/auth/change-password").authenticated()
 								.requestMatchers("/auth/**", "/v3/api-docs", "/v3/api-docs/**", "/swagger-resources",
 										"/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui/**",
-										"/webjars/**", "/swagger-ui.html",
-										"/new-user")
+										"/webjars/**", "/swagger-ui.html")
 								.permitAll()
 								.requestMatchers("/api/v1/users/**").hasAnyAuthority("Gestionnaire")
 								.requestMatchers("/api/v1/profiles/**").hasAnyAuthority("Gestionnaire")

@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -45,6 +46,10 @@ public class User extends BaseEntity implements UserDetails {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "profile_id")
 	private Profile profile;
+
+	@Builder.Default
+	@Column(name = "is_first_login", nullable = false)
+	private boolean isFirstLogin = true;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

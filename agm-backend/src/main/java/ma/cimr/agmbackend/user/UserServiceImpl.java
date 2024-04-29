@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.mail.MessagingException;
 import ma.cimr.agmbackend.email.EmailService;
-import ma.cimr.agmbackend.email.EmailType;
+import ma.cimr.agmbackend.email.EmailTemplateName;
 import ma.cimr.agmbackend.exception.ApiException;
 import ma.cimr.agmbackend.profile.ProfileRepository;
 import ma.cimr.agmbackend.util.SecurePasswordGenerator;
@@ -75,17 +75,17 @@ public class UserServiceImpl implements UserService {
                 profileRepository.findById(userCreateRequest.getProfileId())
                         .orElseThrow(() -> new ApiException(PROFILE_NOT_FOUND)));
         userRepository.save(user);
-        sendWelcomeEmail(user, generatedPassword);
+        // sendWelcomeEmail(user, generatedPassword);
         return userMapper.toUserResponse(user);
     }
 
+    @SuppressWarnings("unused")
     private void sendWelcomeEmail(User user, String generatedPassword) throws MessagingException {
-        LOGGER.info(
-                String.format("* Email sent to %s %s: %s", user.getFirstName(), user.getLastName(), user.getEmail()));
-        emailService.sendEmail(user.getEmail(), user.getFirstName(),
-                " Bienvenue sur l'application de gestion des assemblées générales de la CIMR",
-                generatedPassword, EmailType.NEW_USER);
-
+        LOGGER.info(String.format("* Email sent to %s %s: %s", user.getFirstName(),
+                user.getLastName(), user.getEmail()));
+        emailService.sendEmail(user.getEmail(),
+                " Bienvenue sur l'application de gestion des assemblées générales de la CIMR", user.getFirstName(),
+                generatedPassword, EmailTemplateName.NEW_USER);
     }
 
     @Override

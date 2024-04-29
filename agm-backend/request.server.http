@@ -2,9 +2,14 @@
 POST {{baseUrl}}/auth/login HTTP/1.1
 Content-Type: application/json
 
+# {
+# 	"email": "ibnkhayat.mohamed642@gmail.com",
+# 	"password": "gestionnaire"
+# }
+
 {
-	"email": "ibnkhayat.mohamed642@gmail.com",
-	"password": "gestionnaire"
+	"email": "john.doe@gmail.com",
+	"password": "P@ssw0rd!2022"
 }
 
 ### POST /auth/refresh-token - Refresh Token
@@ -13,6 +18,16 @@ Content-Type: application/json
 
 {
 	"refreshToken": "{{refreshToken}}"
+}
+
+### PATCH /auth/change-password - Change Password
+PATCH {{baseUrl}}/auth/change-password HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+	"temporaryPassword": "6QX7?8jcz_pC",
+	"newPassword": "P@ssw0rd!2022"
 }
 
 ### GET /users - Get All Users
@@ -29,10 +44,10 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-	"firstName": "Jane",
+	"firstName": "John",
 	"lastName": "Doe",
-	"profileId": 1,
-	"email": "jane.doe@gmail.com"
+	"profileId": 2,
+	"email": "john.doe@gmail.com"
 }
 
 ### PATCH /users/{id} - Update User

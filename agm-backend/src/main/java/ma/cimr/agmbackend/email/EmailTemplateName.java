@@ -3,12 +3,12 @@ package ma.cimr.agmbackend.email;
 import lombok.Getter;
 
 @Getter
-public enum EmailType {
+public enum EmailTemplateName {
 	NEW_USER("new_user");
 
 	private final String name;
 
-	private EmailType(String name) {
+	private EmailTemplateName(String name) {
 		this.name = name;
 	}
 }

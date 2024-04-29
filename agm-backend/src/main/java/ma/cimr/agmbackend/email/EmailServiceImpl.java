@@ -25,18 +25,15 @@ public class EmailServiceImpl implements EmailService {
 	private final SpringTemplateEngine templateEngine;
 
 	@Async
-	public void sendEmail(String to, String firstName, String subject, String temporaryPassword, EmailType emailType)
+	public void sendEmail(String to, String subject, String firstName, String temporaryPassword,
+			EmailTemplateName emailTemplateName)
 			throws MessagingException {
-		String type;
-		if (emailType == null) {
-			type = "new_user";
-		} else {
-			type = emailType.getName();
-		}
+
+		String templateName = (emailTemplateName == null) ? "new_user" : emailTemplateName.getName();
 
 		MimeMessage message = mailSender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(message, MULTIPART_MODE_MIXED,
-				UTF_8.name());
+		MimeMessageHelper helper = new MimeMessageHelper(message, MULTIPART_MODE_MIXED, UTF_8.name());
+
 		Map<String, Object> properties = new HashMap<>();
 		properties.put("firstName", firstName);
 		properties.put("temporaryPassword", temporaryPassword);
@@ -48,7 +45,7 @@ public class EmailServiceImpl implements EmailService {
 		helper.setTo(to);
 		helper.setSubject(subject);
 
-		String template = templateEngine.process(type, context);
+		String template = templateEngine.process(templateName, context);
 		helper.setText(template, true);
 		mailSender.send(message);
 	}

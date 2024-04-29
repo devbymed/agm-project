@@ -4,6 +4,7 @@ import jakarta.mail.MessagingException;
 
 public interface EmailService {
 
-	void sendEmail(String to, String firstName, String subject, String temporaryPassword, EmailType emailType)
+	void sendEmail(String to, String firstName, String subject, String temporaryPassword,
+			EmailTemplateName emailTemplateName)
 			throws MessagingException;
 }

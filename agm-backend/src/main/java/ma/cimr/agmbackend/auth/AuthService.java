@@ -4,5 +4,7 @@ public interface AuthService {
 
 	AuthResponse authenticateUser(AuthRequest authRequest);
 
-	AuthResponse renewAccessToken(TokenRefreshRequest tokenRefreshRequest);
+	// AuthResponse renewAccessToken(TokenRefreshRequest tokenRefreshRequest);
+
+	void changePassword(ChangePasswordRequest changePasswordRequest);
 }
