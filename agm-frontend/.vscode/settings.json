@@ -1,0 +1,32 @@
+{
+  "editor.autoIndent": "full",
+  "editor.cursorBlinking": "solid",
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.cursorStyle": "line",
+  "editor.fontSize": 12.6,
+  "editor.fontFamily": "JetBrains Mono Semibold",
+  "editor.fontLigatures": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": false,
+  "editor.formatOnSave": true,
+  "editor.letterSpacing": 0.3,
+  "editor.lineHeight": 22,
+  "editor.minimap.enabled": false,
+  "editor.multiCursorModifier": "ctrlCmd",
+  "editor.suggestSelection": "first",
+  "editor.tabCompletion": "on",
+  "editor.wordWrap": "on",
+  "files.autoSave": "onFocusChange",
+  "files.autoSaveDelay": 1000,
+  "search.showLineNumbers": true,
+  "workbench.iconTheme": "bearded-icons",
+  "workbench.colorCustomizations": {},
+  "workbench.colorTheme": "Default Dark+",
+  "zenMode.centerLayout": false,
+  "rest-client.environmentVariables": {
+    "local": {
+      "baseUrl": "http://localhost:8080/api/v1",
+      "accessToken": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2huLmRvZUBnbWFpbC5jb20iLCJpYXQiOjE3MTQ0Njk2NTIsImV4cCI6MTcxNDQ3MTA5Mn0.hKUW9YJF9vGrsKmoFmGs_zo6RyBuDopvcFP2mMiYi3OxFNKnqCFR_jUeNroayolV"
+    }
+  }
+}
