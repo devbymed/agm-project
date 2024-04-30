@@ -24,7 +24,7 @@ import ma.cimr.agmbackend.user.UserService;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableMethodSecurity(securedEnabled = true)
+@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig {
 
 	private final JwtAuthFilter jwtAuthenticationFilter;
@@ -40,8 +40,8 @@ public class SecurityConfig {
 										"/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui/**",
 										"/webjars/**", "/swagger-ui.html")
 								.permitAll()
-								.requestMatchers("/api/v1/users/**").hasAnyAuthority("Gestionnaire")
-								.requestMatchers("/api/v1/profiles/**").hasAnyAuthority("Gestionnaire")
+								// .requestMatchers("/api/v1/users/**").hasAnyAuthority("Gestionnaire")
+								// .requestMatchers("/api/v1/profiles/**").hasAnyAuthority("Gestionnaire")
 								.anyRequest().authenticated())
 				.sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
 				.authenticationProvider(authenticationProvider())

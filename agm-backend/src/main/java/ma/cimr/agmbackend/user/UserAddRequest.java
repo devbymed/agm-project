@@ -17,6 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserAddRequest {
+
 	@NotBlank(message = "Le prénom est obligatoire")
 	@Size(max = 50, message = "Le prénom ne peut pas dépasser 50 caractères")
 	private String firstName;

@@ -2,16 +2,21 @@ package ma.cimr.agmbackend.auth;
 
 import static ma.cimr.agmbackend.exception.ApiExceptionCodes.BAD_CREDENTIALS;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import ma.cimr.agmbackend.exception.ApiException;
 import ma.cimr.agmbackend.exception.ApiExceptionCodes;
+import ma.cimr.agmbackend.profile.Feature;
 import ma.cimr.agmbackend.user.User;
 import ma.cimr.agmbackend.user.UserRepository;
 
@@ -24,6 +29,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
 
+    @Transactional
     public AuthResponse authenticateUser(AuthRequest authRequest) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmail(),
                 authRequest.getPassword()));
@@ -31,9 +37,11 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new ApiException(BAD_CREDENTIALS));
         String token = jwtService.generateToken(user);
         boolean mustChangePassword = user.isFirstLogin();
+        Set<String> features = user.getProfile().getFeatures().stream().map(Feature::name).collect(Collectors.toSet());
         return AuthResponse.builder()
                 .accessToken(token)
                 .mustChangePassword(mustChangePassword)
+                .features(features)
                 .build();
     }
 

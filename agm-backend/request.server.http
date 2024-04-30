@@ -2,15 +2,15 @@
 POST {{baseUrl}}/auth/login HTTP/1.1
 Content-Type: application/json
 
-# {
-# 	"email": "ibnkhayat.mohamed642@gmail.com",
-# 	"password": "gestionnaire"
-# }
-
 {
-	"email": "john.doe@gmail.com",
-	"password": "P@ssw0rd!2022"
+	"email": "ibnkhayat.mohamed642@gmail.com",
+	"password": "gestionnaire"
 }
+
+# {
+# 	"email": "john.doe@gmail.com",
+# 	"password": "P@ssw0rd!2022"
+# }
 
 ### POST /auth/refresh-token - Refresh Token
 POST {{baseUrl}}/auth/refresh-token HTTP/1.1

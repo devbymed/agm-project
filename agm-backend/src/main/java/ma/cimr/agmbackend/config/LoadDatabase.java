@@ -1,5 +1,10 @@
 package ma.cimr.agmbackend.config;
 
+import static ma.cimr.agmbackend.profile.Feature.AUTHORIZATIONS;
+import static ma.cimr.agmbackend.profile.Feature.USER_MANAGEMENT;
+
+import java.util.EnumSet;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +36,12 @@ public class LoadDatabase {
 			PasswordEncoder passwordEncoder) {
 		return args -> {
 			Profile profile = profileRepository.findByName("Gestionnaire")
-					.orElseGet(() -> profileRepository.save(Profile.builder().name("Gestionnaire").build()));
+					.orElseGet(() -> {
+						Profile newProfile = Profile.builder()
+								.name("Gestionnaire").build();
+						newProfile.setFeatures(EnumSet.of(USER_MANAGEMENT, AUTHORIZATIONS));
+						return profileRepository.save(newProfile);
+					});
 
 			userRepository.findByEmail(email)
 					.orElseGet(() -> userRepository.save(User.builder()

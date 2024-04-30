@@ -1,15 +1,23 @@
 package ma.cimr.agmbackend.profile;
 
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,4 +40,11 @@ public class Profile extends BaseEntity {
 	@OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private List<User> users;
+
+	@Builder.Default
+	@ElementCollection(targetClass = Feature.class, fetch = FetchType.EAGER)
+	@Enumerated(EnumType.STRING)
+	@CollectionTable(name = "profile_features")
+	@Column(name = "feature")
+	private Set<Feature> features = EnumSet.noneOf(Feature.class);
 }

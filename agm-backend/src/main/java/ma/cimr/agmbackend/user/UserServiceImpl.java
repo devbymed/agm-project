@@ -3,6 +3,7 @@ package ma.cimr.agmbackend.user;
 import static ma.cimr.agmbackend.exception.ApiExceptionCodes.PROFILE_NOT_FOUND;
 import static ma.cimr.agmbackend.exception.ApiExceptionCodes.USER_NOT_FOUND;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -10,16 +11,21 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.mail.MessagingException;
 import ma.cimr.agmbackend.email.EmailService;
 import ma.cimr.agmbackend.email.EmailTemplateName;
 import ma.cimr.agmbackend.exception.ApiException;
+import ma.cimr.agmbackend.profile.Feature;
+import ma.cimr.agmbackend.profile.Profile;
 import ma.cimr.agmbackend.profile.ProfileRepository;
 import ma.cimr.agmbackend.util.SecurePasswordGenerator;
 
@@ -48,8 +54,15 @@ public class UserServiceImpl implements UserService {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) {
-                return userRepository.findByEmail(username)
+                User user = userRepository.findByEmail(username)
                         .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
+
+                List<GrantedAuthority> authorities = user.getProfile().getFeatures().stream()
+                        .map(feature -> new SimpleGrantedAuthority(feature.name()))
+                        .collect(Collectors.toList());
+
+                return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
+                        authorities);
             }
         };
     }

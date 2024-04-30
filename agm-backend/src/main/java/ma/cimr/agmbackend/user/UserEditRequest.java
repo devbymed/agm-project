@@ -18,6 +18,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonInclude(value = Include.NON_EMPTY)
 public class UserEditRequest {
+
 	@Size(max = 50, message = "Le prénom ne peut pas dépasser 50 caractères")
 	private String firstName;
 

@@ -31,13 +31,6 @@ public class AuthController {
 		return ApiResponseFormatter.generateResponse(HttpStatus.OK, response);
 	}
 
-	// @PostMapping("/refresh-token")
-	// public ResponseEntity<ApiResponse> renewAccessToken(
-	// 		@RequestBody TokenRefreshRequest tokenRefreshRequest) {
-	// 	AuthResponse response = authService.renewAccessToken(tokenRefreshRequest);
-	// 	return ApiResponseFormatter.generateResponse(HttpStatus.OK, response);
-	// }
-
 	@PatchMapping("/change-password")
 	public ResponseEntity<ApiResponse> changePassword(
 			@Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
