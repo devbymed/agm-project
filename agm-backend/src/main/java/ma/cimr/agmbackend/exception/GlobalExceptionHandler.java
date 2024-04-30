@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -54,6 +55,16 @@ public class GlobalExceptionHandler {
 				.timestamp(LocalDateTime.now())
 				.status(HttpStatus.UNAUTHORIZED)
 				.message(ApiExceptionCodes.BAD_CREDENTIALS.getMessage())
+				.build();
+		return new ResponseEntity<ApiExceptionResponse>(response, response.getStatus());
+	}
+
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<ApiExceptionResponse> handleAccessDeniedException(AccessDeniedException ex) {
+		ApiExceptionResponse response = ApiExceptionResponse.builder()
+				.timestamp(LocalDateTime.now())
+				.status(HttpStatus.FORBIDDEN)
+				.message("Accès Refusé")
 				.build();
 		return new ResponseEntity<ApiExceptionResponse>(response, response.getStatus());
 	}

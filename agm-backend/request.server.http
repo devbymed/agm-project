@@ -12,21 +12,13 @@ Content-Type: application/json
 # 	"password": "P@ssw0rd!2022"
 # }
 
-### POST /auth/refresh-token - Refresh Token
-POST {{baseUrl}}/auth/refresh-token HTTP/1.1
-Content-Type: application/json
-
-{
-	"refreshToken": "{{refreshToken}}"
-}
-
 ### PATCH /auth/change-password - Change Password
 PATCH {{baseUrl}}/auth/change-password HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-	"temporaryPassword": "6QX7?8jcz_pC",
+	"temporaryPassword": "4]E&5LD[@!9o",
 	"newPassword": "P@ssw0rd!2022"
 }
 
@@ -80,3 +72,16 @@ Authorization: Bearer {{accessToken}}
 {
 	"name": "Agent de relance"
 }
+
+### GET /profiles/{id}/features - Get Profile Features
+GET {{baseUrl}}/profiles/2/features HTTP/1.1
+Authorization: Bearer {{accessToken}}
+
+### PATCH /profiles/{id}/features - Update Profile Features
+PATCH {{baseUrl}}/profiles/2/features HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+[
+	"FDR_TRACKING"
+]

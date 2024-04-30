@@ -3,7 +3,6 @@ package ma.cimr.agmbackend.user;
 import static ma.cimr.agmbackend.exception.ApiExceptionCodes.PROFILE_NOT_FOUND;
 import static ma.cimr.agmbackend.exception.ApiExceptionCodes.USER_NOT_FOUND;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,14 +17,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.mail.MessagingException;
 import ma.cimr.agmbackend.email.EmailService;
 import ma.cimr.agmbackend.email.EmailTemplateName;
 import ma.cimr.agmbackend.exception.ApiException;
-import ma.cimr.agmbackend.profile.Feature;
-import ma.cimr.agmbackend.profile.Profile;
 import ma.cimr.agmbackend.profile.ProfileRepository;
 import ma.cimr.agmbackend.util.SecurePasswordGenerator;
 
@@ -88,7 +84,7 @@ public class UserServiceImpl implements UserService {
                 profileRepository.findById(userCreateRequest.getProfileId())
                         .orElseThrow(() -> new ApiException(PROFILE_NOT_FOUND)));
         userRepository.save(user);
-        // sendWelcomeEmail(user, generatedPassword);
+        sendWelcomeEmail(user, generatedPassword);
         return userMapper.toUserResponse(user);
     }
 

@@ -1,8 +1,5 @@
 package ma.cimr.agmbackend.config;
 
-import static ma.cimr.agmbackend.profile.Feature.AUTHORIZATIONS;
-import static ma.cimr.agmbackend.profile.Feature.USER_MANAGEMENT;
-
 import java.util.EnumSet;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import ma.cimr.agmbackend.profile.Feature;
 import ma.cimr.agmbackend.profile.Profile;
 import ma.cimr.agmbackend.profile.ProfileRepository;
 import ma.cimr.agmbackend.user.User;
@@ -39,7 +37,7 @@ public class LoadDatabase {
 					.orElseGet(() -> {
 						Profile newProfile = Profile.builder()
 								.name("Gestionnaire").build();
-						newProfile.setFeatures(EnumSet.of(USER_MANAGEMENT, AUTHORIZATIONS));
+						newProfile.setFeatures(EnumSet.allOf(Feature.class));
 						return profileRepository.save(newProfile);
 					});
 

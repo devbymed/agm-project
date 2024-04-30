@@ -1,5 +1,5 @@
 package ma.cimr.agmbackend.profile;
 
 public enum Feature {
-	USER_MANAGEMENT, AUTHORIZATIONS
+	ASSEMBLY_IN_PROGRESS, FDR_TRACKING, USER_MANAGEMENT, AUTHORIZATIONS
 }
