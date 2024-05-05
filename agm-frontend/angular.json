@@ -50,7 +50,7 @@
             "tsConfig": "tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles.css"],
-            "scripts": []
+            "scripts": ["node_modules/flowbite/dist/flowbite.js"]
           },
           "configurations": {
             "production": {

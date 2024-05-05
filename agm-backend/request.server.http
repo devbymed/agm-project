@@ -18,7 +18,7 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-	"temporaryPassword": "4]E&5LD[@!9o",
+	"temporaryPassword": "iE8fHwsKPZyP",
 	"newPassword": "P@ssw0rd!2022"
 }
 

@@ -6,10 +6,7 @@ import { initFlowbite } from 'flowbite';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet],
-  template: `
-    <main class="bg-gray-50 dark:bg-gray-900"><router-outlet /></main>
-  `,
-  styles: [],
+  template: ` <main class="bg-gray-50"><router-outlet /></main> `,
 })
 export class AppComponent implements OnInit {
   ngOnInit(): void {

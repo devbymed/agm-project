@@ -18,7 +18,9 @@ import ma.cimr.agmbackend.exception.ApiException;
 import ma.cimr.agmbackend.exception.ApiExceptionCodes;
 import ma.cimr.agmbackend.profile.Feature;
 import ma.cimr.agmbackend.user.User;
+import ma.cimr.agmbackend.user.UserMapper;
 import ma.cimr.agmbackend.user.UserRepository;
+import ma.cimr.agmbackend.user.UserResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +30,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private final UserMapper userMapper;
 
     @Transactional
     public AuthResponse authenticateUser(AuthRequest authRequest) {
@@ -37,11 +40,13 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new ApiException(BAD_CREDENTIALS));
         String token = jwtService.generateToken(user);
         boolean mustChangePassword = user.isFirstLogin();
-        Set<String> features = user.getProfile().getFeatures().stream().map(Feature::name).collect(Collectors.toSet());
+        // Set<String> features =
+        // user.getProfile().getFeatures().stream().map(Feature::name).collect(Collectors.toSet());
+        UserResponse userResponse = userMapper.toUserResponse(user);
         return AuthResponse.builder()
                 .accessToken(token)
                 .mustChangePassword(mustChangePassword)
-                .features(features)
+                .user(userResponse)
                 .build();
     }
 

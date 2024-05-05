@@ -2,6 +2,8 @@ package ma.cimr.agmbackend.profile;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
@@ -19,4 +21,5 @@ import lombok.Setter;
 public class ProfileResponse {
 	private Long id;
 	private String name;
+	private Set<String> features;
 }

@@ -65,11 +65,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserResponse> getUsers() {
-        return userRepository.findAll().stream().map(userMapper::toUserResponse).collect(Collectors.toList());
+        return userRepository.findAll().stream().map(userMapper::toUserResponseWithoutFeatures)
+                .collect(Collectors.toList());
     }
 
     public UserResponse getUser(Long id) {
-        return userRepository.findById(id).map(userMapper::toUserResponse)
+        return userRepository.findById(id).map(userMapper::toUserResponseWithoutFeatures)
                 .orElseThrow(() -> new ApiException(USER_NOT_FOUND));
     }
 
@@ -85,7 +86,7 @@ public class UserServiceImpl implements UserService {
                         .orElseThrow(() -> new ApiException(PROFILE_NOT_FOUND)));
         userRepository.save(user);
         sendWelcomeEmail(user, generatedPassword);
-        return userMapper.toUserResponse(user);
+        return userMapper.toUserResponseWithoutFeatures(user);
     }
 
     @SuppressWarnings("unused")
@@ -106,7 +107,7 @@ public class UserServiceImpl implements UserService {
                 .setProfile(profileRepository.findById(profileId)
                         .orElseThrow(() -> new ApiException(PROFILE_NOT_FOUND))));
         userRepository.save(user);
-        return userMapper.toUserResponse(user);
+        return userMapper.toUserResponseWithoutFeatures(user);
     }
 
     @Override

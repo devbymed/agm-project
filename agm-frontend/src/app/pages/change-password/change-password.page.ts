@@ -5,5 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './change-password.page.html',
+  styles: ``,
 })
 export class ChangePasswordPage {}
