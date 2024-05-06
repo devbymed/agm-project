@@ -7,4 +7,4 @@ import { Component } from '@angular/core';
   templateUrl: './user-management.page.html',
   styles: ``,
 })
-export class UserManagementPage {}
+export default class UserManagementPage {}

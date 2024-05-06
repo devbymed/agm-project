@@ -1,7 +1,5 @@
 package ma.cimr.agmbackend.auth;
 
-import java.util.Set;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,5 +15,5 @@ import ma.cimr.agmbackend.user.UserResponse;
 public class AuthResponse {
 	private String accessToken;
 	private boolean mustChangePassword;
-	private UserResponse user;
+	private LoginUserResponse user;
 }

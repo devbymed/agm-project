@@ -14,7 +14,8 @@ public enum ApiExceptionCodes {
 	OLD_PASSWORD_INCORRECT(1002, "L'anien mot de passe est incorrect", HttpStatus.BAD_REQUEST),
 	INVALID_NEW_PASSWORD(1003, "Le nouveau mot de passe est invalide", HttpStatus.BAD_REQUEST),
 	USER_NOT_FOUND(2000, "Utilisateur non trouvé", HttpStatus.NOT_FOUND),
-	PROFILE_NOT_FOUND(3000, "Profil non trouvé", HttpStatus.NOT_FOUND);
+	PROFILE_NOT_FOUND(3000, "Profil non trouvé", HttpStatus.NOT_FOUND),
+	FEATURE_NOT_FOUND(4000, "Fonctionnalité non trouvée", HttpStatus.NOT_FOUND);
 
 	private final int code;
 	private final String message;

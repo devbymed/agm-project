@@ -13,11 +13,7 @@
     <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
       Se connecter
     </h2>
-    <form
-      [formGroup]="loginForm"
-      class="mt-8 space-y-6"
-      (ngSubmit)="onSubmit()"
-    >
+    <form [formGroup]="loginForm" class="mt-8 space-y-6">
       <div>
         <app-input
           label="Identifiant"
@@ -38,12 +34,10 @@
           formControlName="password"
         />
       </div>
-      <button
-        type="submit"
-        class="w-full rounded-lg bg-primary-700 px-5 py-3 text-center text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto"
-      >
-        Se connecter
-      </button>
+      <div class="mb-2">
+        <app-button type="submit">Se connetcter</app-button>
+      </div>
+      <p>{{ loginForm.value | json }}</p>
     </form>
   </div>
 </div>

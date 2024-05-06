@@ -1,7 +1,6 @@
 package ma.cimr.agmbackend.profile;
 
 import java.util.List;
-import java.util.Set;
 
 public interface ProfileService {
 
@@ -11,7 +10,9 @@ public interface ProfileService {
 
 	ProfileResponse createProfile(ProfileAddRequest request);
 
-	Set<Feature> getProfileFeatures(Long id);
+	void updateProfileFeature(Long profileId, String featureName, boolean isEnabled);
 
-	void updateProfileFeatures(Long id, Set<Feature> features);
+	// Set<Feature> getProfileFeatures(Long id);
+
+	// void updateProfileFeatures(Long id, Set<Feature> features);
 }

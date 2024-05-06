@@ -9,7 +9,7 @@ Content-Type: application/json
 
 # {
 # 	"email": "john.doe@gmail.com",
-# 	"password": "P@ssw0rd!2022"
+# 	"password": "H7a_j+D83@S2"
 # }
 
 ### PATCH /auth/change-password - Change Password
