@@ -1,4 +1,4 @@
-package ma.cimr.agmbackend.feature;
+package ma.cimr.agmbackend.permission;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
@@ -16,11 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(value = NON_NULL)
-public class FeatureResponse {
+public class PermissionResponse {
+	private Long id;
 	private String name;
-	private Boolean enabled;
-
-	public FeatureResponse(String name) {
-		this.name = name;
-	}
 }

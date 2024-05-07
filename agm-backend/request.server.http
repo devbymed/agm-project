@@ -9,7 +9,7 @@ Content-Type: application/json
 
 # {
 # 	"email": "john.doe@gmail.com",
-# 	"password": "H7a_j+D83@S2"
+# 	"password": "P@ssw0rd!2022"
 # }
 
 ### PATCH /auth/change-password - Change Password
@@ -18,7 +18,7 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-	"temporaryPassword": "iE8fHwsKPZyP",
+	"temporaryPassword": "%iFS7[8g9m[i",
 	"newPassword": "P@ssw0rd!2022"
 }
 
@@ -43,13 +43,13 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### PATCH /users/{id} - Update User
-PATCH {{baseUrl}}/users/3 HTTP/1.1
+PATCH {{baseUrl}}/users/2 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
 	"firstName": "Johnathan",
-	"profileId": 2
+	"profileId": 1
 }
 
 ### DELETE /users/{id} - Delete User
@@ -73,15 +73,14 @@ Authorization: Bearer {{accessToken}}
 	"name": "Agent de relance"
 }
 
-### GET /profiles/{id}/features - Get Profile Features
-GET {{baseUrl}}/profiles/2/features HTTP/1.1
+### POST /profiles/{id}/permissions - Add Permissions To Profile
+PUT {{baseUrl}}/profiles/2/permissions/2 HTTP/1.1
 Authorization: Bearer {{accessToken}}
 
-### PATCH /profiles/{id}/features - Update Profile Features
-PATCH {{baseUrl}}/profiles/2/features HTTP/1.1
-Content-Type: application/json
+### DELETE /profiles/{id}/permissions/{id} - Remove Permission From Profile
+DELETE {{baseUrl}}/profiles/2/permissions/1 HTTP/1.1
 Authorization: Bearer {{accessToken}}
 
-[
-	"FDR_TRACKING"
-]
+### GET /permissions - Get All Permissions
+GET {{baseUrl}}/permissions HTTP/1.1
+Authorization: Bearer {{accessToken}}

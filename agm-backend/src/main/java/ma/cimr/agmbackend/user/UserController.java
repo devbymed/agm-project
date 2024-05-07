@@ -22,7 +22,7 @@ import ma.cimr.agmbackend.util.ApiResponseFormatter;
 @RestController
 @RequestMapping("users")
 @RequiredArgsConstructor
-@PreAuthorize("hasAuthority('USER_MANAGEMENT')")
+@PreAuthorize("hasAuthority('Gestion utilisateurs')")
 @Tag(name = "Gestion des utilisateurs")
 public class UserController {
 

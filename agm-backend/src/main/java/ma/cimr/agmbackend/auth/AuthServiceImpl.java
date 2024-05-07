@@ -36,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new ApiException(BAD_CREDENTIALS));
         String token = jwtService.generateToken(user);
         boolean mustChangePassword = user.isFirstLogin();
-        LoginUserResponse userResponse = userMapper.toLoginUserResponse(user);
+        UserResponse userResponse = userMapper.toUserResponse(user);
         return AuthResponse.builder()
                 .accessToken(token)
                 .mustChangePassword(mustChangePassword)

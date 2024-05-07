@@ -11,7 +11,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ma.cimr.agmbackend.feature.FeatureResponse;
 
 @Getter
 @Setter
@@ -22,5 +21,5 @@ import ma.cimr.agmbackend.feature.FeatureResponse;
 public class ProfileResponse {
 	private Long id;
 	private String name;
-	private List<FeatureResponse> features;
+	private List<String> permissions;
 }

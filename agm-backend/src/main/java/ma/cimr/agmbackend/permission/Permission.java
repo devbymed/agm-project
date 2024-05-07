@@ -1,4 +1,4 @@
-package ma.cimr.agmbackend.feature;
+package ma.cimr.agmbackend.permission;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,8 +16,8 @@ import ma.cimr.agmbackend.common.BaseEntity;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "features")
-public class Feature extends BaseEntity {
+@Table(name = "permissions")
+public class Permission extends BaseEntity {
 
 	@Column(nullable = false, unique = true)
 	private String name;

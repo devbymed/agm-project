@@ -1,7 +1,7 @@
 package ma.cimr.agmbackend.user;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -53,7 +53,9 @@ public class User extends BaseEntity implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority(profile.getName()));
+		return profile.getPermissions().stream()
+				.map(permission -> new SimpleGrantedAuthority(permission.getName()))
+				.collect(Collectors.toList());
 	}
 
 	@Override

@@ -1,8 +1,5 @@
 package ma.cimr.agmbackend.profile;
 
-import static ma.cimr.agmbackend.exception.ApiExceptionCodes.FEATURE_NOT_FOUND;
-import static ma.cimr.agmbackend.exception.ApiExceptionCodes.PROFILE_NOT_FOUND;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,66 +7,54 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import ma.cimr.agmbackend.exception.ApiException;
-import ma.cimr.agmbackend.feature.Feature;
-import ma.cimr.agmbackend.feature.FeatureRepository;
+import ma.cimr.agmbackend.exception.ApiExceptionCodes;
+import ma.cimr.agmbackend.permission.Permission;
+import ma.cimr.agmbackend.permission.PermissionRepository;
 
 @Service
 @RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
 
 	private final ProfileRepository profileRepository;
-	private final FeatureRepository featureRepository;
 	private final ProfileMapper profileMapper;
+	private final PermissionRepository permissionRepository;
 
 	@Override
 	public List<ProfileResponse> getProfiles() {
-		List<Feature> allFeatures = featureRepository.findAll();
 		return profileRepository.findAll().stream()
-				.map(profile -> profileMapper.toProfileResponseWithAllFeatures(profile, allFeatures))
+				.map(profileMapper::toProfileResponse)
 				.collect(Collectors.toList());
-	}
-
-	@Override
-	public ProfileResponse getProfile(Long id) {
-		List<Feature> allFeatures = featureRepository.findAll();
-		return profileRepository.findById(id)
-				.map(profile -> profileMapper.toProfileResponseWithAllFeatures(profile, allFeatures))
-				.orElseThrow(() -> new ApiException(PROFILE_NOT_FOUND));
 	}
 
 	@Override
 	public ProfileResponse createProfile(ProfileAddRequest profileAddRequest) {
 		Profile profile = profileMapper.toProfile(profileAddRequest);
 		profile = profileRepository.save(profile);
-		return profileMapper.toProfileResponseWithoutFeatures(profile);
+		return profileMapper.toProfileResponse(profile);
 	}
 
-	@Override
-	public void updateProfileFeature(Long profileId, String featureName, boolean isEnabled) {
+	public ProfileResponse addPermissionToProfile(Long profileId, Long permissionId) {
 		Profile profile = profileRepository.findById(profileId)
-				.orElseThrow(() -> new ApiException(PROFILE_NOT_FOUND));
-		Feature feature = featureRepository.findByName(featureName)
-				.orElseThrow(() -> new ApiException(FEATURE_NOT_FOUND));
-		if (isEnabled) {
-			profile.getFeatures().add(feature);
-		} else {
-			profile.getFeatures().remove(feature);
-		}
+				.orElseThrow(() -> new ApiException(ApiExceptionCodes.PROFILE_NOT_FOUND));
+		Permission permission = permissionRepository.findById(permissionId)
+				.orElseThrow(() -> new ApiException(ApiExceptionCodes.PERMISSION_NOT_FOUND));
+
+		profile.getPermissions().add(permission);
+		Profile savedProfile = profileRepository.save(profile);
+		return profileMapper.toProfileResponse(savedProfile);
+	}
+
+	public void removePermissionFromProfile(Long profileId, Long permissionId) {
+		Profile profile = profileRepository.findById(profileId)
+				.orElseThrow(() -> new ApiException(ApiExceptionCodes.PROFILE_NOT_FOUND));
+		Permission permission = permissionRepository.findById(permissionId)
+				.orElseThrow(() -> new ApiException(ApiExceptionCodes.PERMISSION_NOT_FOUND));
+
+		List<Permission> updatedPermissions = profile.getPermissions().stream()
+				.filter(p -> !p.getId().equals(permission.getId()))
+				.collect(Collectors.toList());
+
+		profile.setPermissions(updatedPermissions);
 		profileRepository.save(profile);
 	}
-
-	// @Override
-	// public Set<Feature> getProfileFeatures(Long id) {
-	// Profile profile = profileRepository.findById(id).orElseThrow(() -> new
-	// ApiException(PROFILE_NOT_FOUND));
-	// return profile.getFeatures();
-	// }
-
-	// @Override
-	// public void updateProfileFeatures(Long id, Set<Feature> features) {
-	// Profile profile = profileRepository.findById(id).orElseThrow(() -> new
-	// ApiException(PROFILE_NOT_FOUND));
-	// profile.setFeatures(features);
-	// profileRepository.save(profile);
-	// }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ import ma.cimr.agmbackend.util.ApiResponseFormatter;
 @RestController
 @RequestMapping("profiles")
 @RequiredArgsConstructor
-@PreAuthorize("hasAuthority('AUTHORIZATIONS')")
+@PreAuthorize("hasAuthority('Habilitations')")
 @Tag(name = "Gestion des profils")
 public class ProfileController {
 
@@ -34,42 +35,23 @@ public class ProfileController {
 		return ApiResponseFormatter.generateResponse(HttpStatus.OK, response);
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<ApiResponse> getProfile(@PathVariable Long id) {
-		ProfileResponse response = profileService.getProfile(id);
-		return ApiResponseFormatter.generateResponse(HttpStatus.OK, response);
-	}
-
 	@PostMapping
 	public ResponseEntity<ApiResponse> createProfile(@Valid @RequestBody ProfileAddRequest profileAddRequest) {
 		ProfileResponse response = profileService.createProfile(profileAddRequest);
 		return ApiResponseFormatter.generateResponse(HttpStatus.CREATED, "Profil créé avec succès", response);
 	}
 
-	@PutMapping("/{profileId}/features/{featureName}")
-	public ResponseEntity<ApiResponse> updateProfileFeature(
-			@PathVariable Long profileId,
-			@PathVariable String featureName,
-			@RequestBody boolean isEnabled) {
-		profileService.updateProfileFeature(profileId, featureName, isEnabled);
-		ProfileResponse updatedProfile = profileService.getProfile(profileId);
-		return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Fonctionnalité mise à jour avec succès",
-				updatedProfile);
+	@PutMapping("/{profileId}/permissions/{permissionId}")
+	public ResponseEntity<ApiResponse> addPermissionToProfile(@PathVariable Long profileId,
+			@PathVariable Long permissionId) {
+		ProfileResponse response = profileService.addPermissionToProfile(profileId, permissionId);
+		return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Permission ajoutée avec succès", response);
 	}
 
-	// @GetMapping("/{id}/features")
-	// public ResponseEntity<ApiResponse> getProfileFeatures(@PathVariable Long id)
-	// {
-	// Set<Feature> features = profileService.getProfileFeatures(id);
-	// return ApiResponseFormatter.generateResponse(HttpStatus.OK, features);
-	// }
-
-	// @PatchMapping("/{id}/features")
-	// public ResponseEntity<ApiResponse> updateProfileFeatures(@PathVariable Long
-	// id,
-	// @RequestBody Set<Feature> features) {
-	// profileService.updateProfileFeatures(id, features);
-	// return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Fonctionnalités
-	// du profil mises à jour avec succès");
-	// }
+	@DeleteMapping("/{profileId}/permissions/{permissionId}")
+	public ResponseEntity<ApiResponse> removePermissionFromProfile(@PathVariable Long profileId,
+			@PathVariable Long permissionId) {
+		profileService.removePermissionFromProfile(profileId, permissionId);
+		return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Permission supprimée avec succès");
+	}
 }

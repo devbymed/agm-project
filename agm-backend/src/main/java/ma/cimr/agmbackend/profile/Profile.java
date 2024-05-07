@@ -1,8 +1,6 @@
 package ma.cimr.agmbackend.profile;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -16,13 +14,12 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import ma.cimr.agmbackend.common.BaseEntity;
-import ma.cimr.agmbackend.feature.Feature;
+import ma.cimr.agmbackend.permission.Permission;
 import ma.cimr.agmbackend.user.User;
 
 @Getter
@@ -41,8 +38,7 @@ public class Profile extends BaseEntity {
 	@JsonIgnore
 	private List<User> users;
 
-	@Builder.Default
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "profile_features", joinColumns = @JoinColumn(name = "profile_id"), inverseJoinColumns = @JoinColumn(name = "feature_id"))
-	private Set<Feature> features = new HashSet<>();
+	@JoinTable(name = "profile_permissions", joinColumns = @JoinColumn(name = "profile_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
+	private List<Permission> permissions;
 }

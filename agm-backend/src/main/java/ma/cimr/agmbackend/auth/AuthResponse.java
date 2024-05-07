@@ -15,5 +15,5 @@ import ma.cimr.agmbackend.user.UserResponse;
 public class AuthResponse {
 	private String accessToken;
 	private boolean mustChangePassword;
-	private LoginUserResponse user;
+	private UserResponse user;
 }

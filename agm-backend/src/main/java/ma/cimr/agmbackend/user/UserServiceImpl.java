@@ -5,15 +5,12 @@ import static ma.cimr.agmbackend.exception.ApiExceptionCodes.USER_NOT_FOUND;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-// import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -53,25 +50,22 @@ public class UserServiceImpl implements UserService {
             @Override
             public UserDetails loadUserByUsername(String username) {
                 User user = userRepository.findByEmail(username)
-                        .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
+                        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-                Set<GrantedAuthority> grantedAuthorities = user.getProfile().getFeatures().stream()
-                        .map(feature -> new SimpleGrantedAuthority(feature.getName())).collect(Collectors.toSet());
-
-                return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
-                        grantedAuthorities);
+                Hibernate.initialize(user.getProfile().getPermissions());
+                return user;
             }
         };
     }
 
     @Override
     public List<UserResponse> getUsers() {
-        return userRepository.findAll().stream().map(userMapper::toUserResponseWithoutFeatures)
+        return userRepository.findAll().stream().map(userMapper::toUserResponseWithoutPermissions)
                 .collect(Collectors.toList());
     }
 
     public UserResponse getUser(Long id) {
-        return userRepository.findById(id).map(userMapper::toUserResponseWithoutFeatures)
+        return userRepository.findById(id).map(userMapper::toUserResponseWithoutPermissions)
                 .orElseThrow(() -> new ApiException(USER_NOT_FOUND));
     }
 
@@ -87,7 +81,7 @@ public class UserServiceImpl implements UserService {
                         .orElseThrow(() -> new ApiException(PROFILE_NOT_FOUND)));
         userRepository.save(user);
         sendWelcomeEmail(user, generatedPassword);
-        return userMapper.toUserResponseWithoutFeatures(user);
+        return userMapper.toUserResponseWithoutPermissions(user);
     }
 
     @SuppressWarnings("unused")
@@ -108,7 +102,7 @@ public class UserServiceImpl implements UserService {
                 .setProfile(profileRepository.findById(profileId)
                         .orElseThrow(() -> new ApiException(PROFILE_NOT_FOUND))));
         userRepository.save(user);
-        return userMapper.toUserResponseWithoutFeatures(user);
+        return userMapper.toUserResponseWithoutPermissions(user);
     }
 
     @Override
