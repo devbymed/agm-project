@@ -51,7 +51,6 @@ public class UserServiceImpl implements UserService {
             public UserDetails loadUserByUsername(String username) {
                 User user = userRepository.findByEmail(username)
                         .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
                 Hibernate.initialize(user.getProfile().getPermissions());
                 return user;
             }

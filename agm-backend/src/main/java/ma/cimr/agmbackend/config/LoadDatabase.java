@@ -33,10 +33,12 @@ public class LoadDatabase {
 	private String password;
 
 	@Bean
-	CommandLineRunner initDatabase(ProfileRepository profileRepository, UserRepository userRepository,
+	CommandLineRunner initDatabase(ProfileRepository profileRepository,
+			UserRepository userRepository,
 			PermissionRepository permissionRepository,
 			PasswordEncoder passwordEncoder) {
-		List<String> permissionNames = Arrays.asList("Gestion utilisateurs", "Habilitations");
+		List<String> permissionNames = Arrays.asList("Gestion utilisateurs",
+				"Habilitations");
 		return args -> {
 			List<Permission> permissions = permissionNames.stream()
 					.map(name -> permissionRepository.findByName(name)
