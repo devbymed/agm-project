@@ -36,10 +36,10 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-	"firstName": "John",
+	"firstName": "Jane",
 	"lastName": "Doe",
 	"profileId": 2,
-	"email": "john.doe@gmail.com"
+	"email": "tobekor505@losvtn.com"
 }
 
 ### PATCH /users/{id} - Update User

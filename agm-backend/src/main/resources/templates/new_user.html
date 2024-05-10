@@ -1,24 +1,22 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <title>
-  </title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style type="text/css">
-    #outlook a {
+    /* #outlook a {
       padding: 0;
-    }
-    .ReadMsgBody {
+    } */
+    /* .ReadMsgBody {
       width: 100%;
-    }
-    .ExternalClass {
+    } */
+    /* .ExternalClass {
       width: 100%;
     }
     .ExternalClass * {
       line-height: 100%;
-    }
+    } */
     body {
       margin: 0;
       padding: 0;
@@ -28,8 +26,8 @@
     table,
     td {
       border-collapse: collapse;
-      /* mso-table-lspace: 0pt;
-      mso-table-rspace: 0pt; */
+      mso-table-lspace: 0pt;
+      mso-table-rspace: 0pt;
     }
     img {
       border: 0;
@@ -44,7 +42,7 @@
       margin: 13px 0;
     }
   </style>
-  <style type="text/css">
+  <!-- <style type="text/css">
     @media only screen and (max-width:480px) {
       @-ms-viewport {
         width: 320px;
@@ -60,7 +58,7 @@
         width: 100% !important;
       }
     }
-  </style>
+  </style> -->
 </head>
 <body style="background-color:#f9f9f9;">
   <div style="background-color:#f9f9f9;">
@@ -82,7 +80,7 @@
         <tbody>
           <tr>
             <td
-              style="border:#dddddd solid 1px;border-top:0px;direction:ltr;font-size:0px;padding:20px 0;text-align:center;vertical-align:top;">
+              style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;vertical-align:top;">
               <div class="mj-column-per-100 outlook-group-fix"
                 style="font-size:13px;text-align:left;direction:ltr;display:inline-block;vertical-align:bottom;width:100%;">
                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:bottom;"
@@ -94,21 +92,20 @@
                         <tbody>
                           <tr>
                             <td style="width:100px;">
-                              <img height="auto" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/LOGO_CIMR.png" alt="CIMR"
+                              <img height="auto" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/LOGO_CIMR.png" alt="Logo CIMR"
                                 style="border:0;display:block;outline:none;text-decoration:none;width:100%;"
                                 width="100" />
                             </td>
                           </tr>
                         </tbody>
                       </table>
-
                     </td>
                   </tr>
                   <tr>
                     <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                       <div
                         style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:22px;text-align:left;color:#555;">
-                        Bonjour <span th:text="${firstName}"></span>,<br></br>
+                        Bonjour <span th:text="${firstName}"></span>,<br><br>
                         Nous sommes ravis de vous accueillir sur l'application de gestion des
                         assemblées générales de la CIMR. Pour commencer, veuillez utiliser le
                         mot de passe temporaire suivant pour vous connecter: <span style="font-weight: 600;" th:text="${temporaryPassword}"></span>

@@ -6,6 +6,7 @@ import static org.springframework.mail.javamail.MimeMessageHelper.MULTIPART_MODE
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -20,6 +21,9 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
+
+	@Value("${MAIL_USERNAME}")
+	private String from;
 
 	private final JavaMailSender mailSender;
 	private final SpringTemplateEngine templateEngine;
@@ -41,7 +45,7 @@ public class EmailServiceImpl implements EmailService {
 		Context context = new Context();
 		context.setVariables(properties);
 
-		helper.setFrom("info@cimr.ma");
+		helper.setFrom(from);
 		helper.setTo(to);
 		helper.setSubject(subject);
 

@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import LoginPage from './pages/login/login.page';
+import UserManagementPage from './pages/user-management/user-management.page';
+import { LayoutComponent } from './shared/components/layout.component';
 
 export const routes: Routes = [
   {
@@ -8,25 +10,24 @@ export const routes: Routes = [
     component: LoginPage,
     // canActivate: [guestGuard],
   },
+  // {
+  //   path: 'user-management',
+  //   loadComponent: () => import('./pages/user-management/user-management.page'),
+  //   canActivate: [authGuard],
+  // },
   {
-    path: 'user-management',
-    loadComponent: () => import('./pages/user-management/user-management.page'),
-    // canActivate: [authGuard],
+    path: 'dashboard',
+    component: LayoutComponent,
+    children: [
+      {
+        path: 'user-management',
+        component: UserManagementPage,
+      },
+    ],
   },
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'dashboard',
     pathMatch: 'full',
   },
-  // {
-  //   path: '',
-  //   component: LayoutComponent,
-  //   children: [
-  //     {
-  //       path: 'user-management',
-  //       component: UserManagementPage,
-  //       canActivate: [authGuard],
-  //     },
-  //   ],
-  // },
 ];
