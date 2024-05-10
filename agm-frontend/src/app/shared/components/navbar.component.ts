@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [],
+  imports: [RouterLinkActive],
   template: `
     <header>
       <nav
@@ -25,6 +26,8 @@ import { Component } from '@angular/core';
                     id="dropdownNavbarLink1"
                     data-dropdown-toggle="dropdownNavbar1"
                     class="flex w-full items-center justify-between border-b border-gray-100 py-2 pl-3 pr-4 font-medium text-gray-700 hover:bg-gray-50 md:w-auto md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-primary-700 md:dark:hover:bg-transparent"
+                    routerLinkActive="text-primary-700"
+                    ]
                   >
                     Préparation Assemblée
                     <svg

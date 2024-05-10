@@ -1,10 +1,10 @@
 package ma.cimr.agmbackend.profile;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface ProfileService {
 
-	List<ProfileResponse> getProfiles();
+	Page<ProfileResponse> getProfiles(int page, int size);
 
 	// ProfileResponse getProfile(Long id);
 

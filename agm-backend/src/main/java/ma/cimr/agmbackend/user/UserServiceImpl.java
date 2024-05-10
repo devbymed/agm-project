@@ -2,15 +2,15 @@ package ma.cimr.agmbackend.user;
 
 import static ma.cimr.agmbackend.exception.ApiExceptionCodes.PROFILE_NOT_FOUND;
 import static ma.cimr.agmbackend.exception.ApiExceptionCodes.USER_NOT_FOUND;
+import static org.springframework.data.domain.PageRequest.of;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -58,9 +58,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponse> getUsers() {
-        return userRepository.findAll().stream().map(userMapper::toUserResponseWithoutPermissions)
-                .collect(Collectors.toList());
+    public Page<UserResponse> getUsers(int page, int size) {
+        LOGGER.info(String.format("* Getting users page %d with size %d", page, size));
+        return userRepository.findAll(of(page, size)).map(userMapper::toUserResponseWithoutPermissions);
     }
 
     public UserResponse getUser(Long id) {

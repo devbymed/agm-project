@@ -1,7 +1,6 @@
 package ma.cimr.agmbackend.user;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import jakarta.mail.MessagingException;
@@ -10,7 +9,7 @@ public interface UserService {
 
 	UserDetailsService userDetailsService();
 
-	List<UserResponse> getUsers();
+	Page<UserResponse> getUsers(int page, int size);
 
 	UserResponse getUser(Long id);
 
