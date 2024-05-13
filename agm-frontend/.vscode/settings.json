@@ -20,7 +20,6 @@
   "files.autoSaveDelay": 1000,
   "search.showLineNumbers": true,
   "workbench.iconTheme": "bearded-icons",
-  "workbench.colorCustomizations": {},
   "workbench.colorTheme": "Default Dark+",
   "zenMode.centerLayout": false,
   "rest-client.environmentVariables": {
@@ -28,5 +27,25 @@
       "baseUrl": "http://localhost:8080/api/v1",
       "accessToken": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2huLmRvZUBnbWFpbC5jb20iLCJpYXQiOjE3MTQ0Njk2NTIsImV4cCI6MTcxNDQ3MTA5Mn0.hKUW9YJF9vGrsKmoFmGs_zo6RyBuDopvcFP2mMiYi3OxFNKnqCFR_jUeNroayolV"
     }
-  }
+  },
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#fa1b49",
+    "activityBar.background": "#fa1b49",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#155e02",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "commandCenter.border": "#e7e7e799",
+    "sash.hoverBorder": "#fa1b49",
+    "statusBar.background": "#dd0531",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#fa1b49",
+    "statusBarItem.remoteBackground": "#dd0531",
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "titleBar.activeBackground": "#dd0531",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#dd053199",
+    "titleBar.inactiveForeground": "#e7e7e799"
+  },
+  "peacock.color": "#dd0531"
 }
