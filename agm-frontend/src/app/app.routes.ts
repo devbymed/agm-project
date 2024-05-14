@@ -1,33 +1,67 @@
 import { Routes } from '@angular/router';
+import { MainLayoutComponent } from './main-layout.component';
 import LoginPage from './pages/login/login.page';
-import UserManagementPage from './pages/user-management/user-management.page';
-import { LayoutComponent } from './shared/components/layout.component';
+import { MembersConvocationComponent } from './pages/members-convocation/members-convocation.component';
+import { MembersListComponent } from './pages/members-convocation/pages/members-list/members-list.component';
+import { AssemblyDetailsComponent } from './pages/new-assembly/assembly-details/assembly-details.component';
+import { FdrFollowUpComponent } from './pages/new-assembly/fdr-follow-up/fdr-follow-up.component';
+import { NewAssemblyComponent } from './pages/new-assembly/new-assembly.component';
+import { sidebarLinksResolver } from './sidebar-links.resolver';
 
 export const routes: Routes = [
   {
-    path: 'login',
-    // loadComponent: () => import('./pages/login/login.page'),
+    path: 'connexion',
     component: LoginPage,
-    // canActivate: [guestGuard],
-  },
-  // {
-  //   path: 'user-management',
-  //   loadComponent: () => import('./pages/user-management/user-management.page'),
-  //   canActivate: [authGuard],
-  // },
-  {
-    path: 'dashboard',
-    component: LayoutComponent,
-    children: [
-      {
-        path: 'user-management',
-        component: UserManagementPage,
-      },
-    ],
   },
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'nouvelle-assemblee',
     pathMatch: 'full',
+  },
+  {
+    path: '',
+    component: MainLayoutComponent,
+    children: [
+      {
+        path: 'nouvelle-assemblee',
+        component: NewAssemblyComponent,
+        resolve: {
+          links: sidebarLinksResolver,
+        },
+        children: [
+          {
+            path: 'assemblee-en-cours',
+            component: AssemblyDetailsComponent,
+          },
+          {
+            path: 'suivi-fdr',
+            component: FdrFollowUpComponent,
+          },
+          {
+            path: '',
+            redirectTo: 'assemblee-en-cours',
+            pathMatch: 'full',
+          },
+        ],
+      },
+      {
+        path: 'convocation-adherents',
+        component: MembersConvocationComponent,
+        resolve: {
+          links: sidebarLinksResolver,
+        },
+        children: [
+          {
+            path: 'liste',
+            component: MembersListComponent,
+          },
+          {
+            path: '',
+            redirectTo: 'liste',
+            pathMatch: 'full',
+          },
+        ],
+      },
+    ],
   },
 ];

@@ -7,8 +7,8 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { BaseControlValueAccessorService } from '../../core/services/base-control-value-accessor.service';
-import { InputTypeDirective } from '../directives/input-type.directive';
+import { BaseControlValueAccessorService } from '../../../../core/services/base-control-value-accessor.service';
+import { InputTypeDirective } from '../../../directives/input-type.directive';
 
 export function emailDomainValidator(domain: string): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -27,42 +27,7 @@ export function emailDomainValidator(domain: string): ValidatorFn {
   selector: 'app-input',
   standalone: true,
   imports: [NgClass, NgIf, InputTypeDirective],
-  template: `
-    <label
-      [for]="id"
-      class="mb-2 block text-sm font-medium text-gray-500"
-      [ngClass]="{ 'text-red-700': control.touched && control.invalid }"
-    >
-      {{ label }}
-      <!-- @if ({
-        required: required || control.hasValidator(Validators.required)
-      }) {
-        <abbr title="required" class="text-red-700">*</abbr>
-      } -->
-    </label>
-    <input
-      #input
-      appInputType
-      [id]="id"
-      [appInputType]="type"
-      [name]="name"
-      [value]="value"
-      [placeholder]="placeholder"
-      (focusout)="onTouch()"
-      (input)="onChange(input.value)"
-      class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-500 focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm"
-      [ngClass]="{
-        'border-red-500 bg-red-50 text-sm text-red-900 placeholder-red-700 focus:border-red-500 focus:ring-red-500':
-          control.touched && control.invalid
-      }"
-      autocomplete="on"
-    />
-    <p *ngIf="control.touched" class="mt-2 text-sm text-red-600">
-      <span class="font-medium">
-        {{ getErrorMessage() }}
-      </span>
-    </p>
-  `,
+  templateUrl: './input.component.html',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

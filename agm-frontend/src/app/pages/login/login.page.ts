@@ -1,3 +1,4 @@
+import { JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
@@ -7,10 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service';
-import { ButtonComponent } from '../../shared/components/button.component';
-import { InputComponent } from '../../shared/components/input.component';
-import { JsonPipe } from '@angular/common';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { InputComponent } from '../../shared/components/form/input/input.component';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +18,7 @@ import { JsonPipe } from '@angular/common';
   templateUrl: './login.page.html',
 })
 export default class LoginPage {
-  private authService = inject(AuthService);
+  // private authService = inject(AuthService);
   private router = inject(Router);
 
   loginForm!: FormGroup;

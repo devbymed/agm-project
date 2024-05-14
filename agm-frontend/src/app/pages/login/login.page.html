@@ -1,35 +1,39 @@
-<div
-  class="pt:mt-0 mx-auto flex flex-col items-center justify-center px-6 pt-8 md:h-screen"
->
-  <a href="" class="mb-8 text-2xl font-semibold lg:mb-8">
-    <img src="assets/logo.png" class="h-20" />
-  </a>
-  <div class="w-full max-w-xl space-y-8 rounded-lg bg-white p-6 shadow sm:p-8">
-    <h2 class="m-0 p-0 text-xl font-bold text-gray-500">Se connecter</h2>
-    <form [formGroup]="loginForm" class="mt-8 space-y-6">
-      <div>
-        <app-input
-          label="Identifiant"
-          id="email"
-          name="email"
-          [type]="'email'"
-          placeholder="lamrani@cimr.ma"
-          formControlName="email"
-        />
-      </div>
-      <div>
-        <app-input
-          label="Mot de passe"
-          id="password"
-          name="password"
-          [type]="'password'"
-          placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;"
-          formControlName="password"
-        />
-      </div>
-      <div class="mb-2">
-        <app-button type="submit">Connexion</app-button>
-      </div>
-    </form>
+<main class="bg-gray-50">
+  <div
+    class="pt:mt-0 mx-auto flex flex-col items-center justify-center px-6 pt-8 md:h-screen"
+  >
+    <a href="" class="mb-8 text-2xl font-semibold lg:mb-8">
+      <img src="assets/logo.png" class="h-20" />
+    </a>
+    <div
+      class="w-full max-w-xl space-y-8 rounded-lg bg-white p-6 shadow sm:p-8"
+    >
+      <h2 class="m-0 p-0 text-xl font-bold text-gray-500">Se connecter</h2>
+      <form [formGroup]="loginForm" class="mt-8 space-y-6">
+        <div>
+          <app-input
+            label="Identifiant"
+            id="email"
+            name="email"
+            [type]="'email'"
+            placeholder="lamrani@cimr.ma"
+            formControlName="email"
+          />
+        </div>
+        <div>
+          <app-input
+            label="Mot de passe"
+            id="password"
+            name="password"
+            [type]="'password'"
+            placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;"
+            formControlName="password"
+          />
+        </div>
+        <div class="mb-2">
+          <app-button type="submit">Connexion</app-button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
+</main>
