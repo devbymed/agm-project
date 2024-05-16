@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
-import { SidebarService } from './core/services/sidebar.service';
+import { SidebarService } from '../services/sidebar.service';
 
 export const sidebarLinksResolver: ResolveFn<void> = (
   route: ActivatedRouteSnapshot,
@@ -11,9 +11,12 @@ export const sidebarLinksResolver: ResolveFn<void> = (
       sidebarService.setLinks([
         {
           label: 'Assemblée en cours',
-          path: '/nouvelle-assemblee/assemblee-en-cours',
+          path: '/accueil/preparation-assemblee/nouvelle-assemblee/assemblee-en-cours',
         },
-        { label: 'Suivi FDR', path: '/nouvelle-assemblee/suivi-fdr' },
+        {
+          label: 'Suivi FDR',
+          path: '/accueil/preparation-assemblee/nouvelle-assemblee/suivi-fdr',
+        },
       ]);
       break;
     case 'convocation-adherents':

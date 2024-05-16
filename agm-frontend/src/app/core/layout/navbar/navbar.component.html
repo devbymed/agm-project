@@ -16,6 +16,9 @@
                 id="dropdownNavbarLink1"
                 data-dropdown-toggle="dropdownNavbar1"
                 class="flex w-full items-center justify-between border-b border-gray-100 py-2 pl-3 pr-4 font-medium text-gray-700 hover:bg-gray-50 md:w-auto md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-primary-700 md:dark:hover:bg-transparent"
+                [class.text-primary-700]="
+                  isRouteActive('/accueil/preparation-assemblee')
+                "
               >
                 Préparation Assemblée
                 <svg
@@ -42,7 +45,7 @@
                 >
                   <li>
                     <a
-                      routerLink="/nouvelle-assemblee"
+                      routerLink="preparation-assemblee/nouvelle-assemblee"
                       routerLinkActive="bg-gray-100"
                       class="block px-4 py-2 hover:bg-gray-100"
                       >Nouvelle Assemblée générale
@@ -50,7 +53,8 @@
                   </li>
                   <li>
                     <a
-                      routerLink="/convocation-adherents"
+                      routerLink="preparation-assemblee/convocation-adherents"
+                      routerLinkActive="bg-gray-100"
                       class="block px-4 py-2 hover:bg-gray-100"
                       >Convocation des adhérents</a
                     >
@@ -218,15 +222,36 @@
         >
           <span class="sr-only">View notifications</span>
           <!-- Icon -->
-          <svg
+          <!-- <svg
             class="h-6 w-6"
+            width="20"
+            height="20"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-            ></path>
+              fill-rule="evenodd"
+              d="M12 20a7.966 7.966 0 0 1-5.002-1.756l.002.001v-.683c0-1.794 1.492-3.25 3.333-3.25h3.334c1.84 0 3.333 1.456 3.333 3.25v.683A7.966 7.966 0 0 1 12 20ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 5.5-4.44 9.963-9.932 10h-.138C6.438 21.962 2 17.5 2 12Zm10-5c-1.84 0-3.333 1.455-3.333 3.25S10.159 13.5 12 13.5c1.84 0 3.333-1.455 3.333-3.25S13.841 7 12 7Z"
+              clip-rule="evenodd"
+            />
+          </svg> -->
+          <svg
+            class="h-6 w-6"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 13 16h-2a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 12 21Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+            />
           </svg>
         </button>
         <!-- Dropdown menu -->

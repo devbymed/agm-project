@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-assembly-details',
   standalone: true,
   imports: [],
-  templateUrl: './assembly-details.component.html',
+  templateUrl: './assembly-details.page.html',
   styles: ``,
 })
-export class AssemblyDetailsComponent {}
+export class AssemblyDetailsPage {}

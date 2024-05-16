@@ -8,8 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ButtonComponent } from '../../shared/components/button/button.component';
-import { InputComponent } from '../../shared/components/form/input/input.component';
+import { ButtonComponent } from '@shared/components/button.component';
+import { InputComponent } from '@shared/components/input.component';
 
 @Component({
   selector: 'app-login',

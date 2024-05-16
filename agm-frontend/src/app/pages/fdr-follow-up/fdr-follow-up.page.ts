@@ -4,9 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-fdr-follow-up',
   standalone: true,
   imports: [],
-  templateUrl: './fdr-follow-up.component.html',
-  styles: ``
+  templateUrl: './fdr-follow-up.page.html',
+  styles: ``,
 })
-export class FdrFollowUpComponent {
-
-}
+export class FdrFollowUpPage {}
