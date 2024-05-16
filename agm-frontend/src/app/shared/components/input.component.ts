@@ -7,8 +7,8 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { BaseControlValueAccessorService } from '../../core/services/base-control-value-accessor.service';
-import { InputTypeDirective } from '../directives/input-type.directive';
+import { BaseControlValueAccessorService } from '@core/services/base-control-value-accessor.service';
+import { InputTypeDirective } from '@shared/directives/input-type.directive';
 
 export function emailDomainValidator(domain: string): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {

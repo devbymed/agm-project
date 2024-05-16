@@ -5,6 +5,5 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './assembly-details.page.html',
-  styles: ``,
 })
-export class AssemblyDetailsPage {}
+export default class AssemblyDetailsPage {}

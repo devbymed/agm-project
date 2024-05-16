@@ -16,7 +16,7 @@ import { InputComponent } from '../../../../shared/components/input.component';
   templateUrl: './change-password.page.html',
   styles: ``,
 })
-export class ChangePasswordPage {
+export default class ChangePasswordPage {
   changePasswordForm!: FormGroup;
 
   constructor(private fb: FormBuilder) {

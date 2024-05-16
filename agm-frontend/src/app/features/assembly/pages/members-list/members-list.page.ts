@@ -4,9 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-members-list',
   standalone: true,
   imports: [],
-  templateUrl: './members-list.component.html',
-  styles: ``
+  templateUrl: './members-list.page.html',
 })
-export class MembersListComponent {
-
-}
+export default class MembersListPage {}

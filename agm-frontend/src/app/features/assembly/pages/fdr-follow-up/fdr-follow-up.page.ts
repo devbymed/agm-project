@@ -5,6 +5,5 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './fdr-follow-up.page.html',
-  styles: ``,
 })
-export class FdrFollowUpPage {}
+export default class FdrFollowUpPage {}
