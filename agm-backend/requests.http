@@ -1,48 +1,49 @@
 ### POST /auth/login - Login
+# @name Login
 POST {{baseUrl}}/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-	"email": "ibnkhayat.mohamed642@gmail.com",
+	"email": "ibnkhayat.mohamed42@gmail.com",
 	"password": "gestionnaire"
 }
 
-# {
-# 	"email": "john.doe@gmail.com",
-# 	"password": "P@ssw0rd!2022"
-# }
-
 ### PATCH /auth/change-password - Change Password
+# @name ChangePassword
 PATCH {{baseUrl}}/auth/change-password HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-	"temporaryPassword": "%iFS7[8g9m[i",
+	"oldPassword": "%iFS7[8g9m[i",
 	"newPassword": "P@ssw0rd!2022"
 }
 
 ### GET /users - Get All Users
+# @name GetUsers
 GET {{baseUrl}}/users HTTP/1.1
 Authorization: Bearer {{accessToken}}
 
 ### GET /users/{id} - Get User By Id
+# @name GetUserById
 GET {{baseUrl}}/users/2 HTTP/1.1
 Authorization: Bearer {{accessToken}}
 
 ### POST /users - Create User
+# @name CreateUser
 POST {{baseUrl}}/users HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-	"firstName": "Jane",
-	"lastName": "Doe",
+	"firstName": "Kevin",
+	"lastName": "O'Hara",
 	"profileId": 2,
-	"email": "tobekor505@losvtn.com"
+	"email": "kesoxah285@cgbird.com"
 }
 
 ### PATCH /users/{id} - Update User
+# @name UpdateUser
 PATCH {{baseUrl}}/users/2 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
@@ -53,18 +54,22 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### DELETE /users/{id} - Delete User
+# @name DeleteUser
 DELETE {{baseUrl}}/users/2 HTTP/1.1
 Authorization: Bearer {{accessToken}}
 
 ### GET /profiles - Get All Profiles
+# @name GetProfiles
 GET {{baseUrl}}/profiles HTTP/1.1
 Authorization: Bearer {{accessToken}}
 
 ### GET /profiles/{id} - Get Profile By Id
+# @name GetProfileById
 GET {{baseUrl}}/profiles/2 HTTP/1.1
 Authorization: Bearer {{accessToken}}
 
 ### POST /profiles - Create Profile
+# @name CreateProfile
 POST {{baseUrl}}/profiles HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
@@ -74,13 +79,16 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### POST /profiles/{id}/permissions - Add Permissions To Profile
+# @name AddPermissionsToProfile
 PUT {{baseUrl}}/profiles/2/permissions/2 HTTP/1.1
 Authorization: Bearer {{accessToken}}
 
 ### DELETE /profiles/{id}/permissions/{id} - Remove Permission From Profile
+# @name RemovePermissionFromProfile
 DELETE {{baseUrl}}/profiles/2/permissions/1 HTTP/1.1
 Authorization: Bearer {{accessToken}}
 
 ### GET /permissions - Get All Permissions
+# @name GetPermissions
 GET {{baseUrl}}/permissions HTTP/1.1
 Authorization: Bearer {{accessToken}}

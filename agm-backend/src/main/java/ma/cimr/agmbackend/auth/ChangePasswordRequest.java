@@ -15,8 +15,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ChangePasswordRequest {
 
-	@NotBlank(message = "L'adresse email est obligatoire")
-	private String temporaryPassword;
+	@NotBlank(message = "L'ancien mot de passe est obligatoire")
+	private String oldPassword;
 
 	@NotBlank(message = "Le nouveau mot de passe est obligatoire")
 	@Size(min = 8, max = 20, message = "Le mot de passe doit contenir entre 8 et 20 caractères")

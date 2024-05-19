@@ -19,6 +19,7 @@ spring:
     url: jdbc:sqlserver://${MSSQL_HOST}:${MSSQL_PORT};encrypt=true;trustServerCertificate=true;databaseName=${MSSQL_DATABASE}
     username: ${MSSQL_USERNAME}
     password: ${MSSQL_PASSWORD}
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     show-sql: true
     open-in-view: false

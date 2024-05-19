@@ -1,8 +1,15 @@
 import { Routes } from '@angular/router';
+import {authGuard} from "@core/auth/auth.guard";
+import LoginPage from "@core/auth/pages/login/login.page";
 
 export const routes: Routes = [
   {
+    path: 'auth',
+    component: LoginPage,
+  },
+  {
     path: 'accueil',
+    canActivate: [authGuard],
     children: [
       {
         path: 'preparation-assemblee',
@@ -50,12 +57,8 @@ export const routes: Routes = [
     // },
   },
   {
-    path: 'auth',
-    loadChildren: () => import('@core/auth/auth.routes'),
-  },
-  {
     path: '',
-    redirectTo: 'accueil/preparation-assemblee/nouvelle-assemblee',
+    redirectTo: 'auth',
     pathMatch: 'full',
   },
 ];

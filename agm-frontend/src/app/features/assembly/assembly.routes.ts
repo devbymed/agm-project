@@ -1,8 +1,9 @@
-import { Routes } from '@angular/router';
+import {Route, Routes} from '@angular/router';
 import AssemblyDetailsPage from './pages/assembly-details/assembly-details.page';
 import FdrFollowUpPage from './pages/fdr-follow-up/fdr-follow-up.page';
 import MembersConvocationPage from './pages/members-convocation/members-convocation.page';
 import NewAssemblyPage from './pages/new-assembly/new-assembly.page';
+import {authGuard} from "@core/auth/auth.guard";
 
 export default [
   {
@@ -28,4 +29,9 @@ export default [
     path: 'convocation-adherents',
     component: MembersConvocationPage,
   },
-] as Routes;
+  {
+    path: '',
+    redirectTo: 'nouvelle-assemblee',
+    pathMatch: 'full',
+  }
+] as Route[];

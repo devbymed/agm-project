@@ -54,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
         }
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ApiException(ApiExceptionCodes.USER_NOT_FOUND));
-        if (!passwordEncoder.matches(changePasswordRequest.getTemporaryPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword())) {
             throw new ApiException(ApiExceptionCodes.OLD_PASSWORD_INCORRECT);
         }
         if (!isValidPassword(changePasswordRequest.getNewPassword())) {

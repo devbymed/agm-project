@@ -22,35 +22,35 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
-	@Value("${MAIL_USERNAME}")
-	private String from;
+    @Value("${MAIL_USERNAME}")
+    private String from;
 
-	private final JavaMailSender mailSender;
-	private final SpringTemplateEngine templateEngine;
+    private final JavaMailSender mailSender;
+    private final SpringTemplateEngine templateEngine;
 
-	@Async
-	public void sendEmail(String to, String subject, String firstName, String temporaryPassword,
-			EmailTemplateName emailTemplateName)
-			throws MessagingException {
+    @Async
+    public void sendEmail(String to, String subject, String firstName, String temporaryPassword,
+                          EmailTemplateName emailTemplateName)
+            throws MessagingException {
 
-		String templateName = (emailTemplateName == null) ? "new_user" : emailTemplateName.getName();
+        String templateName = (emailTemplateName == null) ? "new_user" : emailTemplateName.getName();
 
-		MimeMessage message = mailSender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(message, MULTIPART_MODE_MIXED, UTF_8.name());
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, MULTIPART_MODE_MIXED, UTF_8.name());
 
-		Map<String, Object> properties = new HashMap<>();
-		properties.put("firstName", firstName);
-		properties.put("temporaryPassword", temporaryPassword);
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("firstName", firstName);
+        properties.put("temporaryPassword", temporaryPassword);
 
-		Context context = new Context();
-		context.setVariables(properties);
+        Context context = new Context();
+        context.setVariables(properties);
 
-		helper.setFrom(from);
-		helper.setTo(to);
-		helper.setSubject(subject);
+        helper.setFrom(from);
+        helper.setTo(to);
+        helper.setSubject(subject);
 
-		String template = templateEngine.process(templateName, context);
-		helper.setText(template, true);
-		mailSender.send(message);
-	}
+        String template = templateEngine.process(templateName, context);
+        helper.setText(template, true);
+        mailSender.send(message);
+    }
 }
