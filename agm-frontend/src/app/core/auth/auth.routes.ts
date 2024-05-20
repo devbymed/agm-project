@@ -1,7 +1,7 @@
 import { Route } from '@angular/router';
+import { changePasswordGuard } from './guards/change-password.guard';
 import ChangePasswordPage from './pages/change-password/change-password.page';
 import LoginPage from './pages/login/login.page';
-import {authGuard} from "@core/auth/auth.guard";
 
 export default [
   {
@@ -11,7 +11,7 @@ export default [
   {
     path: 'changer-mot-de-passe',
     component: ChangePasswordPage,
-    canActivate: [authGuard]
+    canActivate: [changePasswordGuard],
   },
   {
     path: '',

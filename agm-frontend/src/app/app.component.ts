@@ -1,7 +1,5 @@
-import { AfterViewInit, Component, inject } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { initFlowbite } from 'flowbite';
-import { filter } from 'rxjs/operators';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,19 +7,4 @@ import { filter } from 'rxjs/operators';
   imports: [RouterOutlet],
   template: `<router-outlet />`,
 })
-export class AppComponent implements AfterViewInit {
-  private router = inject(Router);
-
-  ngAfterViewInit(): void {
-    this.initializeFlowbite();
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.initializeFlowbite();
-      });
-  }
-
-  private initializeFlowbite(): void {
-    initFlowbite();
-  }
-}
+export class AppComponent {}

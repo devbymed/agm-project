@@ -1,9 +1,8 @@
-import {Route, Routes} from '@angular/router';
+import { Routes } from '@angular/router';
 import AssemblyDetailsPage from './pages/assembly-details/assembly-details.page';
 import FdrFollowUpPage from './pages/fdr-follow-up/fdr-follow-up.page';
 import MembersConvocationPage from './pages/members-convocation/members-convocation.page';
 import NewAssemblyPage from './pages/new-assembly/new-assembly.page';
-import {authGuard} from "@core/auth/auth.guard";
 
 export default [
   {
@@ -18,11 +17,6 @@ export default [
         path: 'suivi-fdr',
         component: FdrFollowUpPage,
       },
-      {
-        path: '',
-        redirectTo: 'assemblee-en-cours',
-        pathMatch: 'full',
-      },
     ],
   },
   {
@@ -33,5 +27,5 @@ export default [
     path: '',
     redirectTo: 'nouvelle-assemblee',
     pathMatch: 'full',
-  }
-] as Route[];
+  },
+] as Routes;

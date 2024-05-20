@@ -6,8 +6,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ButtonComponent } from '../../../../shared/components/button.component';
-import { InputComponent } from '../../../../shared/components/input.component';
+import { ButtonComponent } from '@shared/components/button.component';
+import { InputComponent } from '@shared/components/input.component';
 
 @Component({
   selector: 'app-change-password',

@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { authGuard } from '@core/auth/auth.guard';
-import { AppShellComponent } from './app-shell.component';
+import { authGuard } from '@core/auth/guards/auth.guard';
+import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component';
 
 export const routes: Routes = [
   {
@@ -9,7 +9,7 @@ export const routes: Routes = [
   },
   {
     path: 'accueil',
-    component: AppShellComponent,
+    component: MainLayoutComponent,
     canActivate: [authGuard],
     children: [
       {
@@ -17,49 +17,15 @@ export const routes: Routes = [
         loadChildren: () => import('@features/assembly/assembly.routes'),
       },
     ],
-    // {
-    //   path: 'preparation-assemblee',
-    //   children: [
-    //     {
-    //       path: 'nouvelle-assemblee',
-    //       component: NewAssemblyPage,
-    //       children: [
-    //         {
-    //           path: 'assemblee-en-cours',
-    //           component: AssemblyDetailsPage,
-    //         },
-    //         {
-    //           path: 'suivi-fdr',
-    //           component: FdrFollowUpPage,
-    //         },
-    //         {
-    //           path: '',
-    //           redirectTo: 'assemblee-en-cours',
-    //           pathMatch: 'full',
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       path: 'convocation-adherents',
-    //       component: MembersConvocationComponent,
-    //       children: [
-    //         {
-    //           path: 'liste',
-    //           component: MembersListComponent,
-    //         },
-    //         {
-    //           path: '',
-    //           redirectTo: 'liste',
-    //           pathMatch: 'full',
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
   },
   {
     path: '',
-    redirectTo: 'auth',
+    redirectTo: 'accueil',
+    pathMatch: 'full',
+  },
+  {
+    path: '**',
+    redirectTo: 'accueil',
     pathMatch: 'full',
   },
 ];

@@ -16,9 +16,7 @@
                 id="dropdownNavbarLink1"
                 data-dropdown-toggle="dropdownNavbar1"
                 class="flex w-full items-center justify-between border-b border-gray-100 py-2 pl-3 pr-4 font-medium text-gray-700 hover:bg-gray-50 md:w-auto md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-primary-700 md:dark:hover:bg-transparent"
-                [class.text-primary-700]="
-                  isRouteActive('/accueil/preparation-assemblee')
-                "
+                [appHighlightActiveLink]="'/accueil/preparation-assemblee'"
               >
                 Préparation Assemblée
                 <svg
@@ -245,16 +243,19 @@
         >
           <div class="px-4 py-3">
             <span class="block text-sm font-semibold text-gray-900"
-              >Imad Lamrani</span
+              >{{ user?.firstName }} {{ user?.lastName }}</span
             >
-            <span class="block truncate text-sm font-light text-gray-500"
-              >lamrani&#64;cimr.ma</span
-            >
+            <span class="block truncate text-sm font-light text-gray-500">{{
+              user?.email
+            }}</span>
           </div>
 
           <ul class="py-1 font-light text-gray-500" aria-labelledby="dropdown">
             <li>
-              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100" (click)="logout()"
+              <a
+                role="button"
+                class="block px-4 py-2 text-sm hover:bg-gray-100"
+                (click)="logout()"
                 >Déconnexion</a
               >
             </li>

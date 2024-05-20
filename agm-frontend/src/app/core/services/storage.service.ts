@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 const USER_KEY = 'auth-user';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StorageService {
   setItem<T>(key: string, value: T): void {
@@ -12,7 +12,7 @@ export class StorageService {
 
   getItem<T>(key: string): T | null {
     const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) as T : null;
+    return item ? (JSON.parse(item) as T) : null;
   }
 
   removeItem(key: string): void {

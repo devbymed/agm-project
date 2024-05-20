@@ -5,7 +5,7 @@ import { NavbarComponent } from '@core/layout/navbar/navbar.component';
 @Component({
   selector: 'app-app-shell',
   standalone: true,
-  imports: [NavbarComponent, RouterOutlet],
-  templateUrl: './app-shell.component.html',
+  imports: [RouterOutlet, NavbarComponent],
+  templateUrl: './main-layout.component.html',
 })
-export class AppShellComponent {}
+export class MainLayoutComponent {}

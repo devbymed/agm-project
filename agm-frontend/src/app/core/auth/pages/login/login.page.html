@@ -9,15 +9,26 @@
       class="w-full max-w-xl space-y-8 rounded-lg bg-white p-6 shadow sm:p-8"
     >
       <h2 class="m-0 p-0 text-xl font-bold text-gray-500">Se connecter</h2>
-      <form [formGroup]="loginForm" class="mt-8 space-y-6" (ngSubmit)="onSubmit()">
+
+      <form
+        [formGroup]="loginForm"
+        class="mt-8 space-y-6"
+        (ngSubmit)="onSubmit()"
+      >
+        @if (error$ | async; as error) {
+        <div>
+          <app-alert [type]="'danger'" [message]="error" />
+        </div>
+        }
         <div>
           <app-input
             label="Identifiant"
             id="email"
             name="email"
             [type]="'email'"
-            placeholder="lamrani@cimr.ma"
+            placeholder="ibnkhayat.mohamed642@gmail.com"
             formControlName="email"
+            [showRequiredIndicator]="false"
           />
         </div>
         <div>
@@ -28,6 +39,7 @@
             [type]="'password'"
             placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;"
             formControlName="password"
+            showRequiredIndicator="false"
           />
         </div>
         <div class="mb-2">

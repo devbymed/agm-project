@@ -4,8 +4,8 @@ POST {{baseUrl}}/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-	"email": "ibnkhayat.mohamed42@gmail.com",
-	"password": "gestionnaire"
+	"email": "ibnkhayat.mohamed642@gmail.com",
+	"password": ""
 }
 
 ### PATCH /auth/change-password - Change Password

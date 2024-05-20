@@ -1,2 +1,1 @@
-export interface Permission {
-}
+export interface Permission {}

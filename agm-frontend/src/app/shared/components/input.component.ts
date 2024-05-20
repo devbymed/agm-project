@@ -34,11 +34,12 @@ export function emailDomainValidator(domain: string): ValidatorFn {
       [ngClass]="{ 'text-red-700': control.touched && control.invalid }"
     >
       {{ label }}
-      <!-- @if ({
-        required: required || control.hasValidator(Validators.required)
-      }) {
+      @if (
+        showRequiredIndicator &&
+        (required || control.hasValidator(Validators.required))
+      ) {
         <abbr title="required" class="text-red-700">*</abbr>
-      } -->
+      }
     </label>
     <input
       #input
@@ -48,7 +49,7 @@ export function emailDomainValidator(domain: string): ValidatorFn {
       [name]="name"
       [value]="value"
       [placeholder]="placeholder"
-      (focusout)="onTouch()"
+      (blur)="onTouch()"
       (input)="onChange(input.value)"
       class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-500 focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm"
       [ngClass]="{
@@ -57,11 +58,13 @@ export function emailDomainValidator(domain: string): ValidatorFn {
       }"
       autocomplete="on"
     />
-    <p *ngIf="control.touched" class="mt-2 text-sm text-red-600">
-      <span class="font-medium">
-        {{ getErrorMessage() }}
-      </span>
-    </p>
+    @if (control.touched && control.invalid) {
+      <p class="mt-2 text-sm text-red-600">
+        <span class="font-medium">
+          {{ getErrorMessage() }}
+        </span>
+      </p>
+    }
   `,
   providers: [
     {
@@ -77,17 +80,17 @@ export class InputComponent extends BaseControlValueAccessorService<string> {
   @Input({ required: true }) id: string;
   @Input({ required: true }) type: string;
   @Input({ required: true }) name: string;
-  @Input({ transform: booleanAttribute }) required = false;
   @Input() placeholder: string = '';
+  @Input({ transform: booleanAttribute }) required = false;
+  @Input({ transform: booleanAttribute }) showRequiredIndicator = false;
 
   getErrorMessage(): string {
     if (this.control.errors?.['required']) return 'Ce champ est obligatoire';
-    if (this.control.errors?.['email'] || this.control.errors?.['emailDomain'])
-      return 'Adresse email invalide';
+    if (this.control.errors?.['email']) return 'Adresse email invalide';
     if (this.control.errors?.['minlength'])
-      return 'Ce champ doit contenir au moins 8 caractères';
+      return `Ce champ doit contenir au moins ${this.control.errors['minlength'].requiredLength} caractères`;
     if (this.control.errors?.['maxlength'])
-      return 'Ce champ doit contenir au maximum 50 caractères';
+      return `Ce champ doit contenir au maximum ${this.control.errors['maxlength'].requiredLength} caractères`;
     return '';
   }
 }

@@ -1,2 +1,1 @@
-export interface Assembly {
-}
+export interface Assembly {}
