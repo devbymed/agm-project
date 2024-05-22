@@ -1,18 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthRequest } from '@core/auth/models/auth-request.model';
 import { AuthResponse } from '@core/auth/models/auth-response.model';
 import { ApiResponse } from '@core/models/api-response.model';
 import { User } from '@core/models/user.model';
 import { StorageService } from '@core/services/storage.service';
 import { environment } from '@env/environment';
-import { BehaviorSubject, catchError, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
+import { ChangePasswordRequest } from './models/change-password-request.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private http = inject(HttpClient);
+  private router = inject(Router);
   private storageService = inject(StorageService);
   private apiUrl = environment.apiUrl;
   private loginResponseSubject = new BehaviorSubject<AuthResponse | null>(null);
@@ -92,5 +95,28 @@ export class AuthService {
 
   get mustChangePasswordFlag(): boolean {
     return this.authResponse?.mustChangePassword ?? false;
+  }
+
+  changePassword(request: ChangePasswordRequest): Observable<void> {
+    return this.http
+      .patch<void>(`${this.apiUrl}/auth/change-password`, request)
+      .pipe(
+        tap(() => {
+          const currentAuthResponse = this.loginResponseSubject.value;
+          if (currentAuthResponse) {
+            currentAuthResponse.mustChangePassword = false;
+            this.storageService.setItem<boolean>('mustChangePassword', false);
+            this.loginResponseSubject.next(currentAuthResponse);
+          }
+          this.errorSubject.next(null);
+          this.router.navigate(['/accueil']);
+        }),
+        catchError((error) => {
+          const errorMessage =
+            error.error?.message || 'Une erreur est survenue';
+          this.errorSubject.next(errorMessage);
+          return throwError(() => error);
+        }),
+      );
   }
 }

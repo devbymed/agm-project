@@ -5,7 +5,7 @@ Content-Type: application/json
 
 {
 	"email": "ibnkhayat.mohamed642@gmail.com",
-	"password": ""
+	"password": "gestionnaire"
 }
 
 ### PATCH /auth/change-password - Change Password
@@ -16,7 +16,7 @@ Authorization: Bearer {{accessToken}}
 
 {
 	"oldPassword": "%iFS7[8g9m[i",
-	"newPassword": "P@ssw0rd!2022"
+	"newPassword": "P@ssw0rd!"
 }
 
 ### GET /users - Get All Users

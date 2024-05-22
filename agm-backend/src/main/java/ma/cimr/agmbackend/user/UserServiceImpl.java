@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse createUser(UserAddRequest userCreateRequest) throws MessagingException {
-        String generatedPassword = SecurePasswordGenerator.generateSecurePassword(12);
+        String generatedPassword = SecurePasswordGenerator.generateSecurePassword(8);
         LOGGER.info(String.format("* Generated password for %s %s: %s", userCreateRequest.getFirstName(),
                 userCreateRequest.getLastName(), generatedPassword));
         User user = userMapper.toUser(userCreateRequest);

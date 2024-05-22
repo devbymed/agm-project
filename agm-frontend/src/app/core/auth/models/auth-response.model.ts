@@ -1,7 +1,7 @@
-import { User } from '../../models/user.model';
+import { User } from '@core/models/user.model';
 
 export interface AuthResponse {
   accessToken: string;
-  mustChangePassword: boolean;
   user: User;
+  mustChangePassword: boolean;
 }

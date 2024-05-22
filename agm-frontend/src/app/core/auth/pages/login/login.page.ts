@@ -19,9 +19,9 @@ import { Subject, takeUntil, tap } from 'rxjs';
   standalone: true,
   imports: [
     AsyncPipe,
-    ButtonComponent,
     AlertComponent,
     InputComponent,
+    ButtonComponent,
     ReactiveFormsModule,
   ],
   templateUrl: './login.page.html',
@@ -49,9 +49,7 @@ export default class LoginPage implements OnInit, OnDestroy {
             if (response.mustChangePassword) {
               this.router.navigateByUrl('/auth/changer-mot-de-passe');
             } else {
-              this.router.navigateByUrl(
-                '/accueil/preparation-assemblee/nouvelle-assemblee',
-              );
+              this.router.navigate(['/accueil']);
             }
           }
         }),

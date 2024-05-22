@@ -16,6 +16,11 @@ export const routes: Routes = [
         path: 'preparation-assemblee',
         loadChildren: () => import('@features/assembly/assembly.routes'),
       },
+      {
+        path: '',
+        redirectTo: 'preparation-assemblee',
+        pathMatch: 'full',
+      },
     ],
   },
   {

@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { BaseControlValueAccessorService } from '@core/services/base-control-value-accessor.service';
 import { InputTypeDirective } from '@shared/directives/input-type.directive';
+import { PasswordStrengthIndicatorComponent } from '../../core/auth/password-strength-indicator.component';
 
 export function emailDomainValidator(domain: string): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -26,7 +27,6 @@ export function emailDomainValidator(domain: string): ValidatorFn {
 @Component({
   selector: 'app-input',
   standalone: true,
-  imports: [NgClass, NgIf, InputTypeDirective],
   template: `
     <label
       [for]="id"
@@ -49,7 +49,7 @@ export function emailDomainValidator(domain: string): ValidatorFn {
       [name]="name"
       [value]="value"
       [placeholder]="placeholder"
-      (blur)="onTouch()"
+      (focusout)="onTouch()"
       (input)="onChange(input.value)"
       class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-500 focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm"
       [ngClass]="{
@@ -73,6 +73,12 @@ export function emailDomainValidator(domain: string): ValidatorFn {
       multi: true,
     },
   ],
+  imports: [
+    NgClass,
+    NgIf,
+    InputTypeDirective,
+    PasswordStrengthIndicatorComponent,
+  ],
 })
 export class InputComponent extends BaseControlValueAccessorService<string> {
   protected readonly Validators = Validators;
@@ -83,6 +89,8 @@ export class InputComponent extends BaseControlValueAccessorService<string> {
   @Input() placeholder: string = '';
   @Input({ transform: booleanAttribute }) required = false;
   @Input({ transform: booleanAttribute }) showRequiredIndicator = false;
+  @Input() dataPopoverTarget: string;
+  @Input() dataPopoverPlacement: string;
 
   getErrorMessage(): string {
     if (this.control.errors?.['required']) return 'Ce champ est obligatoire';
@@ -91,6 +99,10 @@ export class InputComponent extends BaseControlValueAccessorService<string> {
       return `Ce champ doit contenir au moins ${this.control.errors['minlength'].requiredLength} caractères`;
     if (this.control.errors?.['maxlength'])
       return `Ce champ doit contenir au maximum ${this.control.errors['maxlength'].requiredLength} caractères`;
+    if (this.control.errors?.['emailDomain'])
+      return `L'adresse email doit appartenir au domaine ${this.control.errors['emailDomain'].requiredDomain}`;
+    if (this.control.errors?.['pattern'])
+      return `Ce champ doit respecter le format requis`;
     return '';
   }
 }

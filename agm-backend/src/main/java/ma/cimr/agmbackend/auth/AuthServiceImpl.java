@@ -57,16 +57,17 @@ public class AuthServiceImpl implements AuthService {
         if (!passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword())) {
             throw new ApiException(ApiExceptionCodes.OLD_PASSWORD_INCORRECT);
         }
-        if (!isValidPassword(changePasswordRequest.getNewPassword())) {
-            throw new ApiException(ApiExceptionCodes.INVALID_NEW_PASSWORD);
-        }
+        // if (!isValidPassword(changePasswordRequest.getNewPassword())) {
+        // throw new ApiException(ApiExceptionCodes.INVALID_NEW_PASSWORD);
+        // }
         user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
         user.setFirstLogin(false);
         userRepository.save(user);
     }
 
-    private boolean isValidPassword(String password) {
-        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&*()_+\\-=\\[\\]?]).{8,20}$";
-        return password.matches(passwordRegex);
-    }
+    // private boolean isValidPassword(String password) {
+    // String passwordRegex =
+    // "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&*()_+\\-=\\[\\]?]).{8,20}$";
+    // return password.matches(passwordRegex);
+    // }
 }
