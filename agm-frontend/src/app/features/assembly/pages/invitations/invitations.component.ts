@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-invitations',
   standalone: true,
   imports: [],
-  templateUrl: './invitations.page.html',
+  templateUrl: './invitations.component.html',
 })
-export default class InvitationsPage {}
+export class InvitationsComponent { }

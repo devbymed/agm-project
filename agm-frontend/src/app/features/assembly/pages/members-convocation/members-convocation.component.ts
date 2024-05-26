@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-members-convocation',
   standalone: true,
   imports: [],
-  templateUrl: './members-convocation.page.html',
+  templateUrl: './members-convocation.component.html',
 })
-export default class MembersConvocationPage {}
+export class MembersConvocationComponent { }

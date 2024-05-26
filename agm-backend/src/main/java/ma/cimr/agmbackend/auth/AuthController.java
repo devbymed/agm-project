@@ -25,9 +25,6 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity<ApiResponse> authenticateUser(@Valid @RequestBody AuthRequest authRequest) {
 		AuthResponse response = authService.authenticateUser(authRequest);
-		if (response.isMustChangePassword()) {
-			return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Vous devez changer votre mot de passe", response);
-		}
 		return ApiResponseFormatter.generateResponse(HttpStatus.OK, response);
 	}
 

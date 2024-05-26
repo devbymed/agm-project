@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-fdr-follow-up',
   standalone: true,
   imports: [],
-  templateUrl: './fdr-follow-up.page.html',
+  templateUrl: './fdr-follow-up.component.html',
 })
-export default class FdrFollowUpPage {}
+export class FdrFollowUpComponent { }

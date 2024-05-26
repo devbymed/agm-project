@@ -5,11 +5,7 @@ import { Component, Input } from '@angular/core';
   selector: 'app-alert',
   standalone: true,
   imports: [NgClass],
-  template: `
-    <div class="rounded-lg p-4 text-sm" [ngClass]="alertClass" role="alert">
-      <span class="font-medium">{{ message }}</span>
-    </div>
-  `,
+  templateUrl: './alert.component.html',
 })
 export class AlertComponent {
   @Input({ required: true }) message!: string;

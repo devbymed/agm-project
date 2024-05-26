@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer2, inject } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
 
@@ -7,15 +7,13 @@ import { Subscription, filter } from 'rxjs';
   standalone: true,
 })
 export class HighlightActiveLinkDirective {
+  private subscription: Subscription;
+  private element = inject(ElementRef);
+  private renderer = inject(Renderer2);
+  private router = inject(Router);
+
   @Input('appHighlightActiveLink') linkPath: string;
   @Input() activeClass = 'text-primary-700';
-  private subscription: Subscription;
-
-  constructor(
-    private router: Router,
-    private element: ElementRef,
-    private renderer: Renderer2,
-  ) {}
 
   ngOnInit(): void {
     this.subscription = this.router.events

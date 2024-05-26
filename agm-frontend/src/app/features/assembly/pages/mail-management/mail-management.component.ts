@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-mail-management',
   standalone: true,
   imports: [],
-  templateUrl: './mail-management.page.html',
+  templateUrl: './mail-management.component.html',
 })
-export default class MailManagementPage {}
+export class MailManagementComponent { }

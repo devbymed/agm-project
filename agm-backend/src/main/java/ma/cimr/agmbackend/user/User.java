@@ -48,8 +48,8 @@ public class User extends BaseEntity implements UserDetails {
 	private Profile profile;
 
 	@Builder.Default
-	@Column(name = "is_first_login", nullable = false)
-	private boolean isFirstLogin = true;
+	@Column(name = "first_login", nullable = false)
+	private boolean firstLogin = true;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

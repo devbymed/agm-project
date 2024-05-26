@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-members-list',
   standalone: true,
   imports: [],
-  templateUrl: './members-list.page.html',
+  templateUrl: './members-list.component.html',
 })
-export default class MembersListPage {}
+export class MembersListComponent { }

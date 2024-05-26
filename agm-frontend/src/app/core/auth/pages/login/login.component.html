@@ -1,0 +1,44 @@
+<main class="h-screen bg-gray-50">
+  <div class="mx-auto flex h-full flex-col items-center justify-center px-6">
+    <a href="" class="mb-8 text-2xl font-semibold lg:mb-8">
+      <img src="assets/logo.png" class="h-20" />
+    </a>
+    <div
+      class="w-full max-w-lg space-y-6 rounded-lg bg-white p-6 shadow sm:p-8"
+    >
+      <div class="space-y-2">
+        <h2 class="text-xl font-bold text-gray-500">Se connecter</h2>
+        <p class="text-sm font-medium text-gray-500">
+          Connectez-vous ci-dessous
+        </p>
+      </div>
+      <form [formGroup]="loginForm" class="space-y-6" (ngSubmit)="onSubmit()">
+        <div>
+          <app-input
+            label="Identifiant"
+            id="email"
+            name="email"
+            [type]="'email'"
+            placeholder="lamrani@cimr.ma"
+            formControlName="email"
+            [showRequiredIndicator]="false"
+          />
+        </div>
+        <div>
+          <app-input
+            label="Mot de passe"
+            id="password"
+            name="password"
+            [type]="'password'"
+            placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;"
+            formControlName="password"
+            showRequiredIndicator="false"
+          />
+        </div>
+        <div>
+          <app-button type="submit">Se connecter</app-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>

@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-authorizations',
   standalone: true,
   imports: [],
-  templateUrl: './authorizations.page.html',
+  templateUrl: './authorizations.component.html',
 })
-export default class AuthorizationsPage {}
+export class AuthorizationsComponent { }

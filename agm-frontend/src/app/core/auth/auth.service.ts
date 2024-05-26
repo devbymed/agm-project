@@ -1,122 +1,53 @@
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthRequest } from '@core/auth/models/auth-request.model';
-import { AuthResponse } from '@core/auth/models/auth-response.model';
-import { ApiResponse } from '@core/models/api-response.model';
-import { User } from '@core/models/user.model';
-import { StorageService } from '@core/services/storage.service';
+import { HttpClient } from "@angular/common/http";
+import { Injectable, inject } from '@angular/core';
+import { AuthResp } from '@core/auth/models/auth-resp.model';
+import { ApiResp } from '@core/models/api-resp.model';
+import { User } from "@core/models/user.model";
+import { StorageService } from "@core/services/storage.service";
 import { environment } from '@env/environment';
-import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
-import { ChangePasswordRequest } from './models/change-password-request.model';
+import {
+  Observable,
+  tap
+} from 'rxjs';
+import { AuthReq } from "./models/auth-req.model";
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private router = inject(Router);
   private storageService = inject(StorageService);
   private apiUrl = environment.apiUrl;
-  private loginResponseSubject = new BehaviorSubject<AuthResponse | null>(null);
-  loginResponse$ = this.loginResponseSubject.asObservable();
-  private errorSubject = new BehaviorSubject<string | null>(null);
-  error$ = this.errorSubject.asObservable();
+  private firstLogin: boolean;
 
-  constructor() {
-    this.loadStoredData();
-  }
-
-  private loadStoredData(): void {
-    const accessToken = this.storageService.getItem<string>('accessToken');
-    const user = this.storageService.getItem<User>('user');
-    const mustChangePassword =
-      this.storageService.getItem<boolean>('mustChangePassword');
-
-    if (accessToken && user) {
-      this.loginResponseSubject.next({
-        accessToken,
-        user,
-        mustChangePassword: mustChangePassword ?? false,
-      });
-    }
-  }
-
-  login(credentials: AuthRequest): void {
-    this.http
-      .post<ApiResponse<AuthResponse>>(`${this.apiUrl}/auth/login`, credentials)
+  login(authReq: AuthReq): Observable<ApiResp<AuthResp>> {
+    return this.http.post<ApiResp<AuthResp>>(`${this.apiUrl}/auth/login`, authReq)
       .pipe(
-        tap((response) => {
-          if (response.status === 'OK' && response.data) {
-            this.storageService.setItem<string>(
-              'accessToken',
-              response.data.accessToken,
-            );
-            this.storageService.setItem<User>('user', response.data.user);
-            this.storageService.setItem<boolean>(
-              'mustChangePassword',
-              response.data.mustChangePassword,
-            );
-            this.loginResponseSubject.next(response.data);
-            this.errorSubject.next(null);
-          } else {
-            this.loginResponseSubject.next(null);
-            this.errorSubject.next(
-              response.message || 'Une erreur est survenue',
-            );
+        tap((response: ApiResp<AuthResp>) => {
+          if (response.data) {
+            this.storageService.set('accessToken', response.data.accessToken);
+            this.storageService.set('user', response.data.user);
+            this.firstLogin = response.data.firstLogin;
           }
-        }),
-        catchError((error) => {
-          console.log('Erreur lors de la connexion', error);
-          const errorMessage =
-            error.error?.message || 'Une erreur est survenue';
-          this.loginResponseSubject.next(null);
-          this.errorSubject.next(errorMessage);
-          return throwError(() => error);
-        }),
-      )
-      .subscribe();
+        })
+      );
+  }
+
+  isLoggedIn(): boolean {
+    const accessToken = this.storageService.get<string>('accessToken');
+    return !!accessToken;
   }
 
   logout(): void {
-    this.storageService.removeItem('accessToken');
-    this.storageService.removeItem('user');
-    this.storageService.removeItem('mustChangePassword');
-    this.loginResponseSubject.next(null);
+    this.storageService.remove('accessToken');
+    this.storageService.remove('user');
   }
 
-  get token(): string | null {
-    return this.storageService.getItem<string>('accessToken');
+  getUser(): User | null {
+    return this.storageService.get<User>('user');
   }
 
-  get authResponse(): AuthResponse | null {
-    return this.loginResponseSubject.value;
-  }
-
-  get mustChangePasswordFlag(): boolean {
-    return this.authResponse?.mustChangePassword ?? false;
-  }
-
-  changePassword(request: ChangePasswordRequest): Observable<void> {
-    return this.http
-      .patch<void>(`${this.apiUrl}/auth/change-password`, request)
-      .pipe(
-        tap(() => {
-          const currentAuthResponse = this.loginResponseSubject.value;
-          if (currentAuthResponse) {
-            currentAuthResponse.mustChangePassword = false;
-            this.storageService.setItem<boolean>('mustChangePassword', false);
-            this.loginResponseSubject.next(currentAuthResponse);
-          }
-          this.errorSubject.next(null);
-          this.router.navigate(['/accueil']);
-        }),
-        catchError((error) => {
-          const errorMessage =
-            error.error?.message || 'Une erreur est survenue';
-          this.errorSubject.next(errorMessage);
-          return throwError(() => error);
-        }),
-      );
+  isFirstLogin(): boolean {
+    return this.firstLogin;
   }
 }

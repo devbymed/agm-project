@@ -6,8 +6,18 @@
       "name": "ng serve",
       "type": "chrome",
       "request": "launch",
+      "runtimeExecutable": "C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe",
       "preLaunchTask": "npm: start",
-      "url": "http://localhost:4200/"
+      "url": "http://localhost:4200/",
+      "webRoot": "${workspaceFolder}",
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "webpack:/*": "${webRoot}/*",
+        "/./**": "${webRoot}/**",
+        "/src/**": "${webRoot}/src/**",
+        "/**": "**",
+        "/./~/*": "${workspaceFolder}/node_modules/**"
+      }
     },
     {
       "name": "ng test",

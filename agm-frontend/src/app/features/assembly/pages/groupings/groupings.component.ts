@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-groupings',
   standalone: true,
   imports: [],
-  templateUrl: './groupings.page.html',
+  templateUrl: './groupings.component.html',
 })
-export default class GroupingsPage {}
+export class GroupingsComponent { }

@@ -6,16 +6,16 @@ const USER_KEY = 'auth-user';
   providedIn: 'root',
 })
 export class StorageService {
-  setItem<T>(key: string, value: T): void {
+  set(key: string, value: any): void {
     localStorage.setItem(key, JSON.stringify(value));
   }
 
-  getItem<T>(key: string): T | null {
-    const item = localStorage.getItem(key);
-    return item ? (JSON.parse(item) as T) : null;
+  get<T>(key: string): T | null {
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value) : null;
   }
 
-  removeItem(key: string): void {
+  remove(key: string): void {
     localStorage.removeItem(key);
   }
 

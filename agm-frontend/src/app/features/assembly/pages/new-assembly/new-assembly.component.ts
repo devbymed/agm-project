@@ -5,6 +5,6 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-new-assembly',
   standalone: true,
   imports: [RouterOutlet],
-  templateUrl: './new-assembly.page.html',
+  templateUrl: './new-assembly.component.html',
 })
-export default class NewAssemblyPage {}
+export class NewAssemblyComponent { }

@@ -22,7 +22,6 @@ import ma.cimr.agmbackend.email.EmailService;
 import ma.cimr.agmbackend.email.EmailTemplateName;
 import ma.cimr.agmbackend.exception.ApiException;
 import ma.cimr.agmbackend.profile.ProfileRepository;
-import ma.cimr.agmbackend.util.SecurePasswordGenerator;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -70,7 +69,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse createUser(UserAddRequest userCreateRequest) throws MessagingException {
-        String generatedPassword = SecurePasswordGenerator.generateSecurePassword(8);
+        String generatedPassword = "password";
+        // String generatedPassword = SecurePasswordGenerator.generateSecurePassword(8);
         LOGGER.info(String.format("* Generated password for %s %s: %s", userCreateRequest.getFirstName(),
                 userCreateRequest.getLastName(), generatedPassword));
         User user = userMapper.toUser(userCreateRequest);
@@ -83,7 +83,6 @@ public class UserServiceImpl implements UserService {
         return userMapper.toUserResponseWithoutPermissions(user);
     }
 
-    @SuppressWarnings("unused")
     private void sendWelcomeEmail(User user, String generatedPassword) throws MessagingException {
         LOGGER.info(String.format("* Email sent to %s %s: %s", user.getFirstName(),
                 user.getLastName(), user.getEmail()));

@@ -61,7 +61,7 @@ public class LoadDatabase {
 							.email(email)
 							.password(passwordEncoder.encode(password))
 							.profile(profile)
-							.isFirstLogin(false)
+							.firstLogin(false)
 							.build()));
 		};
 	}

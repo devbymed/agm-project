@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-settings',
   standalone: true,
   imports: [],
-  templateUrl: './settings.page.html',
+  templateUrl: './settings.component.html',
 })
-export default class SettingsPage {}
+export class SettingsComponent { }

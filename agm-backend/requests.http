@@ -8,6 +8,12 @@ Content-Type: application/json
 	"password": "gestionnaire"
 }
 
+# {
+# 	"email": "kesoxah285@cgbird.com",
+# 	"password": "l#MGgqOS"
+# }
+
+
 ### PATCH /auth/change-password - Change Password
 # @name ChangePassword
 PATCH {{baseUrl}}/auth/change-password HTTP/1.1
@@ -15,7 +21,7 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-	"oldPassword": "%iFS7[8g9m[i",
+	"oldPassword": "l#MGgqOS",
 	"newPassword": "P@ssw0rd!"
 }
 
@@ -36,10 +42,10 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-	"firstName": "Kevin",
-	"lastName": "O'Hara",
+	"firstName": "Alex",
+	"lastName": "Boviris",
 	"profileId": 2,
-	"email": "kesoxah285@cgbird.com"
+	"email": "boviris269@neixos.com"
 }
 
 ### PATCH /users/{id} - Update User

@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-user-management',
   standalone: true,
   imports: [],
-  templateUrl: './users.page.html',
+  templateUrl: './users.component.html',
 })
-export default class UsersPage {}
+export class UsersComponent { }

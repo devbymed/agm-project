@@ -35,11 +35,10 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByEmail(authRequest.getEmail())
                 .orElseThrow(() -> new ApiException(BAD_CREDENTIALS));
         String token = jwtService.generateToken(user);
-        boolean mustChangePassword = user.isFirstLogin();
         UserResponse userResponse = userMapper.toUserResponse(user);
         return AuthResponse.builder()
                 .accessToken(token)
-                .mustChangePassword(mustChangePassword)
+                .firstLogin(user.isFirstLogin())
                 .user(userResponse)
                 .build();
     }
