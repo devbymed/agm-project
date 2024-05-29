@@ -43,6 +43,7 @@ export default class ChangePasswordComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
+    this.changePasswordForm.markAllAsTouched();
     if (this.changePasswordForm.valid) {
       const { currentPassword, newPassword, confirmPassword } = this.changePasswordForm.value;
       if (newPassword !== confirmPassword) {

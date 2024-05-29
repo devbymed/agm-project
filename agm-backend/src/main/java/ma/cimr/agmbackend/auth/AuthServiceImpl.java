@@ -48,6 +48,9 @@ public class AuthServiceImpl implements AuthService {
         if (!passwordEncoder.matches(changePasswordRequest.getCurrentPassword(), user.getPassword())) {
             throw new ApiException(ApiExceptionCodes.INCORRECT_CURRENT_PASSWORD);
         }
+        if (passwordEncoder.matches(changePasswordRequest.getNewPassword(), user.getPassword())) {
+            throw new ApiException(ApiExceptionCodes.SAME_AS_CURRENT_PASSWORD);
+        }
         if (!changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmPassword())) {
             throw new ApiException(ApiExceptionCodes.MISMATCHED_PASSWORDS);
         }

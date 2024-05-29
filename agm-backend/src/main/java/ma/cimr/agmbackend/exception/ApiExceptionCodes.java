@@ -9,9 +9,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ApiExceptionCodes {
 
-	BAD_CREDENTIALS("Identifiant et/ou mot de passe incorrect(s)", HttpStatus.UNAUTHORIZED),
+	BAD_CREDENTIALS("Identifiant ou mot de passe incorrect", HttpStatus.UNAUTHORIZED),
 	INVALID_TOKEN("Token invalide", HttpStatus.UNAUTHORIZED),
 	INCORRECT_CURRENT_PASSWORD("Le mot de passe actuel est incorrect", HttpStatus.BAD_REQUEST),
+	SAME_AS_CURRENT_PASSWORD("Le nouveau mot de passe doit différer de l'actuel", HttpStatus.BAD_REQUEST),
 	MISMATCHED_PASSWORDS("Les mots de passe ne correspondent pas", HttpStatus.BAD_REQUEST),
 	USER_NOT_FOUND("Utilisateur non trouvé", HttpStatus.NOT_FOUND),
 	PROFILE_NOT_FOUND("Profil non trouvé", HttpStatus.NOT_FOUND),

@@ -87,8 +87,8 @@ public class UserServiceImpl implements UserService {
     private void sendWelcomeEmail(User user, String generatedPassword) throws MessagingException {
         LOGGER.info(String.format("* Email sent to %s %s: %s", user.getFirstName(),
                 user.getLastName(), user.getEmail()));
-        emailService.sendEmail(user.getEmail(),
-                " Bienvenue sur l'application de gestion des assemblées générales de la CIMR", user.getFirstName(),
+        emailService.sendEmail(user.getEmail(), user.getFirstName(),
+                "Bienvenue sur l'application de gestion des assemblées générales de la CIMR",
                 generatedPassword, EmailTemplateName.NEW_USER);
     }
 

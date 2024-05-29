@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, Input, booleanAttribute, forwardRef } from '@angular/core';
+import { Component, Input, ViewChild, booleanAttribute, forwardRef } from '@angular/core';
 import {
   AbstractControl,
   NG_VALUE_ACCESSOR,
@@ -39,6 +39,7 @@ export function emailDomainValidator(domain: string): ValidatorFn {
 })
 export class InputComponent extends BaseControlValueAccessorService<string> {
   protected readonly Validators = Validators;
+  isPasswordVisible = false;
 
   @Input({ required: true }) label: string;
   @Input({ required: true }) id: string;
@@ -47,8 +48,14 @@ export class InputComponent extends BaseControlValueAccessorService<string> {
   @Input() placeholder: string = '';
   @Input({ transform: booleanAttribute }) required = false;
   @Input({ transform: booleanAttribute }) showRequiredIndicator = false;
+  @ViewChild(InputTypeDirective) inputTypeDirective: InputTypeDirective;
 
   constructor(public validationErrorService: ValidationErrorService) {
     super();
+  }
+
+  togglePasswordVisibility(): void {
+    this.isPasswordVisible = !this.isPasswordVisible;
+    this.inputTypeDirective.togglePasswordVisibility();
   }
 }

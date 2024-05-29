@@ -49,6 +49,7 @@ export default class LoginComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
+    this.loginForm.markAllAsTouched();
     if (this.loginForm.valid) {
       const authRequest: AuthRequest = this.loginForm.value;
       this.authService.login(authRequest).pipe(

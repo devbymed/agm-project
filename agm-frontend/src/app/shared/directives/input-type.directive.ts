@@ -26,4 +26,15 @@ export class InputTypeDirective implements OnInit {
       this.renderer.setAttribute(inputElement, 'type', 'text');
     }
   }
+
+  togglePasswordVisibility(): void {
+    const inputElement = this.element.nativeElement;
+    const currentType = inputElement.type;
+
+    if (currentType === 'password') {
+      this.renderer.setAttribute(inputElement, 'type', 'text');
+    } else if (currentType === 'text') {
+      this.renderer.setAttribute(inputElement, 'type', 'password');
+    }
+  }
 }
