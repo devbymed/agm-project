@@ -9,8 +9,8 @@ Content-Type: application/json
 }
 
 # {
-# 	"email": "boviris269@neixos.com",
-# 	"password": "password"
+# 	"email": "pigicat244@fresec.com",
+# 	"password": "bismilah71"
 # }
 
 
@@ -21,8 +21,9 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-	"oldPassword": "password",
-	"newPassword": "bismilah71"
+	"currentPassword": "password",
+	"newPassword": "bismilah71",
+	"confirmPassword": "bismilah71"
 }
 
 ### GET /users - Get All Users

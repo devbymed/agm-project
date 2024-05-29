@@ -44,7 +44,7 @@ export default class LoginComponent implements OnInit, OnDestroy {
   private initializeForm(): void {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required]]
     });
   }
 
@@ -63,9 +63,9 @@ export default class LoginComponent implements OnInit, OnDestroy {
   private handleLoginResponse(response: ApiResponse<AuthResponse>): void {
     if (response.status === 'OK' && response.data) {
       if (response.data.firstLogin) {
-        this.router.navigate(['/auth/changer-mot-de-passe']);
+        this.router.navigate(['/changer-mot-de-passe']);
       } else {
-        this.router.navigate(['/accueil']);
+        this.router.navigate(['/']);
       }
     } else {
       this.errorMessage$.next(response.message || 'Une erreur est survenue');

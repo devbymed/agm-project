@@ -7,7 +7,7 @@ export const guestGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   if (authService.isLoggedIn()) {
-    router.navigate(['/accueil']);
+    router.navigate(['/']);
     return false;
   } else {
     return true;

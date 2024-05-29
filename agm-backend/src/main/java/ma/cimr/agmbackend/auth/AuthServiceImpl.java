@@ -2,10 +2,10 @@ package ma.cimr.agmbackend.auth;
 
 import static ma.cimr.agmbackend.exception.ApiExceptionCodes.BAD_CREDENTIALS;
 
+import java.security.Principal;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,30 +43,16 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void changePassword(ChangePasswordRequest changePasswordRequest) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String email;
-        if (principal instanceof UserDetails) {
-            email = ((UserDetails) principal).getUsername();
-        } else {
-            email = principal.toString();
+    public void changePassword(ChangePasswordRequest changePasswordRequest, Principal authenticatedUser) {
+        var user = (User) ((UsernamePasswordAuthenticationToken) authenticatedUser).getPrincipal();
+        if (!passwordEncoder.matches(changePasswordRequest.getCurrentPassword(), user.getPassword())) {
+            throw new ApiException(ApiExceptionCodes.INCORRECT_CURRENT_PASSWORD);
         }
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ApiException(ApiExceptionCodes.USER_NOT_FOUND));
-        if (!passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword())) {
-            throw new ApiException(ApiExceptionCodes.OLD_PASSWORD_INCORRECT);
+        if (!changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmPassword())) {
+            throw new ApiException(ApiExceptionCodes.MISMATCHED_PASSWORDS);
         }
-        // if (!isValidPassword(changePasswordRequest.getNewPassword())) {
-        // throw new ApiException(ApiExceptionCodes.INVALID_NEW_PASSWORD);
-        // }
         user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
         user.setFirstLogin(false);
         userRepository.save(user);
     }
-
-    // private boolean isValidPassword(String password) {
-    // String passwordRegex =
-    // "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&*()_+\\-=\\[\\]?]).{8,20}$";
-    // return password.matches(passwordRegex);
-    // }
 }

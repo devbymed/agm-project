@@ -8,7 +8,7 @@ export const firstLoginGuard: CanActivateFn = () => {
 
   const firstLogin = authService.isFirstLogin();
   if (firstLogin) {
-    router.navigate(['/auth/changer-mot-de-passe']);
+    router.navigate(['/changer-mot-de-passe']);
     return false;
   } else {
     return true;

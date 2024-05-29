@@ -10,7 +10,7 @@ export const changePwdGuard: CanActivateFn = () => {
   if (firstLogin) {
     return true;
   } else {
-    router.navigate(['/accueil']);
+    router.navigate(['/']);
     return false;
   }
 };

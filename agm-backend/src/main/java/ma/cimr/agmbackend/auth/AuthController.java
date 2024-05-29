@@ -1,5 +1,7 @@
 package ma.cimr.agmbackend.auth;
 
+import java.security.Principal;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,8 +32,8 @@ public class AuthController {
 
 	@PatchMapping("/change-password")
 	public ResponseEntity<ApiResponse> changePassword(
-			@Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
-		authService.changePassword(changePasswordRequest);
+			@Valid @RequestBody ChangePasswordRequest changePasswordRequest, Principal authenticatedUser) {
+		authService.changePassword(changePasswordRequest, authenticatedUser);
 		return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Le mot de passe a été modifié avec succès");
 	}
 }

@@ -15,28 +15,19 @@ import { NewAssemblyComponent } from '@features/assembly/pages/new-assembly/new-
 import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component';
 
 export const routes: Routes = [
+
   {
-    path: 'auth',
-    children: [
-      {
-        path: 'connexion',
-        component: LoginComponent,
-        canActivate: [guestGuard],
-      },
-      {
-        path: 'changer-mot-de-passe',
-        component: ChangePasswordComponent,
-        canActivate: [authGuard, changePwdGuard],
-      },
-      {
-        path: '',
-        redirectTo: 'connexion',
-        pathMatch: 'full',
-      },
-    ],
+    path: 'connexion',
+    component: LoginComponent,
+    canActivate: [guestGuard],
   },
   {
-    path: 'accueil',
+    path: 'changer-mot-de-passe',
+    component: ChangePasswordComponent,
+    canActivate: [authGuard, changePwdGuard],
+  },
+  {
+    path: '',
     component: MainLayoutComponent,
     canActivate: [authGuard, firstLoginGuard],
     children: [
@@ -103,13 +94,7 @@ export const routes: Routes = [
     ],
   },
   {
-    path: '',
-    redirectTo: 'accueil',
-    pathMatch: 'full',
-  },
-  {
     path: '**',
-    redirectTo: 'accueil',
-    pathMatch: 'full',
+    redirectTo: '',
   },
 ];

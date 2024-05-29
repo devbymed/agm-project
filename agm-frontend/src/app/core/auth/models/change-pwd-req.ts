@@ -1,4 +1,5 @@
 export interface ChangePwdReq {
-  oldPassword: string;
+  currentPassword: string;
   newPassword: string;
+  confirmPassword: string;
 }
