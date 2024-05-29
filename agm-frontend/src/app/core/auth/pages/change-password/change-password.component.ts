@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -26,15 +26,13 @@ import { BehaviorSubject, Subject, takeUntil } from "rxjs";
   templateUrl: './change-password.component.html',
 })
 export default class ChangePasswordComponent implements OnInit, OnDestroy {
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
   changePasswordForm: FormGroup;
   errorMessage$ = new BehaviorSubject<string | null>(null);
   private destroy$ = new Subject<void>();
-
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
-  ) { }
 
   ngOnInit(): void {
     this.changePasswordForm = this.fb.group({
