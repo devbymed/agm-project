@@ -5,9 +5,10 @@ import { AuthService } from '@core/auth/auth.service';
 import { User } from "@core/models/user.model";
 import { HighlightActiveLinkDirective } from '@shared/directives/highlight-active-link.directive';
 import { initFlowbite } from 'flowbite';
+import { Observable } from "rxjs";
 
 @Component({
-  selector: 'app-navbar',
+  selector: 'app-header',
   standalone: true,
   imports: [
     AsyncPipe,
@@ -15,20 +16,20 @@ import { initFlowbite } from 'flowbite';
     RouterLinkActive,
     HighlightActiveLinkDirective,
   ],
-  templateUrl: './navbar.component.html',
+  templateUrl: './header.component.html',
 })
-export class NavbarComponent implements OnInit {
+export class HeaderComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
-  user: User | null = null;
+  user$: Observable<User | null>;
+
+  ngOnInit(): void {
+    this.user$ = this.authService.getUser();
+    initFlowbite();
+  }
 
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/auth/connexion']);
-  }
-
-  ngOnInit(): void {
-    initFlowbite();
-    this.user = this.authService.getUser();
   }
 }

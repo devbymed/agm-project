@@ -9,8 +9,8 @@ Content-Type: application/json
 }
 
 # {
-# 	"email": "kesoxah285@cgbird.com",
-# 	"password": "l#MGgqOS"
+# 	"email": "boviris269@neixos.com",
+# 	"password": "password"
 # }
 
 
@@ -21,8 +21,8 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-	"oldPassword": "l#MGgqOS",
-	"newPassword": "P@ssw0rd!"
+	"oldPassword": "password",
+	"newPassword": "bismilah71"
 }
 
 ### GET /users - Get All Users
@@ -42,10 +42,10 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-	"firstName": "Alex",
-	"lastName": "Boviris",
+	"firstName": "Pierre",
+	"lastName": "Gicat",
 	"profileId": 2,
-	"email": "boviris269@neixos.com"
+	"email": "pigicat244@fresec.com"
 }
 
 ### PATCH /users/{id} - Update User

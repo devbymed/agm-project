@@ -63,6 +63,7 @@
                 id="dropdownNavbarLink4"
                 data-dropdown-toggle="dropdownNavbar4"
                 class="flex w-full items-center justify-between border-b border-gray-100 py-2 pl-3 pr-4 font-medium text-gray-700 hover:bg-gray-50 md:w-auto md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-primary-700"
+                [appHighlightActiveLink]="'/accueil/administration'"
               >
                 Administration
                 <svg
@@ -88,7 +89,9 @@
                   aria-labelledby="dropdownLargeButton"
                 >
                   <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100"
+                    <a
+                      routerLink="/accueil/administration/utilisateurs"
+                      class="block px-4 py-2 hover:bg-gray-100"
                       >Gestion utilisateurs
                     </a>
                   </li>
@@ -140,10 +143,11 @@
         >
           <div class="px-4 py-3">
             <span class="block text-sm font-semibold text-gray-900"
-              >{{ user?.firstName }} {{ user?.lastName }}</span
+              >{{ (user$ | async)?.firstName }}
+              {{ (user$ | async)?.lastName }}</span
             >
             <span class="block truncate text-sm font-light text-gray-500">{{
-              user?.email
+              (user$ | async)?.email
             }}</span>
           </div>
 

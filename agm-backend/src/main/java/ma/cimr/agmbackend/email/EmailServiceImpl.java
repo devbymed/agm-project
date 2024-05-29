@@ -29,8 +29,9 @@ public class EmailServiceImpl implements EmailService {
     private final SpringTemplateEngine templateEngine;
 
     @Async
+    @Override
     public void sendEmail(String to, String subject, String firstName, String temporaryPassword,
-                          EmailTemplateName emailTemplateName)
+            EmailTemplateName emailTemplateName)
             throws MessagingException {
 
         String templateName = (emailTemplateName == null) ? "new_user" : emailTemplateName.getName();

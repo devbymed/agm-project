@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import ma.cimr.agmbackend.exception.ApiException;
@@ -28,7 +27,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
     private final UserMapper userMapper;
 
-    @Transactional
+    @Override
     public AuthResponse authenticateUser(AuthRequest authRequest) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmail(),
                 authRequest.getPassword()));
@@ -43,6 +42,7 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
+    @Override
     public void changePassword(ChangePasswordRequest changePasswordRequest) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String email;

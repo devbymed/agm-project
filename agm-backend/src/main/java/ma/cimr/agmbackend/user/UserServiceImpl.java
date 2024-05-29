@@ -62,6 +62,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll(of(page, size)).map(userMapper::toUserResponseWithoutPermissions);
     }
 
+    @Override
     public UserResponse getUser(Long id) {
         return userRepository.findById(id).map(userMapper::toUserResponseWithoutPermissions)
                 .orElseThrow(() -> new ApiException(USER_NOT_FOUND));

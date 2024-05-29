@@ -2,15 +2,15 @@ import { inject } from "@angular/core";
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from "../auth.service";
 
-export const firstLoginGuard: CanActivateFn = () => {
+export const changePwdGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
   const firstLogin = authService.isFirstLogin();
   if (firstLogin) {
-    router.navigate(['/auth/changer-mot-de-passe']);
-    return false;
-  } else {
     return true;
+  } else {
+    router.navigate(['/accueil']);
+    return false;
   }
 };

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from "@core/auth/guards/auth.guard";
+import { changePwdGuard } from "@core/auth/guards/change-pwd.guard";
 import { firstLoginGuard } from "@core/auth/guards/first-login.guard";
 import { guestGuard } from "@core/auth/guards/guest.guard";
 import ChangePasswordComponent from "@core/auth/pages/change-password/change-password.component";
@@ -20,12 +21,12 @@ export const routes: Routes = [
       {
         path: 'connexion',
         component: LoginComponent,
-        canActivate: [guestGuard]
+        canActivate: [guestGuard],
       },
       {
         path: 'changer-mot-de-passe',
         component: ChangePasswordComponent,
-        canActivate: [authGuard],
+        canActivate: [authGuard, changePwdGuard],
       },
       {
         path: '',

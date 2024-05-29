@@ -15,10 +15,15 @@ export class InputTypeDirective implements OnInit {
   private element = inject(ElementRef);
   private renderer = inject(Renderer2);
 
-  @Input('appInputType') type: string;
+  @Input('inputType') type: string;
 
   ngOnInit(): void {
     const inputElement = this.element.nativeElement;
-    this.renderer.setAttribute(inputElement, 'type', this.type);
+
+    if (this.type) {
+      this.renderer.setAttribute(inputElement, 'type', this.type);
+    } else {
+      this.renderer.setAttribute(inputElement, 'type', 'text');
+    }
   }
 }

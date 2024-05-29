@@ -38,6 +38,7 @@ public class ProfileServiceImpl implements ProfileService {
 		return profileMapper.toProfileResponse(profile);
 	}
 
+	@Override
 	public ProfileResponse addPermissionToProfile(Long profileId, Long permissionId) {
 		Profile profile = profileRepository.findById(profileId)
 				.orElseThrow(() -> new ApiException(ApiExceptionCodes.PROFILE_NOT_FOUND));
@@ -49,6 +50,7 @@ public class ProfileServiceImpl implements ProfileService {
 		return profileMapper.toProfileResponse(savedProfile);
 	}
 
+	@Override
 	public void removePermissionFromProfile(Long profileId, Long permissionId) {
 		Profile profile = profileRepository.findById(profileId)
 				.orElseThrow(() -> new ApiException(ApiExceptionCodes.PROFILE_NOT_FOUND));

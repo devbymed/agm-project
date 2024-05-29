@@ -1,19 +1,22 @@
 <main class="h-screen bg-gray-50">
   <div class="mx-auto flex h-full flex-col items-center justify-center px-6">
-    <a href="" class="mb-8 text-2xl font-semibold lg:mb-8">
+    <a class="mb-8 text-2xl font-semibold lg:mb-8">
       <img src="assets/logo.png" class="h-20" />
     </a>
-    <div
-      class="w-full max-w-lg space-y-6 rounded-lg bg-white p-6 shadow sm:p-8"
-    >
-      <div class="space-y-2">
+    <div class="w-full max-w-lg rounded-lg bg-white p-6 shadow sm:p-8">
+      <div class="mb-5 space-y-2">
         <h2 class="text-xl font-bold text-gray-500">Se connecter</h2>
         <p class="text-sm font-medium text-gray-500">
           Connectez-vous ci-dessous
         </p>
       </div>
-      <form [formGroup]="loginForm" class="space-y-6" (ngSubmit)="onSubmit()">
-        <div>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        @if (errorMessage$ | async; as error) {
+          <div class="mb-5">
+            <app-alert [message]="error" type="danger"></app-alert>
+          </div>
+        }
+        <div class="mb-5">
           <app-input
             label="Identifiant"
             id="email"
@@ -21,10 +24,10 @@
             [type]="'email'"
             placeholder="lamrani@cimr.ma"
             formControlName="email"
-            [showRequiredIndicator]="false"
+            showRequiredIndicator="false"
           />
         </div>
-        <div>
+        <div class="mb-5">
           <app-input
             label="Mot de passe"
             id="password"
@@ -35,9 +38,7 @@
             showRequiredIndicator="false"
           />
         </div>
-        <div>
-          <app-button type="submit">Se connecter</app-button>
-        </div>
+        <app-button type="submit">Se connecter</app-button>
       </form>
     </div>
   </div>
