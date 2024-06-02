@@ -1,5 +1,6 @@
 package ma.cimr.agmbackend.profile;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -32,9 +33,8 @@ public class ProfileController {
 	private final ProfileService profileService;
 
 	@GetMapping
-	public ResponseEntity<ApiResponse> getProfiles(@RequestParam Optional<Integer> page,
-			@RequestParam Optional<Integer> size) {
-		Page<ProfileResponse> response = profileService.getProfiles(page.orElse(0), size.orElse(1));
+	public ResponseEntity<ApiResponse> getProfiles() {
+		List<ProfileResponse> response = profileService.getProfiles();
 		return ApiResponseFormatter.generateResponse(HttpStatus.OK, response);
 	}
 

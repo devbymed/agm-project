@@ -19,16 +19,18 @@ import ma.cimr.agmbackend.permission.PermissionRepository;
 @RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ProfileServiceImpl.class);
+	// private static final Logger LOGGER =
+	// LoggerFactory.getLogger(ProfileServiceImpl.class);
 
 	private final ProfileRepository profileRepository;
 	private final ProfileMapper profileMapper;
 	private final PermissionRepository permissionRepository;
 
 	@Override
-	public Page<ProfileResponse> getProfiles(int page, int size) {
-		LOGGER.info("* Getting profiles page %d with size %d", page, size);
-		return profileRepository.findAll(PageRequest.of(page, size)).map(profileMapper::toProfileResponse);
+	public List<ProfileResponse> getProfiles() {
+		return profileRepository.findAll().stream()
+				.map(profileMapper::toProfileResponse)
+				.collect(Collectors.toList());
 	}
 
 	@Override
