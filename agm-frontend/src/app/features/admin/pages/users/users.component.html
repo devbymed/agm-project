@@ -72,7 +72,7 @@
   </div>
   <div class="col-span-2">
     <div
-      class="mb-4 space-y-6 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 2xl:col-span-2"
+      class="space-y-6 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 2xl:col-span-2"
     >
       <div class="flex items-center justify-between">
         <h3 class="text-xl font-semibold text-gray-500 dark:text-white">
@@ -124,38 +124,40 @@
                   </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-gray-800">
-                  <tr>
-                    <td class="w-4 p-4">
-                      <div class="flex items-center">
-                        <input
-                          id="checkbox-1"
-                          aria-describedby="checkbox-1"
-                          type="checkbox"
-                          class="focus:ring-3 h-4 w-4 rounded border-gray-300 bg-gray-50 checked:bg-primary-500 focus:ring-primary-300"
-                        />
-                      </div>
-                    </td>
-                    <td
-                      class="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
-                    >
-                      John
-                    </td>
-                    <td
-                      class="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
-                    >
-                      Doe
-                    </td>
-                    <td
-                      class="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
-                    >
-                      john.doe&#64;gmail.com
-                    </td>
-                    <td
-                      class="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
-                    >
-                      Gestionnaire
-                    </td>
-                  </tr>
+                  @for (user of users; track user.id) {
+                    <tr>
+                      <td class="w-4 p-4">
+                        <div class="flex items-center">
+                          <input
+                            id="checkbox-{{ user.id }}"
+                            aria-describedby="checkbox-1"
+                            type="checkbox"
+                            class="focus:ring-3 h-4 w-4 rounded border-gray-300 bg-gray-50 checked:bg-primary-500 focus:ring-primary-300"
+                          />
+                        </div>
+                      </td>
+                      <td
+                        class="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                      >
+                        {{ user.firstName }}
+                      </td>
+                      <td
+                        class="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                      >
+                        {{ user.lastName }}
+                      </td>
+                      <td
+                        class="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                      >
+                        {{ user.email }}
+                      </td>
+                      <td
+                        class="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                      >
+                        {{ user.profile.name }}
+                      </td>
+                    </tr>
+                  }
                 </tbody>
               </table>
             </div>

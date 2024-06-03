@@ -1,5 +1,6 @@
 package ma.cimr.agmbackend.user;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -33,10 +34,9 @@ public class UserController {
 	private final UserService userService;
 
 	@GetMapping
-	public ResponseEntity<ApiResponse> getUsers(@RequestParam Optional<Integer> page,
-			@RequestParam Optional<Integer> size) {
-		Page<UserResponse> response = userService.getUsers(page.orElse(0), size.orElse(20));
-		return ApiResponseFormatter.generateResponse(HttpStatus.OK, response);
+	public ResponseEntity<ApiResponse> getUsers() {
+		List<UserResponse> users = userService.getUsers();
+		return ApiResponseFormatter.generateResponse(HttpStatus.OK, users);
 	}
 
 	@GetMapping("/{id}")

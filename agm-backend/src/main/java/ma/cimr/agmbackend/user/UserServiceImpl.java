@@ -4,6 +4,7 @@ import static ma.cimr.agmbackend.exception.ApiExceptionCodes.PROFILE_NOT_FOUND;
 import static ma.cimr.agmbackend.exception.ApiExceptionCodes.USER_NOT_FOUND;
 import static org.springframework.data.domain.PageRequest.of;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.hibernate.Hibernate;
@@ -57,9 +58,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserResponse> getUsers(int page, int size) {
-        LOGGER.info(String.format("* Getting users page %d with size %d", page, size));
-        return userRepository.findAll(of(page, size)).map(userMapper::toUserResponseWithoutPermissions);
+    public List<UserResponse> getUsers() {
+        return userRepository.findAll().stream().map(userMapper::toUserResponseWithoutPermissions)
+                .toList();
     }
 
     @Override

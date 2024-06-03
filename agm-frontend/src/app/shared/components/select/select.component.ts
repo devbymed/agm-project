@@ -23,7 +23,7 @@ export class SelectComponent extends BaseControlValueAccessorService<string> imp
   @Input({ required: true }) label: string;
   @Input({ required: true }) id: string;
   @Input({ required: true }) name: string;
-  @Input() options: { value: string | number, label: string }[] = [];
+  @Input() options: { value: number | string, label: string }[] = [];
   @Input() placeholder: string = '';
   @Input({ transform: booleanAttribute }) required = false;
   @Input({ transform: booleanAttribute }) showRequiredIndicator = false;
