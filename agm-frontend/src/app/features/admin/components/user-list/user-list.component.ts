@@ -1,22 +1,19 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { ApiResponse } from "@core/models/api-response.model";
 import { User } from "@core/models/user.model";
-import { UserFormComponent } from "@features/admin/components/user-form/user-form.component";
 import { UserService } from "@features/admin/services/user.service";
 import { ButtonComponent } from "@shared/components/button/button.component";
-import { BreadcrumbComponent } from "@shared/components/menu/breadcrumb/breadcrumb.component";
 import { ToastrService } from "ngx-toastr";
-import { ButtonModule } from "primeng/button";
 import { Subject, takeUntil } from "rxjs";
 
 @Component({
-  selector: 'app-user-management',
+  selector: 'app-user-list',
   standalone: true,
-  imports: [UserFormComponent, ButtonComponent, ButtonModule, FormsModule, BreadcrumbComponent],
-  templateUrl: './users.component.html',
+  imports: [FormsModule, ButtonComponent],
+  templateUrl: './user-list.component.html',
 })
-export class UsersComponent implements OnInit {
+export class UserListComponent {
   private userService = inject(UserService);
   private toastrService = inject(ToastrService);
   private destroy$ = new Subject<void>();
@@ -50,7 +47,7 @@ export class UsersComponent implements OnInit {
   loadUser() {
     const selectedUsers = this.users.filter(user => user.checked);
     if (selectedUsers.length !== 1) {
-      this.toastrService.error('Veuillez sélectionner un utilisateur');
+      this.toastrService.warning('Veuillez sélectionner un seul utilisateur');
       return;
     }
 

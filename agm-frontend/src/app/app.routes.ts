@@ -7,7 +7,7 @@ import ChangePasswordComponent from "@core/auth/pages/change-password/change-pas
 import LoginComponent from "@core/auth/pages/login/login.component";
 import { AuthorizationsComponent } from '@features/admin/pages/authorizations/authorizations.component';
 import { SettingsComponent } from '@features/admin/pages/settings/settings.component';
-import { UsersComponent } from '@features/admin/pages/users/users.component';
+import { UserManagementComponent } from '@features/admin/pages/user-management/user-management.component';
 import { AssemblyDetailsComponent } from '@features/assembly/pages/assembly-details/assembly-details.component';
 import { FdrFollowUpComponent } from '@features/assembly/pages/fdr-follow-up/fdr-follow-up.component';
 import { MembersConvocationComponent } from '@features/assembly/pages/members-convocation/members-convocation.component';
@@ -81,7 +81,7 @@ export const routes: Routes = [
           },
           {
             path: 'utilisateurs',
-            component: UsersComponent,
+            component: UserManagementComponent,
             data: { breadcrumb: 'Gestion utilisateurs' },
           },
           {
