@@ -1,13 +1,18 @@
-import { NgClass } from "@angular/common";
-import { Component, Input, OnInit, booleanAttribute, forwardRef } from '@angular/core';
-import { NG_VALUE_ACCESSOR, Validators } from "@angular/forms";
+import { NgClass, NgFor } from "@angular/common";
+import { Component, Input, booleanAttribute, forwardRef } from '@angular/core';
+import { FormsModule, NG_VALUE_ACCESSOR, Validators } from "@angular/forms";
 import { BaseControlValueAccessorService } from "@core/services/base-control-value-accessor.service";
 import { ValidationErrorService } from "@core/services/validation-error.service";
+
+interface Option {
+  value: string;
+  label: string;
+}
 
 @Component({
   selector: 'app-select',
   standalone: true,
-  imports: [NgClass],
+  imports: [NgClass, NgFor, FormsModule],
   templateUrl: './select.component.html',
   providers: [
     {
@@ -17,14 +22,15 @@ import { ValidationErrorService } from "@core/services/validation-error.service"
     },
   ],
 })
-export class SelectComponent extends BaseControlValueAccessorService<string> implements OnInit {
+export class SelectComponent extends BaseControlValueAccessorService<string> {
   protected readonly Validators = Validators;
 
   @Input({ required: true }) label: string;
   @Input({ required: true }) id: string;
   @Input({ required: true }) name: string;
-  @Input() options: { value: number | string, label: string }[] = [];
+  @Input() options: Option[] = [];
   @Input() placeholder: string = '';
+  @Input() selected: string = '';
   @Input({ transform: booleanAttribute }) required = false;
   @Input({ transform: booleanAttribute }) showRequiredIndicator = false;
 

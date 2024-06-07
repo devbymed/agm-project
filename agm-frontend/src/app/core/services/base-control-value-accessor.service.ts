@@ -11,14 +11,13 @@ import {
 
 @Injectable()
 export abstract class BaseControlValueAccessorService<T>
-  implements ControlValueAccessor, OnInit
-{
+  implements ControlValueAccessor, OnInit {
   injector = inject(Injector);
   value: T;
   control: FormControl;
 
-  onChange = (value: T) => {};
-  onTouch = () => {};
+  onChange = (value: T) => { };
+  onTouch = () => { };
 
   ngOnInit() {
     this.control = this.getControl();

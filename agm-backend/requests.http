@@ -46,7 +46,7 @@ Authorization: Bearer {{accessToken}}
 	"firstName": "Pierre",
 	"lastName": "Gicat",
 	"profileId": 2,
-	"email": "pigicat244@fresec.com"
+	"email": "devbymed@gmail.com"
 }
 
 ### PATCH /users/{id} - Update User

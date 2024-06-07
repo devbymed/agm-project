@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '@core/auth/auth.service';
 import { AlertComponent } from '@shared/components/alert/alert.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
-import { InputComponent } from '@shared/components/input/input.component';
+import { InputComponent } from '@shared/components/form/input/input.component';
 import { BehaviorSubject, Subject, takeUntil } from "rxjs";
 
 @Component({

@@ -54,7 +54,7 @@ public class LoadDatabase {
 						return profileRepository.save(newProfile);
 					});
 
-			Profile profile2 = profileRepository.findByName("Agent de relance")
+			profileRepository.findByName("Agent de relance")
 					.orElseGet(() -> {
 						Profile newProfile = Profile.builder()
 								.name("Agent de relance")

@@ -4,7 +4,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '@core/auth/auth.service';
 import { User } from "@core/models/user.model";
 import { HighlightActiveLinkDirective } from '@shared/directives/highlight-active-link.directive';
-import { initFlowbite } from 'flowbite';
+import { initFlowbite } from "flowbite";
 import { Observable } from "rxjs";
 
 @Component({

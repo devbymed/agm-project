@@ -1,8 +1,8 @@
 package ma.cimr.agmbackend.user;
 
+import static ma.cimr.agmbackend.exception.ApiExceptionCodes.EMAIL_ALREADY_EXISTS;
 import static ma.cimr.agmbackend.exception.ApiExceptionCodes.PROFILE_NOT_FOUND;
 import static ma.cimr.agmbackend.exception.ApiExceptionCodes.USER_NOT_FOUND;
-import static org.springframework.data.domain.PageRequest.of;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +11,6 @@ import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -71,6 +70,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse createUser(UserAddRequest userCreateRequest) throws MessagingException {
+        if (userRepository.existsByEmail(userCreateRequest.getEmail())) {
+            throw new ApiException(EMAIL_ALREADY_EXISTS);
+        }
         String generatedPassword = "password";
         // String generatedPassword = SecurePasswordGenerator.generateSecurePassword(8);
         LOGGER.info(String.format("* Generated password for %s %s: %s", userCreateRequest.getFirstName(),

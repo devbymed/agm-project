@@ -1,0 +1,35 @@
+<label [for]="id" class="mb-2 block text-sm font-medium text-gray-500">
+  {{ label }}
+  @if (
+    showRequiredIndicator &&
+    (required || control.hasValidator(Validators.required))
+  ) {
+    <span class="font-medium text-red-600">*</span>
+  }
+</label>
+<select
+  #select
+  [id]="id"
+  [(ngModel)]="value"
+  (focusout)="onTouch()"
+  (ngModelChange)="onChange(select.value)"
+  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-500 placeholder-gray-500 focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm"
+  [ngClass]="{
+    'border-red-500 text-sm focus:border-red-500 focus:ring-red-500':
+      control.touched && control.invalid
+  }"
+>
+  <option value="" selected>
+    {{ placeholder }}
+  </option>
+  <option *ngFor="let option of options" [value]="option.value">
+    {{ option.label }}
+  </option>
+</select>
+@if (control.touched && control.invalid) {
+  <p class="mt-1 text-sm text-red-600">
+    <span class="font-medium">
+      {{ validationErrorService.getErrorMessage(control.errors) }}
+    </span>
+  </p>
+}

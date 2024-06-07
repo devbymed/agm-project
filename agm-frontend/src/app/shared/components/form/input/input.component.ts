@@ -1,7 +1,8 @@
-import { NgClass } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { Component, Input, ViewChild, booleanAttribute, forwardRef } from '@angular/core';
 import {
   AbstractControl,
+  FormsModule,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
   ValidatorFn,
@@ -27,7 +28,7 @@ export function emailDomainValidator(domain: string): ValidatorFn {
 @Component({
   selector: 'app-input',
   standalone: true,
-  imports: [NgClass, InputTypeDirective],
+  imports: [NgClass, InputTypeDirective, CommonModule, FormsModule],
   templateUrl: './input.component.html',
   providers: [
     {
@@ -44,7 +45,6 @@ export class InputComponent extends BaseControlValueAccessorService<string> {
   @Input({ required: true }) label: string;
   @Input({ required: true }) id: string;
   @Input({ required: true }) type: string;
-  @Input({ required: true }) name: string;
   @Input() placeholder: string = '';
   @Input({ transform: booleanAttribute }) required = false;
   @Input({ transform: booleanAttribute }) showRequiredIndicator = false;

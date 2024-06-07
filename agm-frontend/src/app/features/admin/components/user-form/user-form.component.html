@@ -4,53 +4,59 @@
   <h3 class="mb-4 text-xl font-semibold text-gray-500">
     Ajouter un utilisateur
   </h3>
-  <form [formGroup]="userForm" (ngSubmit)="addUser()">
-    <div class="mb-4">
+  <form [formGroup]="userForm">
+    @if (errorMessage) {
+      <div class="mb-5">
+        <app-alert [message]="errorMessage" type="danger"></app-alert>
+      </div>
+    }
+    <div class="mb-5">
       <app-input
         label="Prénom"
         id="firstName"
         name="firstName"
         [type]="'text'"
-        placeholder="John"
+        placeholder="Prénom"
         formControlName="firstName"
         showRequiredIndicator="true"
       />
     </div>
-    <div class="mb-4">
+    <div class="mb-5">
       <app-input
         label="Nom"
         id="lastName"
         name="lastName"
         [type]="'text'"
-        placeholder="Doe"
+        placeholder="Nom"
         formControlName="lastName"
         showRequiredIndicator="true"
       />
     </div>
-    <div class="mb-4">
+    <div class="mb-5">
       <app-select
         label="Profil"
         id="profile"
-        name="profile"
+        name="profileId"
         [options]="(profileOptions$ | async) ?? []"
+        placeholder="Sélectionner un profil"
         formControlName="profileId"
         showRequiredIndicator="true"
       />
     </div>
-    <div class="mb-6">
+    <div class="mb-5">
       <app-input
         label="Email"
         id="email"
         name="email"
         [type]="'email'"
-        placeholder="john.doe@gmail.com"
+        placeholder="exemple@cimr.ma"
         formControlName="email"
         showRequiredIndicator="true"
       />
     </div>
     <div class="flex gap-2">
-      <app-button type="submit">Valider</app-button>
-      <app-button type="reset" buttonType="light" (click)="resetForm()"
+      <app-button type="button" (click)="addUser()">Valider</app-button>
+      <app-button type="button" buttonType="light" (click)="resetForm()"
         >Annuler</app-button
       >
     </div>

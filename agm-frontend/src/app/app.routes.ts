@@ -29,22 +29,27 @@ export const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
+    data: { breadcrumb: 'Accueil' },
     canActivate: [authGuard, firstLoginGuard],
     children: [
       {
         path: 'preparation-assemblee',
+        data: { breadcrumb: 'Préparation assemblée' },
         children: [
           {
             path: 'nouvelle-assemblee',
             component: NewAssemblyComponent,
+            data: { breadcrumb: 'Nouvelle assemblée' },
             children: [
               {
                 path: 'assemblee-en-cours',
                 component: AssemblyDetailsComponent,
+                data: { breadcrumb: 'Assemblée en cours' },
               },
               {
                 path: 'suivi-fdr',
                 component: FdrFollowUpComponent,
+                data: { breadcrumb: 'Suivi FDR' },
               },
               {
                 path: '',
@@ -56,6 +61,7 @@ export const routes: Routes = [
           {
             path: 'convocation-adherents',
             component: MembersConvocationComponent,
+            data: { breadcrumb: 'Convocation des adhérents' },
           },
           {
             path: '',
@@ -66,22 +72,26 @@ export const routes: Routes = [
       },
       {
         path: 'administration',
+        data: { breadcrumb: 'Administration' },
         children: [
-          {
-            path: 'utilisateurs',
-            component: UsersComponent,
-          },
           {
             path: 'habilitations',
             component: AuthorizationsComponent,
+            data: { breadcrumb: 'Habilitations' },
+          },
+          {
+            path: 'utilisateurs',
+            component: UsersComponent,
+            data: { breadcrumb: 'Gestion utilisateurs' },
           },
           {
             path: 'parametrage',
             component: SettingsComponent,
+            data: { breadcrumb: 'Paramétrage' },
           },
           {
             path: '',
-            redirectTo: 'utilisateurs',
+            redirectTo: 'habilitations',
             pathMatch: 'full',
           },
         ],

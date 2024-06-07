@@ -13,7 +13,8 @@ import { AuthResponse } from "@core/auth/models/auth-response.model";
 import { ApiResponse } from "@core/models/api-response.model";
 import { AlertComponent } from '@shared/components/alert/alert.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
-import { InputComponent } from '@shared/components/input/input.component';
+import { InputComponent } from '@shared/components/form/input/input.component';
+import { ButtonModule } from "primeng/button";
 import { BehaviorSubject, Subject, takeUntil } from "rxjs";
 
 @Component({
@@ -24,6 +25,7 @@ import { BehaviorSubject, Subject, takeUntil } from "rxjs";
     AlertComponent,
     InputComponent,
     ButtonComponent,
+    ButtonModule,
     ReactiveFormsModule,
   ],
   templateUrl: './login.component.html',

@@ -30,7 +30,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendEmail(String to, String subject, String firstName, String temporaryPassword,
+    public void sendEmail(String to, String firstName, String subject, String temporaryPassword,
             EmailTemplateName emailTemplateName)
             throws MessagingException {
 
