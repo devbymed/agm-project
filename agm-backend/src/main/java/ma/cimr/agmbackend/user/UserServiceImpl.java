@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) {
-                User user = userRepository.findByEmail(username)
+                User user = userRepository.findByUsername(username)
                         .orElseThrow(() -> new UsernameNotFoundException("User not found"));
                 Hibernate.initialize(user.getProfile().getPermissions());
                 return user;
@@ -78,6 +78,7 @@ public class UserServiceImpl implements UserService {
         LOGGER.info(String.format("* Generated password for %s %s: %s", userCreateRequest.getFirstName(),
                 userCreateRequest.getLastName(), generatedPassword));
         User user = userMapper.toUser(userCreateRequest);
+        user.setUsername(userCreateRequest.getEmail().split("@")[0]);
         user.setPassword(passwordEncoder.encode(generatedPassword));
         user.setProfile(
                 profileRepository.findById(userCreateRequest.getProfileId())

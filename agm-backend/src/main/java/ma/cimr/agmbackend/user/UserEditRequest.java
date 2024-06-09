@@ -25,6 +25,9 @@ public class UserEditRequest {
 	@Size(max = 50, message = "Le nom ne peut pas dépasser 50 caractères")
 	private String lastName;
 
+	@Size(max = 50, message = "L'email ne peut pas dépasser 50 caractères")
+	private String email;
+
 	@Positive(message = "L'identifiant du profil ne peut pas être négatif")
 	private Long profileId;
 }

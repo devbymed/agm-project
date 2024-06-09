@@ -38,6 +38,9 @@ public class User extends BaseEntity implements UserDetails {
 	private String lastName;
 
 	@Column(nullable = false, unique = true)
+	private String username;
+
+	@Column(nullable = false, unique = true)
 	private String email;
 
 	@Column(nullable = false)
@@ -60,7 +63,7 @@ public class User extends BaseEntity implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return email;
+		return username;
 	}
 
 	@Override

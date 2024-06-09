@@ -14,7 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AuthRequest {
 	@NotBlank(message = "Veillez saisir votre identifiant")
-	private String email;
+	private String username;
 
 	@NotBlank(message = "Veillez saisir votre mot de passe")
 	private String password;

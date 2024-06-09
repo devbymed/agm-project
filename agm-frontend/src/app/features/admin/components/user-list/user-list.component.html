@@ -52,40 +52,37 @@
               </tr>
             </thead>
             <tbody class="bg-white">
-              @for (user of users; track user) {
-                <tr>
-                  <td class="w-4 p-4">
-                    <div class="flex items-center">
-                      <input
-                        [(ngModel)]="user.checked"
-                        (change)="check()"
-                        type="checkbox"
-                        class="h-4 w-4 rounded border-gray-300 bg-gray-50 checked:bg-primary-500 checked:ring-primary-500 focus:ring-0 focus:ring-offset-0"
-                      />
-                    </div>
-                  </td>
-                  <td
-                    class="whitespace-nowrap p-4 text-sm font-normal text-gray-500"
-                  >
-                    {{ user.firstName }}
-                  </td>
-                  <td
-                    class="whitespace-nowrap p-4 text-sm font-normal text-gray-500"
-                  >
-                    {{ user.lastName }}
-                  </td>
-                  <td
-                    class="whitespace-nowrap p-4 text-sm font-normal text-gray-500"
-                  >
-                    {{ user.email }}
-                  </td>
-                  <td
-                    class="whitespace-nowrap p-4 text-sm font-normal text-gray-500"
-                  >
-                    {{ user.profile.name }}
-                  </td>
-                </tr>
-              }
+              <tr *ngFor="let user of users$ | async">
+                <td class="w-4 p-4">
+                  <div class="flex items-center">
+                    <input
+                      [(ngModel)]="user.checked"
+                      type="checkbox"
+                      class="h-4 w-4 rounded border-gray-300 bg-gray-50 checked:bg-primary-500 checked:ring-primary-500 focus:ring-0 focus:ring-offset-0"
+                    />
+                  </div>
+                </td>
+                <td
+                  class="whitespace-nowrap p-4 text-sm font-normal text-gray-500"
+                >
+                  {{ user.firstName }}
+                </td>
+                <td
+                  class="whitespace-nowrap p-4 text-sm font-normal text-gray-500"
+                >
+                  {{ user.lastName }}
+                </td>
+                <td
+                  class="whitespace-nowrap p-4 text-sm font-normal text-gray-500"
+                >
+                  {{ user.email }}
+                </td>
+                <td
+                  class="whitespace-nowrap p-4 text-sm font-normal text-gray-500"
+                >
+                  {{ user.profile.name }}
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -95,7 +92,7 @@
   <!-- Card Footer -->
   <div class="flex justify-end gap-2 pt-3 sm:pt-6">
     <app-button type="button" buttonType="light">Supprimer</app-button>
-    <app-button type="button" buttonType="default" (click)="loadUser()"
+    <app-button type="button" buttonType="default" (click)="onEdit()"
       >Modifier</app-button
     >
   </div>

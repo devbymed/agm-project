@@ -19,7 +19,7 @@
   "files.autoSave": "onFocusChange",
   "files.autoSaveDelay": 1000,
   "search.showLineNumbers": true,
-  "workbench.iconTheme": "bearded-icons",
+  "workbench.iconTheme": "vs-seti",
   "workbench.colorTheme": "Default Dark Modern",
   "zenMode.centerLayout": false,
   "rest-client.environmentVariables": {

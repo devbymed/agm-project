@@ -68,6 +68,7 @@ public class LoadDatabase {
 							.firstName(firstName)
 							.lastName(lastName)
 							.email(email)
+							.username(email.split("@")[0])
 							.password(passwordEncoder.encode(password))
 							.profile(profile)
 							.firstLogin(false)

@@ -29,9 +29,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse authenticateUser(AuthRequest authRequest) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmail(),
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(),
                 authRequest.getPassword()));
-        User user = userRepository.findByEmail(authRequest.getEmail())
+        User user = userRepository.findByUsername(authRequest.getUsername())
                 .orElseThrow(() -> new ApiException(BAD_CREDENTIALS));
         String token = jwtService.generateToken(user);
         UserResponse userResponse = userMapper.toUserResponse(user);
