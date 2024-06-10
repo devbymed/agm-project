@@ -6,24 +6,13 @@
       Gestion des utilisateurs
     </h3>
   </div>
-  <!-- Table -->
   <div class="mt-6 flex flex-col">
     <div class="overflow-x-auto rounded-lg">
       <div class="inline-block min-w-full align-middle">
-        <div class="overflow-hidden shadow sm:rounded-lg">
+        <div class="max-h-64 overflow-y-auto shadow sm:rounded-lg">
           <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
               <tr>
-                <!-- <th scope="col" class="p-4">
-                      <div class="flex items-center">
-                        <input
-                          [(ngModel)]="selectAll"
-                          (change)="checkAll()"
-                          type="checkbox"
-                          class="h-4 w-4 rounded border-gray-300 bg-gray-50 checked:bg-primary-500 checked:ring-primary-500 focus:ring-0 focus:ring-offset-0"
-                        />
-                      </div>
-                    </th> -->
                 <th scope="col"></th>
                 <th
                   scope="col"
@@ -52,11 +41,20 @@
               </tr>
             </thead>
             <tbody class="bg-white">
-              <tr *ngFor="let user of users$ | async">
+              <tr *ngIf="users.length === 0">
+                <td
+                  colspan="5"
+                  class="p-4 text-center text-sm font-normal text-gray-500"
+                >
+                  Aucun utilisateur trouvé.
+                </td>
+              </tr>
+              <tr *ngFor="let user of users">
                 <td class="w-4 p-4">
                   <div class="flex items-center">
                     <input
-                      [(ngModel)]="user.checked"
+                      (change)="toggleSelection(user)"
+                      [checked]="isSelected(user)"
                       type="checkbox"
                       class="h-4 w-4 rounded border-gray-300 bg-gray-50 checked:bg-primary-500 checked:ring-primary-500 focus:ring-0 focus:ring-offset-0"
                     />
@@ -89,10 +87,14 @@
       </div>
     </div>
   </div>
-  <!-- Card Footer -->
-  <div class="flex justify-end gap-2 pt-3 sm:pt-6">
-    <app-button type="button" buttonType="light">Supprimer</app-button>
-    <app-button type="button" buttonType="default" (click)="onEdit()"
+  <div class="flex justify-end gap-2 pt-3 sm:pt-6" *ngIf="users.length !== 0">
+    <app-button
+      type="button"
+      buttonType="light"
+      (click)="deleteUser(selectedUser?.id ?? 0)"
+      >Supprimer</app-button
+    >
+    <app-button type="button" buttonType="default" (click)="editUser()"
       >Modifier</app-button
     >
   </div>

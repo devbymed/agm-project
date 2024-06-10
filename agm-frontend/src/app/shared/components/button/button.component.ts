@@ -18,8 +18,8 @@ export class ButtonComponent {
 
   setButtonClass() {
     const buttonClasses: { [key: string]: string } = {
-      'default': 'text-white bg-primary-700 hover:bg-primary-800 focus:ring-primary-100',
-      'light': 'text-primary-700 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-gray-100',
+      'default': 'text-white bg-primary-700 hover:bg-primary-800',
+      'light': 'text-primary-700 bg-white border border-gray-300 hover:bg-gray-100',
     };
 
     this.buttonClass = buttonClasses[this.buttonType] || buttonClasses['default'];

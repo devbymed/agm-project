@@ -4,7 +4,7 @@ import { FormsModule, NG_VALUE_ACCESSOR, Validators } from "@angular/forms";
 import { BaseControlValueAccessorService } from "@core/services/base-control-value-accessor.service";
 import { ValidationErrorService } from "@core/services/validation-error.service";
 
-interface Option {
+interface SelectOption {
   value: string;
   label: string;
 }
@@ -28,7 +28,7 @@ export class SelectComponent extends BaseControlValueAccessorService<string> {
   @Input({ required: true }) label: string;
   @Input({ required: true }) id: string;
   @Input({ required: true }) name: string;
-  @Input() options: Option[] = [];
+  @Input() options: SelectOption[] = [];
   @Input() placeholder: string = '';
   @Input() selected: string = '';
   @Input({ transform: booleanAttribute }) required = false;

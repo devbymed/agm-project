@@ -1,6 +1,8 @@
-import { AsyncPipe } from "@angular/common";
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NgIf } from "@angular/common";
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { ApiResponse } from "@core/models/api-response.model";
+import { Profile } from "@core/models/profile.model";
 import { User } from "@core/models/user.model";
 import { ProfileService } from "@features/admin/services/profile.service";
 import { UserService } from "@features/admin/services/user.service";
@@ -9,115 +11,93 @@ import { ButtonComponent } from "@shared/components/button/button.component";
 import { InputComponent } from "@shared/components/form/input/input.component";
 import { SelectComponent } from "@shared/components/form/select/select.component";
 import { ToastrService } from "ngx-toastr";
-import { Observable, Subject, map, takeUntil } from "rxjs";
+import { Observable, Subscription, catchError, throwError } from "rxjs";
+
+interface SelectOption {
+  value: string;
+  label: string;
+}
 
 @Component({
   selector: 'app-user-form',
   standalone: true,
-  imports: [AsyncPipe, AlertComponent, InputComponent, SelectComponent, ButtonComponent, ReactiveFormsModule],
+  imports: [NgIf, ReactiveFormsModule, AlertComponent, InputComponent, SelectComponent, ButtonComponent,],
   templateUrl: './user-form.component.html',
 })
-export class UserFormComponent implements OnInit, OnDestroy {
+export class UserFormComponent implements OnChanges, OnDestroy {
+  @Input() user: User | undefined;
+  @Output() userSaved = new EventEmitter<User>();
+
   userForm: FormGroup;
-  isEditing: boolean;
+  options: SelectOption[] = [];
+  private subscriptions: Subscription = new Subscription();
+  formTitle: string = 'Ajouter un utilisateur';
   errorMessage: string | null = null;
-  profileOptions$: Observable<{ value: string, label: string }[]>;
-  private destroy$ = new Subject<void>();
 
   constructor(
-    private formBuilder: FormBuilder,
+    private fb: FormBuilder,
     private userService: UserService,
     private profileService: ProfileService,
     private toastr: ToastrService
   ) {
-    this.profileOptions$ = this.profileService.getProfiles().pipe(
-      map(profiles => profiles.map(profile => ({ value: profile.id.toString(), label: profile.name })))
-    );
-  }
-
-  ngOnInit() {
-    this.initForm();
-    this.listenToSelectedUser();
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  initForm() {
-    this.userForm = this.formBuilder.group({
-      id: [''],
+    this.userForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      profileId: ['', Validators.required],
+      profileId: ['', Validators.required]
     });
+
+    const profileSubscription = this.profileService.getProfiles().subscribe((response) => {
+      const apiResponse = response as ApiResponse<Profile[]>;
+      this.options = (apiResponse.data || []).map(profile => ({
+        value: profile.id.toString(),
+        label: profile.name
+      }));
+    });
+    this.subscriptions.add(profileSubscription);
   }
 
-  private listenToSelectedUser() {
-    this.userService.selectedUser$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(user => {
-        if (user) {
-          this.isEditing = true;
-          this.userForm.patchValue({
-            id: user.id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            profileId: user.profile.id.toString(),
-          });
-        } else {
-          this.isEditing = false;
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['user'] && changes['user'].currentValue) {
+      this.userForm.patchValue(
+        {
+          firstName: this.user?.firstName,
+          lastName: this.user?.lastName,
+          email: this.user?.email,
+          profileId: this.user?.profile.id.toString()
         }
-      });
-  }
-
-  submitForm() {
-    this.userForm.markAsUntouched();
-    if (this.userForm.valid) {
-      const user = this.userForm.value as User;
-      if (this.isEditing) {
-        this.updateUser(user);
-      } else {
-        this.addUser(user);
-      }
+      );
+      this.formTitle = 'Modifier utilisateur';
+    } else {
+      this.resetForm();
     }
   }
 
-  updateUser(user: User) {
-    this.userService.updateUser(user).pipe(
-      takeUntil(this.destroy$)
-    ).subscribe({
-      next: (response) => {
-        if (response?.status === 'OK') {
-          this.toastr.success(response.message);
-          this.resetForm();
-          this.isEditing = false;
-        }
-      },
-      error: (e) => {
-        this.errorMessage = e.error.message;
-        console.error(e.error.message);
-      }
-    });
+  onSubmit() {
+    this.userForm.markAllAsTouched();
+    if (this.userForm.valid) {
+      const observable = this.user && this.user.id
+        ? this.userService.updateUser(this.user.id, this.userForm.value)
+        : this.userService.addUser(this.userForm.value);
+
+      this.handleApiResponse(observable);
+    }
   }
 
-  addUser(user: User) {
-    this.userService.addUser(user).pipe(
-      takeUntil(this.destroy$)
-    ).subscribe({
-      next: (response) => {
-        if (response?.status === 'CREATED') {
-          this.toastr.success(response.message);
-          this.resetForm();
-        }
-      },
-      error: (e) => {
-        this.errorMessage = e.error.message;
-      }
+  private handleApiResponse(observable: Observable<ApiResponse<User>>) {
+    const subscription = observable.pipe(
+      catchError(error => {
+        this.errorMessage = error.error.message;
+        return throwError(() => error);
+      })
+    ).subscribe((response) => {
+      const apiResponse = response as ApiResponse<User>;
+      this.userSaved.emit(apiResponse.data!);
+      this.toastr.success(apiResponse.message);
+      this.errorMessage = null;
+      this.resetForm();
     });
+    this.subscriptions.add(subscription);
   }
 
   resetForm() {
@@ -126,10 +106,16 @@ export class UserFormComponent implements OnInit, OnDestroy {
         firstName: '',
         lastName: '',
         email: '',
-        profileId: '',
+        profileId: ''
       },
     );
-    this.isEditing = false;
     this.errorMessage = null;
+    this.formTitle = 'Ajouter un utilisateur';
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }
+
+

@@ -2,14 +2,12 @@
   class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6 2xl:col-span-2"
 >
   <h3 class="mb-4 text-xl font-semibold text-gray-500">
-    {{ isEditing ? "Modifier un utilisateur" : "Ajouter un utilisateur" }}
+    {{ formTitle }}
   </h3>
-  <form [formGroup]="userForm">
-    @if (errorMessage) {
-      <div class="mb-5">
-        <app-alert [message]="errorMessage" type="danger"></app-alert>
-      </div>
-    }
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <div class="mb-5" *ngIf="errorMessage">
+      <app-alert [message]="errorMessage" type="danger"></app-alert>
+    </div>
     <div class="mb-5">
       <app-input
         label="Prénom"
@@ -37,7 +35,7 @@
         label="Profil"
         id="profile"
         name="profileId"
-        [options]="(profileOptions$ | async) ?? []"
+        [options]="options"
         placeholder="Sélectionner un profil"
         formControlName="profileId"
         showRequiredIndicator="true"
@@ -55,7 +53,7 @@
       />
     </div>
     <div class="flex gap-2">
-      <app-button type="button" (click)="submitForm()">Valider</app-button>
+      <app-button type="submit">Valider</app-button>
       <app-button type="button" buttonType="light" (click)="resetForm()"
         >Annuler</app-button
       >
