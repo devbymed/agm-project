@@ -1,1 +1,77 @@
-<p>authorizations works!</p>
+<div class="grid grid-cols-1 gap-4 xl:grid-cols-3">
+  <div class="col-span-2 xl:col-auto"></div>
+  <div class="col-span-2">
+    <div
+      class="space-y-6 rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6 2xl:col-span-2"
+    >
+      <div class="flex items-center justify-between">
+        <h3 class="text-xl font-semibold text-gray-500">
+          Profils des utilisateurs
+        </h3>
+      </div>
+      <div class="mt-6 flex flex-col">
+        <div class="overflow-x-auto rounded-lg">
+          <div class="inline-block min-w-full align-middle">
+            <div class="overflow-y-hidden shadow sm:rounded-lg">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th
+                      scope="col"
+                      class="p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                    >
+                      Profil
+                    </th>
+                    <th
+                      scope="col"
+                      class="p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                    >
+                      Accès
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white">
+                  <tr>
+                    <td class="p-4 text-sm font-normal text-gray-500">
+                      Gestionnaire
+                    </td>
+                    <td class="w-full p-4 text-sm font-normal text-gray-500">
+                      <div class="justify-content-center flex">
+                        <!-- <p-tree
+                          [value]="files"
+                          selectionMode="checkbox"
+                          [(selection)]="selectedFiles"
+                        >
+                          <ng-template let-node pTemplate="default">
+                            <div class="flex items-center">
+                              <span class="text-sm font-normal text-gray-500">{{
+                                node.label
+                              }}</span>
+                            </div>
+                          </ng-template>
+                        </p-tree> -->
+                        <p-tree
+                          [value]="files"
+                          selectionMode="checkbox"
+                          [(selection)]="selectedFiles"
+                        >
+                          <ng-template let-node pTemplate="default">
+                            <div class="flex items-center">
+                              <span class="text-sm font-normal text-gray-500">{{
+                                node.label
+                              }}</span>
+                            </div>
+                          </ng-template>
+                        </p-tree>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -19,8 +19,8 @@
   "files.autoSave": "onFocusChange",
   "files.autoSaveDelay": 1000,
   "search.showLineNumbers": true,
-  "workbench.iconTheme": "vs-seti",
-  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.colorTheme": "Default Dark+",
   "zenMode.centerLayout": false,
   "rest-client.environmentVariables": {
     "local": {
