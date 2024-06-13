@@ -37,6 +37,7 @@
 }
 
 .p-tree {
+  padding: 0;
   .p-tree-container {
     .p-treenode:focus > .p-treenode-content {
       outline: none;

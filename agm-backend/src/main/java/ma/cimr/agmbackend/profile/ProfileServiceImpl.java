@@ -1,6 +1,8 @@
 package ma.cimr.agmbackend.profile;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -18,8 +20,8 @@ public class ProfileServiceImpl implements ProfileService {
 	// private static final Logger LOGGER =
 	// LoggerFactory.getLogger(ProfileServiceImpl.class);
 
-	private final ProfileRepository profileRepository;
 	private final ProfileMapper profileMapper;
+	private final ProfileRepository profileRepository;
 	private final PermissionRepository permissionRepository;
 
 	@Override
@@ -30,36 +32,56 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 
 	@Override
+	public ProfileResponse getProfile(Long id) {
+		Profile profile = profileRepository.findById(id)
+				.orElseThrow(() -> new ApiException(ApiExceptionCodes.PROFILE_NOT_FOUND));
+		return profileMapper.toProfileResponse(profile);
+	}
+
+	@Override
 	public ProfileResponse createProfile(ProfileAddRequest profileAddRequest) {
+		if (profileRepository.existsByName(profileAddRequest.getName())) {
+			throw new ApiException(ApiExceptionCodes.PROFILE_ALREADY_EXISTS);
+		}
 		Profile profile = profileMapper.toProfile(profileAddRequest);
+		Set<Permission> permissions = getPermissionsFromIds(profileAddRequest.getPermissionIds());
+		if (permissions == null) {
+			permissions = new HashSet<>();
+		}
+		profile.setPermissions(permissions);
 		profile = profileRepository.save(profile);
 		return profileMapper.toProfileResponse(profile);
 	}
 
 	@Override
-	public ProfileResponse addPermissionToProfile(Long profileId, Long permissionId) {
-		Profile profile = profileRepository.findById(profileId)
+	public ProfileResponse updateProfile(Long id, ProfileEditRequest profileEditRequest) {
+		Profile profile = profileRepository.findById(id)
 				.orElseThrow(() -> new ApiException(ApiExceptionCodes.PROFILE_NOT_FOUND));
-		Permission permission = permissionRepository.findById(permissionId)
-				.orElseThrow(() -> new ApiException(ApiExceptionCodes.PERMISSION_NOT_FOUND));
 
-		profile.getPermissions().add(permission);
-		Profile savedProfile = profileRepository.save(profile);
-		return profileMapper.toProfileResponse(savedProfile);
+		// Mettre à jour le nom du profil si fourni
+		if (profileEditRequest.getName() != null) {
+			profile.setName(profileEditRequest.getName());
+		}
+
+		// Mettre à jour les permissions du profil si fournies
+		if (profileEditRequest.getPermissionIds() != null) {
+			Set<Permission> permissions = getPermissionsFromIds(profileEditRequest.getPermissionIds());
+			profile.setPermissions(permissions);
+		}
+
+		// Sauvegarder le profil mis à jour
+		profile = profileRepository.save(profile);
+
+		return profileMapper.toProfileResponse(profile);
 	}
 
-	@Override
-	public void removePermissionFromProfile(Long profileId, Long permissionId) {
-		Profile profile = profileRepository.findById(profileId)
-				.orElseThrow(() -> new ApiException(ApiExceptionCodes.PROFILE_NOT_FOUND));
-		Permission permission = permissionRepository.findById(permissionId)
-				.orElseThrow(() -> new ApiException(ApiExceptionCodes.PERMISSION_NOT_FOUND));
-
-		List<Permission> updatedPermissions = profile.getPermissions().stream()
-				.filter(p -> !p.getId().equals(permission.getId()))
-				.collect(Collectors.toList());
-
-		profile.setPermissions(updatedPermissions);
-		profileRepository.save(profile);
+	private Set<Permission> getPermissionsFromIds(List<Long> permissionIds) {
+		if (permissionIds == null || permissionIds.isEmpty()) {
+			return new HashSet<>();
+		}
+		return permissionIds.stream()
+				.map(permissionRepository::findById)
+				.map(optional -> optional.orElseThrow(() -> new ApiException(ApiExceptionCodes.PERMISSION_NOT_FOUND)))
+				.collect(Collectors.toSet());
 	}
 }

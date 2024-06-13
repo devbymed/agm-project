@@ -6,11 +6,9 @@ public interface ProfileService {
 
 	List<ProfileResponse> getProfiles();
 
-	// ProfileResponse getProfile(Long id);
+	ProfileResponse getProfile(Long id);
 
 	ProfileResponse createProfile(ProfileAddRequest request);
 
-	ProfileResponse addPermissionToProfile(Long profileId, Long permissionId);
-
-	void removePermissionFromProfile(Long profileId, Long permissionId);
+	ProfileResponse updateProfile(Long id, ProfileEditRequest profileEditRequest);
 }

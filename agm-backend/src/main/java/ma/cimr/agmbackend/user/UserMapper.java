@@ -10,6 +10,7 @@ import ma.cimr.agmbackend.profile.ProfileMapper;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = IGNORE, uses = ProfileMapper.class)
 public interface UserMapper {
 
+	@Mapping(source = "profile", target = "profile", qualifiedByName = "toProfileResponse")
 	UserResponse toUserResponse(User user);
 
 	User toUser(UserAddRequest userAddRequest);

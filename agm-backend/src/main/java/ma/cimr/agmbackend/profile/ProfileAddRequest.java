@@ -1,5 +1,11 @@
 package ma.cimr.agmbackend.profile;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +18,11 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(value = NON_EMPTY)
 public class ProfileAddRequest {
+
 	@NotBlank(message = "Le nom du profil est obligatoire")
 	private String name;
+
+	private List<Long> permissionIds;
 }

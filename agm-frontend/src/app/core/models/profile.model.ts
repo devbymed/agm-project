@@ -1,5 +1,7 @@
+import { Permission } from "@features/admin/models/permission.model";
+
 export interface Profile {
-  id: string;
+  id: number;
   name: string;
-  permissions?: string[];
+  permissions: Permission[];
 }

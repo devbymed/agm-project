@@ -2,6 +2,8 @@ package ma.cimr.agmbackend.permission;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
@@ -19,4 +21,6 @@ import lombok.Setter;
 public class PermissionResponse {
 	private Long id;
 	private String name;
+	private String label;
+	private List<PermissionResponse> children;
 }

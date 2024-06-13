@@ -10,60 +10,41 @@
         </h3>
       </div>
       <div class="mt-6 flex flex-col">
-        <div class="overflow-x-auto rounded-lg">
+        <div class="overflow-x-auto">
           <div class="inline-block min-w-full align-middle">
-            <div class="overflow-y-hidden shadow sm:rounded-lg">
-              <table class="min-w-full divide-y divide-gray-200">
+            <div class="overflow-y-hidden shadow">
+              <table class="min-w-full border-collapse border border-gray-200">
                 <thead class="bg-gray-50">
                   <tr>
                     <th
                       scope="col"
-                      class="p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                      class="border border-gray-200 p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
                     >
                       Profil
                     </th>
                     <th
                       scope="col"
-                      class="p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                      class="border border-gray-200 p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
                     >
                       Accès
                     </th>
                   </tr>
                 </thead>
                 <tbody class="bg-white">
-                  <tr>
-                    <td class="p-4 text-sm font-normal text-gray-500">
-                      Gestionnaire
+                  <tr *ngFor="let profile of profiles">
+                    <td
+                      class="border border-gray-200 p-4 text-sm font-normal text-gray-500"
+                    >
+                      {{ profile.name }}
                     </td>
-                    <td class="w-full p-4 text-sm font-normal text-gray-500">
-                      <div class="justify-content-center flex">
-                        <!-- <p-tree
-                          [value]="files"
-                          selectionMode="checkbox"
-                          [(selection)]="selectedFiles"
-                        >
-                          <ng-template let-node pTemplate="default">
-                            <div class="flex items-center">
-                              <span class="text-sm font-normal text-gray-500">{{
-                                node.label
-                              }}</span>
-                            </div>
-                          </ng-template>
-                        </p-tree> -->
-                        <p-tree
-                          [value]="files"
-                          selectionMode="checkbox"
-                          [(selection)]="selectedFiles"
-                        >
-                          <ng-template let-node pTemplate="default">
-                            <div class="flex items-center">
-                              <span class="text-sm font-normal text-gray-500">{{
-                                node.label
-                              }}</span>
-                            </div>
-                          </ng-template>
-                        </p-tree>
-                      </div>
+                    <td
+                      class="border border-gray-200 p-4 text-sm font-normal text-gray-500"
+                    >
+                      <p-tree
+                        [value]="permissions"
+                        selectionMode="checkbox"
+                        [(selection)]="selectedPermissions[profile.id]"
+                      ></p-tree>
                     </td>
                   </tr>
                 </tbody>

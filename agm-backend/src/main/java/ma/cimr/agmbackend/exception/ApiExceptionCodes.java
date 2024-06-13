@@ -17,6 +17,7 @@ public enum ApiExceptionCodes {
 	USER_NOT_FOUND("Utilisateur non trouvé", HttpStatus.NOT_FOUND),
 	EMAIL_ALREADY_EXISTS("Cet email existe déjà", HttpStatus.BAD_REQUEST),
 	PROFILE_NOT_FOUND("Profil non trouvé", HttpStatus.NOT_FOUND),
+	PROFILE_ALREADY_EXISTS("Ce profil existe déjà", HttpStatus.BAD_REQUEST),
 	PERMISSION_NOT_FOUND("Permission non trouvée", HttpStatus.NOT_FOUND);
 
 	private final String message;

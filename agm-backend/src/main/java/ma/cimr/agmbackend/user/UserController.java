@@ -24,7 +24,7 @@ import ma.cimr.agmbackend.util.ApiResponseFormatter;
 @RestController
 @RequestMapping("users")
 @RequiredArgsConstructor
-@PreAuthorize("hasAuthority('Gestion utilisateurs')")
+@PreAuthorize("hasAuthority('USER_MANAGEMENT')")
 @Tag(name = "Gestion des utilisateurs")
 public class UserController {
 

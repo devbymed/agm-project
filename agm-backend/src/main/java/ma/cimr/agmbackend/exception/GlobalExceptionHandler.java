@@ -26,15 +26,16 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ApiExceptionResponse>(response, response.getStatus());
 	}
 
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ApiExceptionResponse> handleException(Exception ex) {
-		ApiExceptionResponse response = ApiExceptionResponse.builder()
-				.timestamp(LocalDateTime.now())
-				.status(HttpStatus.INTERNAL_SERVER_ERROR)
-				.message("Une erreur inattendue s'est produite")
-				.build();
-		return new ResponseEntity<ApiExceptionResponse>(response, response.getStatus());
-	}
+	// @ExceptionHandler(Exception.class)
+	// public ResponseEntity<ApiExceptionResponse> handleException(Exception ex) {
+	// ApiExceptionResponse response = ApiExceptionResponse.builder()
+	// .timestamp(LocalDateTime.now())
+	// .status(HttpStatus.INTERNAL_SERVER_ERROR)
+	// .message("Une erreur inattendue s'est produite")
+	// .build();
+	// return new ResponseEntity<ApiExceptionResponse>(response,
+	// response.getStatus());
+	// }
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ApiExceptionResponse> handleMethodArgumentNotValidException(
