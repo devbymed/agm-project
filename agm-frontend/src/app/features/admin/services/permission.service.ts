@@ -14,7 +14,7 @@ export class PermissionService {
   constructor(private http: HttpClient) {
   }
 
-  getPermissions(): Observable<ApiResponse<Permission[]>> {
+  getPermissionTree(): Observable<ApiResponse<Permission[]>> {
     return this.http.get<ApiResponse<Permission[]>>(`${this.apiUrl}/permissions/hierarchy`);
   }
 }

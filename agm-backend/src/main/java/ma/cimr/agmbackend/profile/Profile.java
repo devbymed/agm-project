@@ -1,7 +1,6 @@
 package ma.cimr.agmbackend.profile;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,9 +36,10 @@ public class Profile extends BaseEntity {
 	@Column(nullable = false, unique = true)
 	private String name;
 
+	@Builder.Default
 	@OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
-	private List<User> users;
+	private Set<User> users = new HashSet<>();
 
 	@Builder.Default
 	@ManyToMany(fetch = FetchType.EAGER)

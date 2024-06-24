@@ -20,11 +20,11 @@
 //   @tailwind utilities;
 // }
 
-.p-treenode-toggler,
-.p-tree-toggler-icon,
-.p-ripple.p-element.p-tree-toggler.p-link {
-  display: none !important;
-}
+// .p-treenode-toggler,
+// .p-tree-toggler-icon,
+// .p-ripple.p-element.p-tree-toggler.p-link {
+//   display: none !important;
+// }
 
 .p-treenode-label {
   font-size: 0.875rem;
@@ -47,13 +47,13 @@
   // }
 }
 
-// .p-checkbox-box {
-//   height: 1rem;
-//   width: 1rem;
-//   border-radius: 0.25rem; /* Rounded corners */
-//   border: 1px solid #d1d5db; /* Border color (gray-300) */
-//   background-color: #f9fafb; /* Background color (gray-50) */
-// }
+.p-checkbox-box {
+  height: 1rem;
+  width: 1rem;
+  border-radius: 0.25rem; /* Rounded corners */
+  border: 1px solid #d1d5db; /* Border color (gray-300) */
+  background-color: #f9fafb; /* Background color (gray-50) */
+}
 
 // .p-checkbox-box.p-highlight {
 //   background-color: #77ad1a !important; /* Checked background color (primary-500) */
@@ -64,22 +64,22 @@
 //   color: #ffffff !important; /* Color of the checkmark */
 // }
 
-.p-checkbox {
-  display: flex;
-  align-items: center;
-}
-
-// /* Appliquez vos styles à la checkbox générée par PrimeNG */
-// .p-checkbox-box {
-//   height: 1rem;
-//   width: 1rem;
-//   border-radius: 0.25rem; /* Rounded corners */
-//   border: 1px solid #d1d5db; /* Border color (gray-300) */
-//   background-color: #f9fafb; /* Background color (gray-50) */
+// .p-checkbox {
 //   display: flex;
 //   align-items: center;
-//   justify-content: center;
 // }
+
+/* Appliquez vos styles à la checkbox générée par PrimeNG */
+.p-checkbox-box {
+  height: 1rem;
+  width: 1rem;
+  border-radius: 0.25rem; /* Rounded corners */
+  border: 1px solid #d1d5db; /* Border color (gray-300) */
+  background-color: #f9fafb; /* Background color (gray-50) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .p-checkbox-box.p-highlight {
   background-color: #84cc16 !important; /* Checked background color (green) */

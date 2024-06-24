@@ -1,13 +1,13 @@
 package ma.cimr.agmbackend.permission;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import ma.cimr.agmbackend.exception.ApiException;
-import ma.cimr.agmbackend.exception.ApiExceptionCodes;
 
 @Service
 @RequiredArgsConstructor
@@ -16,43 +16,35 @@ public class PermissionServiceImpl implements PermissionService {
 	private final PermissionRepository permissionRepository;
 	private final PermissionMapper permissionMapper;
 
-	// public List<PermissionResponse> getAllPermissions() {
-	// return permissionRepository.findAll().stream()
-	// .map(permissionMapper::toPermissionResponse)
-	// .collect(Collectors.toList());
-	// }
-
-	@Override
-	public List<PermissionResponse> getAllPermissions() {
+	public List<PermissionResponse> getPermissionsHierarchy() {
 		List<Permission> permissions = permissionRepository.findAll();
-		return permissionMapper.toPermissionResponseList(permissions);
+		List<PermissionResponse> responses = permissionMapper.toResponseList(permissions);
+
+		Map<Long, PermissionResponse> responseMap = responses.stream()
+				.collect(Collectors.toMap(PermissionResponse::getId, response -> response));
+
+		List<PermissionResponse> rootPermissions = new ArrayList<>();
+
+		for (PermissionResponse response : responseMap.values()) {
+			if (response.getParentId() != null) {
+				PermissionResponse parent = responseMap.get(response.getParentId());
+				if (parent != null) {
+					if (parent.getChildren() == null) {
+						parent.setChildren(new ArrayList<>());
+					}
+					parent.getChildren().add(response);
+				}
+			} else {
+				rootPermissions.add(response);
+			}
+		}
+		return rootPermissions;
 	}
 
-	@Override
-	public List<PermissionResponse> getPermissionsWithHierarchy() {
-		List<Permission> allPermissions = permissionRepository.findAll();
-		List<Permission> rootPermissions = allPermissions.stream()
-				.filter(permission -> permission.getParent() == null)
-				.collect(Collectors.toList());
-		return permissionMapper.toPermissionResponseList(rootPermissions);
-	}
-
-	public Permission createPermission(Permission permission) {
-		return permissionRepository.save(permission);
-	}
-
-	public Permission updatePermission(Long id, Permission permissionDetails) {
-		Permission permission = permissionRepository.findById(id)
-				.orElseThrow(() -> new ApiException(ApiExceptionCodes.PERMISSION_NOT_FOUND));
-		permission.setName(permissionDetails.getName());
-		permission.setLabel(permissionDetails.getLabel());
-		permission.setParent(permissionDetails.getParent());
-		return permissionRepository.save(permission);
-	}
-
-	public void deletePermission(Long id) {
-		Permission permission = permissionRepository.findById(id)
-				.orElseThrow(() -> new ApiException(ApiExceptionCodes.PERMISSION_NOT_FOUND));
-		permissionRepository.delete(permission);
-	}
+	// @Override
+	// public PermissionResponse getPermissionById(Long id) {
+	// Permission permission = permissionRepository.findById(id)
+	// .orElseThrow(() -> new ApiException(ApiExceptionCodes.PERMISSION_NOT_FOUND));
+	// return permissionMapper.toResponse(permission);
+	// }
 }

@@ -41,9 +41,10 @@
                       class="border border-gray-200 p-4 text-sm font-normal text-gray-500"
                     >
                       <p-tree
-                        [value]="permissions"
+                        [value]="treeData[profile.name]"
                         selectionMode="checkbox"
-                        [(selection)]="selectedPermissions[profile.id]"
+                        [(selection)]="selectedNodes[profile.name]"
+                        class="md:w-30rem w-full"
                       ></p-tree>
                     </td>
                   </tr>

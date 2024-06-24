@@ -1,6 +1,5 @@
 import { NgFor } from "@angular/common";
 import { Component, OnInit } from '@angular/core';
-import { ApiResponse } from "@core/models/api-response.model";
 import { Profile } from "@core/models/profile.model";
 import { Permission } from "@features/admin/models/permission.model";
 import { PermissionService } from "@features/admin/services/permission.service";
@@ -17,60 +16,89 @@ import { TreeModule } from 'primeng/tree';
 })
 export class AuthorizationsComponent implements OnInit {
   profiles: Profile[] = [];
-  permissions: TreeNode[] = [];
-  selectedPermissions: { [key: number]: TreeNode[] } = {};
+  treeData: { [key: string]: TreeNode[] } = {};
+  selectedNodes: { [key: string]: TreeNode[] } = {};
 
   constructor(
     private profileService: ProfileService,
     private permissionService: PermissionService
   ) { }
 
-  ngOnInit(): void {
-    this.loadProfiles();
-    this.loadPermissions();
+  ngOnInit() {
+    this.loadProfilesAndPermissions();
   }
 
-  loadProfiles(): void {
-    this.profileService.getProfiles().subscribe((response: ApiResponse<Profile[]>) => {
-      if (response.status === 'OK') {
-        this.profiles = response.data || [];
-        this.profiles.forEach(profile => {
-          this.selectedPermissions[profile.id] = this.transformPermissionsToTreeNodes(profile.permissions || []);
+  loadProfilesAndPermissions() {
+    this.profileService.getProfiles().subscribe(profileResponse => {
+      if (profileResponse.status === 'OK') {
+        this.profiles = profileResponse.data || []
+        this.permissionService.getPermissionTree().subscribe(permissionResponse => {
+          if (permissionResponse.status === 'OK') {
+            const allPermissions = permissionResponse.data;
+            this.profiles.forEach(profile => {
+              this.treeData[profile.name] = this.convertPermissionsToTreeNodes(allPermissions || [], profile.permissions);
+              this.selectedNodes[profile.name] = this.getSelectedNodes(this.treeData[profile.name]);
+              this.updateNodeSelectionState(this.treeData[profile.name], profile.name);
+            });
+          }
         });
-        console.log("Profiles loaded: ", this.profiles);
-        console.log("Selected permissions: ", this.selectedPermissions);
       }
     });
   }
 
-  loadPermissions(): void {
-    this.permissionService.getPermissions().subscribe((response: ApiResponse<Permission[]>) => {
-      if (response.status === 'OK') {
-        this.permissions = this.transformPermissionsToTreeNodes(response.data || []);
-        console.log("Permissions loaded: ", this.permissions);
-      }
+  convertPermissionsToTreeNodes(permissions: Permission[], selectedPermissions: Permission[]): TreeNode[] {
+    return permissions.map(permission => {
+      const isSelected = selectedPermissions.some(sp => sp.id === permission.id);
+      const node: TreeNode = {
+        key: permission.id?.toString() || '',
+        label: permission.label,
+        data: { ...permission, selected: isSelected },
+        children: permission.children ? this.convertPermissionsToTreeNodes(permission.children, selectedPermissions) : [],
+        selectable: true,
+        partialSelected: false
+      };
+      return node;
     });
   }
 
-  transformPermissionsToTreeNodes(permissions: Permission[]): TreeNode[] {
-    return permissions.map(permission => ({
-      label: permission.label,
-      data: permission.id,
-      expanded: true, // Expand all nodes by default
-      children: this.transformPermissionsToTreeNodes(permission.children || [])
-    }));
+  getSelectedNodes(treeNodes: TreeNode[]): TreeNode[] {
+    let selectedNodes: TreeNode[] = [];
+    treeNodes.forEach(node => {
+      if (node.children && node.children.length) {
+        const childSelectedNodes = this.getSelectedNodes(node.children);
+        if (childSelectedNodes.length > 0) {
+          selectedNodes = [...selectedNodes, ...childSelectedNodes];
+          node.partialSelected = true;
+        }
+      }
+      if (node.data.selected) {
+        selectedNodes.push(node);
+        node.partialSelected = false;
+      }
+    });
+    return selectedNodes;
   }
 
+  onPermissionChange(event: any, profileName: string): void {
+    this.selectedNodes[profileName] = event;
+    this.updateNodeSelectionState(this.treeData[profileName], profileName);
+  }
 
-  // updatePermissions(): void {
-  //   this.profiles.forEach(profile => {
-  //     const permissionIds = (this.selectedPermissions[profile.id] || []).map(node => node.data);
-  //     this.profileService.updateProfilePermissions(profile.id, permissionIds).subscribe(response => {
-  //       if (response.status === 'OK') {
-  //         // Logic to handle successful update
-  //         console.log(`Permissions updated for profile ${profile.name}`);
-  //       }
-  //     });
-  //   });
-  // }
+  updateNodeSelectionState(treeNodes: TreeNode[], profileName: string): void {
+    treeNodes.forEach(node => {
+      if (node.children && node.children.length) {
+        this.updateNodeSelectionState(node.children, profileName);
+        const allChildrenSelected = node.children.every(child => this.selectedNodes[profileName]?.includes(child));
+        const someChildrenSelected = node.children.some(child => this.selectedNodes[profileName]?.includes(child) || child.partialSelected);
+
+        node.partialSelected = !allChildrenSelected && someChildrenSelected;
+        if (allChildrenSelected && !this.selectedNodes[profileName]?.includes(node)) {
+          this.selectedNodes[profileName]?.push(node);
+        } else if (!allChildrenSelected && this.selectedNodes[profileName]?.includes(node)) {
+          const index = this.selectedNodes[profileName]?.indexOf(node);
+          this.selectedNodes[profileName]?.splice(index, 1);
+        }
+      }
+    });
+  }
 }

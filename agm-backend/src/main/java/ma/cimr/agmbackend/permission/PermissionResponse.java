@@ -2,6 +2,7 @@ package ma.cimr.agmbackend.permission;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -22,5 +23,8 @@ public class PermissionResponse {
 	private Long id;
 	private String name;
 	private String label;
-	private List<PermissionResponse> children;
+	private String path;
+	private Long parentId;
+	@Builder.Default
+	private List<PermissionResponse> children = new ArrayList<>();
 }
