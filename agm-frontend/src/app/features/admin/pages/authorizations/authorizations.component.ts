@@ -12,7 +12,6 @@ import { TreeModule } from 'primeng/tree';
   standalone: true,
   imports: [TreeModule, NgFor],
   templateUrl: './authorizations.component.html',
-  styleUrls: ['./authorizations.component.css']
 })
 export class AuthorizationsComponent implements OnInit {
   profiles: Profile[] = [];
