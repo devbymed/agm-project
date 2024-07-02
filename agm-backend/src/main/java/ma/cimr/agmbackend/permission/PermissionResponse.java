@@ -20,11 +20,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonInclude(value = NON_NULL)
 public class PermissionResponse {
+
 	private Long id;
 	private String name;
 	private String label;
 	private String path;
 	private Long parentId;
+
 	@Builder.Default
 	private List<PermissionResponse> children = new ArrayList<>();
 }

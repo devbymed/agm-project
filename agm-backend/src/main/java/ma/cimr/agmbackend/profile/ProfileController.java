@@ -52,4 +52,11 @@ public class ProfileController {
 		ProfileResponse response = profileService.updateProfile(id, profileEditRequest);
 		return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Profil mis à jour avec succès", response);
 	}
+
+	@PostMapping("/profiles/{profileId}/permissions")
+	public ResponseEntity<ApiResponse> updateProfilePermissions(@PathVariable Long profileId,
+			@RequestBody List<Long> permissionIds) {
+		profileService.updatePermissions(profileId, permissionIds);
+		return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Permissions mises à jour avec succès");
+	}
 }

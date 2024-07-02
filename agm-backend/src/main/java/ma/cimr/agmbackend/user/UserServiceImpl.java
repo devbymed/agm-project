@@ -51,8 +51,8 @@ public class UserServiceImpl implements UserService {
                 User user = userRepository.findByUsername(username)
                         .orElseThrow(() -> new UsernameNotFoundException("User not found"));
                 Hibernate.initialize(user.getProfile().getPermissions());
-                user.getProfile().getPermissions()
-                        .forEach(permission -> LOGGER.info("Permission: " + permission.getName()));
+                // user.getProfile().getPermissions()
+                // .forEach(permission -> LOGGER.info("Permission: " + permission.getName()));
                 return user;
             }
         };

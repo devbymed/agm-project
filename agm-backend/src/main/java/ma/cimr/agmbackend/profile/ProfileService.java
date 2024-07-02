@@ -11,4 +11,6 @@ public interface ProfileService {
 	ProfileResponse createProfile(ProfileAddRequest request);
 
 	ProfileResponse updateProfile(Long id, ProfileEditRequest profileEditRequest);
+
+	void updatePermissions(Long profileId, List<Long> permissionIds);
 }

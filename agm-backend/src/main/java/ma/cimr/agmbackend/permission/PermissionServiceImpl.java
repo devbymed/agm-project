@@ -40,11 +40,4 @@ public class PermissionServiceImpl implements PermissionService {
 		}
 		return rootPermissions;
 	}
-
-	// @Override
-	// public PermissionResponse getPermissionById(Long id) {
-	// Permission permission = permissionRepository.findById(id)
-	// .orElseThrow(() -> new ApiException(ApiExceptionCodes.PERMISSION_NOT_FOUND));
-	// return permissionMapper.toResponse(permission);
-	// }
 }

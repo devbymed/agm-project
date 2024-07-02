@@ -49,7 +49,8 @@ public class LoadDatabase {
 
 			createPermissions();
 			Profile gestionnaireProfile = createProfileIfNotFound("Gestionnaire", getGestionnairePermissions());
-			Profile agentRelanceProfile = createProfileIfNotFound("Agent de relance", getAgentRelancePermissions());
+			Profile agentRelanceProfile = createProfileIfNotFound("Agent de relance",
+					getAgentRelancePermissions());
 			createUserIfNotFound(email, firstName, lastName, password, gestionnaireProfile);
 
 			log.info("Database initialization completed.");
@@ -158,7 +159,8 @@ public class LoadDatabase {
 	}
 
 	private Set<Permission> getAgentRelancePermissions() {
-		List<String> permissionNames = Arrays.asList("MEMBER_LIST", "GROUPINGS_CONSULTATION", "MAIL_RETURN_MANAGEMENT");
+		List<String> permissionNames = Arrays.asList("MEMBER_LIST",
+				"GROUPINGS_CONSULTATION", "MAIL_RETURN_MANAGEMENT");
 		return new HashSet<>(permissionRepository.findByNameIn(permissionNames));
 	}
 }

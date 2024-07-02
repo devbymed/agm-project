@@ -75,6 +75,16 @@ public class ProfileServiceImpl implements ProfileService {
 		return profileMapper.toProfileResponse(profile);
 	}
 
+	@Override
+	public void updatePermissions(Long profileId, List<Long> permissionIds) {
+		Profile profile = profileRepository.findById(profileId)
+				.orElseThrow(() -> new ApiException(ApiExceptionCodes.PROFILE_NOT_FOUND));
+		List<Permission> permissions = permissionRepository.findAllById(permissionIds);
+		Set<Permission> permissionsSet = new HashSet<>(permissions);
+		profile.setPermissions(permissionsSet);
+		profileRepository.save(profile);
+	}
+
 	private Set<Permission> getPermissionsFromIds(List<Long> permissionIds) {
 		if (permissionIds == null || permissionIds.isEmpty()) {
 			return new HashSet<>();
