@@ -1,6 +1,9 @@
 server:
   servlet:
     context-path: /api/v1/
+    multipart:
+      max-file-size: 500KB
+      max-request-size: 500KB
   error:
     # path: /user/error
     whitelabel:

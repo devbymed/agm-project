@@ -24,3 +24,4 @@ build/
 !**/src/test/**/build/
 application-dev.yml
 META-INF/
+uploads/

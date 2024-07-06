@@ -13,12 +13,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ma.cimr.agmbackend.permission.Permission;
-import ma.cimr.agmbackend.permission.PermissionRepository;
-import ma.cimr.agmbackend.profile.Profile;
-import ma.cimr.agmbackend.profile.ProfileRepository;
-import ma.cimr.agmbackend.user.User;
-import ma.cimr.agmbackend.user.UserRepository;
+import ma.cimr.agmbackend.model.Permission;
+import ma.cimr.agmbackend.model.Profile;
+import ma.cimr.agmbackend.model.User;
+import ma.cimr.agmbackend.repository.PermissionRepository;
+import ma.cimr.agmbackend.repository.ProfileRepository;
+import ma.cimr.agmbackend.repository.UserRepository;
 
 @Slf4j
 @Configuration

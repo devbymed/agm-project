@@ -18,7 +18,12 @@ public enum ApiExceptionCodes {
 	EMAIL_ALREADY_EXISTS("Cet email existe déjà", HttpStatus.BAD_REQUEST),
 	PROFILE_NOT_FOUND("Profil non trouvé", HttpStatus.NOT_FOUND),
 	PROFILE_ALREADY_EXISTS("Ce profil existe déjà", HttpStatus.BAD_REQUEST),
-	PERMISSION_NOT_FOUND("Permission non trouvée", HttpStatus.NOT_FOUND);
+	PERMISSION_NOT_FOUND("Permission non trouvée", HttpStatus.NOT_FOUND),
+	ASSEMBLY_NOT_FOUND("Assemblée non trouvée", HttpStatus.NOT_FOUND),
+	ASSEMBLY_ALREADY_CLOSED("L'assemblée est déjà clôturée", HttpStatus.BAD_REQUEST),
+	ACTION_NOT_FOUND("Action non trouvée", HttpStatus.NOT_FOUND),
+	DOCUMENT_UPLOAD_FAILED("Échec du téléchargement du document", HttpStatus.INTERNAL_SERVER_ERROR),
+	INVALID_DOCUMENT_FORMAT("Format de document invalide", HttpStatus.BAD_REQUEST);
 
 	private final String message;
 	private final HttpStatus status;
