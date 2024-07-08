@@ -7,187 +7,161 @@
         Veuillez compléter la création de l'assemblée par les informations
         suivantes:
       </p>
-      <form [formGroup]="newAssemblyForm">
+      <form [formGroup]="newAssemblyForm" (ngSubmit)="onSubmit()">
         <div class="grid grid-cols-6 gap-6">
           <div class="col-span-6 sm:col-span-3">
-            <app-input
+            <app-select
               label="Type"
               id="type"
               name="type"
-              [type]="'text'"
-              placeholder="Type"
+              [options]="types"
+              placeholder="Sélectionner un type"
               formControlName="type"
               showRequiredIndicator="true"
             />
           </div>
           <div class="col-span-6 sm:col-span-3">
-            <app-input
+            <app-select
               label="Année"
-              id="yean"
+              id="year"
               name="year"
-              [type]="'number'"
-              placeholder="Année"
+              [options]="years"
+              placeholder="Sélectionner une année"
               formControlName="year"
               showRequiredIndicator="true"
             />
           </div>
           <div class="col-span-6 sm:col-span-3">
-            <label
-              for="country"
-              class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-              >Country</label
-            >
-            <input
-              type="text"
-              name="country"
-              id="country"
-              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
-              placeholder="United States"
-              required
+            <app-input
+              label="Jour"
+              id="day"
+              name="day"
+              [type]="'date'"
+              formControlName="day"
+              showRequiredIndicator="true"
             />
           </div>
           <div class="col-span-6 sm:col-span-3">
-            <label
-              for="city"
-              class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-              >City</label
-            >
-            <input
-              type="text"
-              name="city"
-              id="city"
-              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
-              placeholder="e.g. San Francisco"
-              required
+            <app-input
+              label="Heure"
+              id="time"
+              name="time"
+              [type]="'time'"
+              formControlName="time"
+              showRequiredIndicator="true"
             />
           </div>
           <div class="col-span-6 sm:col-span-3">
-            <label
-              for="address"
-              class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-              >Address</label
-            >
-            <input
-              type="text"
-              name="address"
+            <app-input
+              label="Adresse"
               id="address"
-              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
-              placeholder="e.g. California"
+              name="address"
+              [type]="'text'"
+              placeholder="Adresse"
+              formControlName="address"
+              showRequiredIndicator="true"
+            />
+          </div>
+          <div class="col-span-6 sm:col-span-3">
+            <app-select
+              label="Ville"
+              id="city"
+              name="city"
+              [options]="cities"
+              placeholder="Sélectionner une ville"
+              formControlName="city"
+              showRequiredIndicator="true"
+            />
+          </div>
+          <div class="col-span-6 sm:col-span-3">
+            <label
+              class="mb-2 block text-sm font-medium text-gray-500"
+              for="routeSheet"
+              >Feuille de route (FDR)
+              <span class="font-medium text-red-600">*</span></label
+            >
+            <input
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 text-gray-500 placeholder-gray-500 focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm"
+              id="routeSheet"
+              type="file"
+              name="routeSheet"
+              #routeSheetInput
+              (change)="onFileChange($event, 'routeSheet')"
               required
             />
           </div>
           <div class="col-span-6 sm:col-span-3">
             <label
-              for="email"
-              class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-              >Email</label
+              class="mb-2 block text-sm font-medium text-gray-500"
+              for="invitationLetter"
+              >Lettre de convocation des adhérents
+              <span class="font-medium text-red-600">*</span></label
             >
             <input
-              type="email"
-              name="email"
-              id="email"
-              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
-              placeholder="example@company.com"
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 text-gray-500 placeholder-gray-500 focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm"
+              id="invitationLetter"
+              type="file"
+              name="invitationLetter"
+              #invitationLetterInput
+              (change)="onFileChange($event, 'invitationLetter')"
               required
             />
           </div>
           <div class="col-span-6 sm:col-span-3">
             <label
-              for="phone-number"
-              class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-              >Phone Number</label
+              class="mb-2 block text-sm font-medium text-gray-500"
+              for="attendanceSheet"
+              >Feuille de présence
+              <span class="font-medium text-red-600">*</span></label
             >
             <input
-              type="number"
-              name="phone-number"
-              id="phone-number"
-              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
-              placeholder="e.g. +(12)3456 789"
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 text-gray-500 placeholder-gray-500 focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm"
+              id="attendanceSheet"
+              type="file"
+              name="attendanceSheet"
+              #attendanceSheetInput
+              (change)="onFileChange($event, 'attendanceSheet')"
               required
             />
           </div>
           <div class="col-span-6 sm:col-span-3">
             <label
-              for="birthday"
-              class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-              >Birthday</label
+              class="mb-2 block text-sm font-medium text-gray-500"
+              for="proxy"
+              >Pouvoir <span class="font-medium text-red-600">*</span></label
             >
             <input
-              type="number"
-              name="birthday"
-              id="birthday"
-              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
-              placeholder="15/08/1990"
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 text-gray-500 placeholder-gray-500 focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm"
+              id="proxy"
+              type="file"
+              name="proxy"
+              #proxyInput
+              (change)="onFileChange($event, 'proxy')"
               required
             />
           </div>
           <div class="col-span-6 sm:col-span-3">
             <label
-              for="organization"
-              class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-              >Organization</label
+              class="mb-2 block text-sm font-medium text-gray-500"
+              for="attendanceForm"
+              >Fiche de présence
+              <span class="font-medium text-red-600">*</span></label
             >
             <input
-              type="text"
-              name="organization"
-              id="organization"
-              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
-              placeholder="Company Name"
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 text-gray-500 placeholder-gray-500 focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm"
+              id="attendanceForm"
+              type="file"
+              name="attendanceForm"
+              #attendanceFormInput
+              (change)="onFileChange($event, 'attendanceForm')"
               required
             />
           </div>
-          <div class="col-span-6 sm:col-span-3">
-            <label
-              for="role"
-              class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-              >Role</label
+          <div class="sm:col-full col-span-6 flex justify-end gap-2">
+            <app-button type="button" buttonType="light" (click)="resetForm()"
+              >Annuler</app-button
             >
-            <input
-              type="text"
-              name="role"
-              id="role"
-              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
-              placeholder="React Developer"
-              required
-            />
-          </div>
-          <div class="col-span-6 sm:col-span-3">
-            <label
-              for="department"
-              class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-              >Department</label
-            >
-            <input
-              type="text"
-              name="department"
-              id="department"
-              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
-              placeholder="Development"
-              required
-            />
-          </div>
-          <div class="col-span-6 sm:col-span-3">
-            <label
-              for="zip-code"
-              class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-              >Zip/postal code</label
-            >
-            <input
-              type="number"
-              name="zip-code"
-              id="zip-code"
-              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
-              placeholder="123456"
-              required
-            />
-          </div>
-          <div class="sm:col-full col-span-6">
-            <button
-              class="rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              type="submit"
-            >
-              Save all
-            </button>
+            <app-button type="submit">Créer</app-button>
           </div>
         </div>
       </form>
