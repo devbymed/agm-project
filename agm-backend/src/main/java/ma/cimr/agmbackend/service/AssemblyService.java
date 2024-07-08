@@ -12,8 +12,10 @@ public interface AssemblyService {
 
 	AssemblyResponse getCurrentAssembly();
 
-	AssemblyResponse closeAssembly(Long id);
-
 	AssemblyResponse updateAssembly(Long id, AssemblyCreateRequest request, MultipartFile routeSheet,
 			MultipartFile invitationLetter, MultipartFile attendanceSheet, MultipartFile proxy, MultipartFile attendanceForm);
+
+	void deleteCurrentAssembly();
+
+	AssemblyResponse closeCurrentAssembly();
 }

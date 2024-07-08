@@ -21,6 +21,12 @@ export class ValidationErrorService {
     if (errors['maxlength']) {
       return `Ce champ doit contenir au maximum ${errors['maxlength'].requiredLength} caractères`;
     }
+    if (errors['min']) {
+      return `La valeur doit être supérieure ou égale à ${errors['min'].min}`;
+    }
+    if (errors['max']) {
+      return `La valeur doit être inférieure ou égale à ${errors['max'].max}`;
+    }
     if (errors['emailDomain']) {
       return `L'adresse email doit appartenir au domaine ${errors['emailDomain'].requiredDomain}`;
     }

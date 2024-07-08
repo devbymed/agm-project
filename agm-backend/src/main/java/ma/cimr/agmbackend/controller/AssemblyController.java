@@ -2,8 +2,10 @@ package ma.cimr.agmbackend.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -72,16 +74,16 @@ public class AssemblyController {
 		return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Assemblée mise à jour avec succès", updatedAssembly);
 	}
 
-	@PutMapping("/close/{id}")
-	public ResponseEntity<ApiResponse> closeAssembly(@PathVariable Long id) {
-		AssemblyResponse closedAssembly = assemblyService.closeAssembly(id);
-		return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Assemblée clôturée avec succès", closedAssembly);
+	@DeleteMapping("/current")
+	public ResponseEntity<ApiResponse> deleteCurrentAssembly() {
+		assemblyService.deleteCurrentAssembly();
+		return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Assemblée en cours supprimée avec succès");
 	}
 
-	// @DeleteMapping("/{id}")
-	// public ResponseEntity<ApiResponse> deleteAssembly(@PathVariable Long id) {
-	// assemblyService.deleteAssembly(id);
-	// return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Assemblée
-	// supprimée avec succès");
-	// }
+	@PatchMapping("/current/close")
+	public ResponseEntity<ApiResponse> closeCurrentAssembly() {
+		AssemblyResponse closedAssembly = assemblyService.closeCurrentAssembly();
+		return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Assemblée en cours clôturée avec succès",
+				closedAssembly);
+	}
 }

@@ -1,11 +1,9 @@
-package ma.cimr.agmbackend.dto.response;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+package ma.cimr.agmbackend.dto.request;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,10 +16,9 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(value = NON_NULL)
-public class ActionResponse {
+@JsonInclude(value = Include.NON_EMPTY)
+public class ActionEditRequest {
 
-	private Long id;
 	private String description;
 	private String responsible;
 	private LocalDate startDate;
@@ -30,5 +27,4 @@ public class ActionResponse {
 	private LocalDate realizationDate;
 	private String observation;
 	private String deliverable;
-	// private List<DocumentResponse> attachments;
 }

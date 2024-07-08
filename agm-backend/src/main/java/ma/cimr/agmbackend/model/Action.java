@@ -27,23 +27,23 @@ import ma.cimr.agmbackend.common.BaseEntity;
 @Table(name = "actions")
 public class Action extends BaseEntity {
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "assembly_id", nullable = false)
 	private Assembly assembly;
 
 	@Column(nullable = false)
 	private String description;
 
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String responsible;
 
-	@Column(name = "start_date", nullable = false)
+	@Column(name = "start_date")
 	private LocalDate startDate;
 
-	@Column(name = "end_date", nullable = false)
+	@Column(name = "end_date")
 	private LocalDate endDate;
 
-	@Column(name = "progress_status", nullable = false)
+	@Column(name = "progress_status")
 	private String progressStatus;
 
 	@Column(name = "realization_date")
@@ -55,7 +55,7 @@ public class Action extends BaseEntity {
 	@Column
 	private String deliverable;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JoinColumn(name = "action_id")
 	private List<Document> attachments;
 }

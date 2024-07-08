@@ -64,18 +64,6 @@ public class AssemblyServiceImpl implements AssemblyService {
 	}
 
 	@Override
-	public AssemblyResponse closeAssembly(Long id) {
-		Assembly assembly = assemblyRepository.findById(id)
-				.orElseThrow(() -> new ApiException(ApiExceptionCodes.ASSEMBLY_NOT_FOUND));
-		if (assembly.isClosed()) {
-			throw new ApiException(ApiExceptionCodes.ASSEMBLY_ALREADY_CLOSED);
-		}
-		assembly.setClosed(true);
-		Assembly closedAssembly = assemblyRepository.save(assembly);
-		return assemblyMapper.toResponse(closedAssembly);
-	}
-
-	@Override
 	public AssemblyResponse updateAssembly(Long id, AssemblyCreateRequest request, MultipartFile routeSheet,
 			MultipartFile invitationLetter, MultipartFile attendanceSheet, MultipartFile proxy,
 			MultipartFile attendanceForm) {
@@ -98,6 +86,27 @@ public class AssemblyServiceImpl implements AssemblyService {
 
 		Assembly updatedAssembly = assemblyRepository.save(assembly);
 		return assemblyMapper.toResponse(updatedAssembly);
+	}
+
+	@Override
+	public void deleteCurrentAssembly() {
+		Assembly currentAssembly = assemblyRepository.findByClosed(false)
+				.orElseThrow(() -> new ApiException(ApiExceptionCodes.ASSEMBLY_NOT_FOUND));
+		assemblyRepository.delete(currentAssembly);
+	}
+
+	@Override
+	public AssemblyResponse closeCurrentAssembly() {
+		Assembly currentAssembly = assemblyRepository.findByClosed(false)
+				.orElseThrow(() -> new ApiException(ApiExceptionCodes.ASSEMBLY_NOT_FOUND));
+		if (currentAssembly.isClosed()) {
+			throw new ApiException(ApiExceptionCodes.ASSEMBLY_ALREADY_CLOSED);
+		}
+
+		currentAssembly.getActions().clear();
+		currentAssembly.setClosed(true);
+		Assembly closedAssembly = assemblyRepository.save(currentAssembly);
+		return assemblyMapper.toResponse(closedAssembly);
 	}
 
 	private void handleFilesAndDocuments(Assembly assembly, MultipartFile routeSheet, MultipartFile invitationLetter,

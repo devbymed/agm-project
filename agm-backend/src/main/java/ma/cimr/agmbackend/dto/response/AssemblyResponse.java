@@ -4,7 +4,6 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -36,5 +35,4 @@ public class AssemblyResponse {
 	private DocumentResponse attendanceSheet;
 	private DocumentResponse proxy;
 	private DocumentResponse attendanceForm;
-	private List<ActionResponse> actions;
 }
