@@ -11,4 +11,6 @@ import ma.cimr.agmbackend.model.Assembly;
 public interface AssemblyRepository extends JpaRepository<Assembly, Long> {
 
 	Optional<Assembly> findByClosed(boolean closed);
+
+	boolean existsByClosed(boolean closed);
 }

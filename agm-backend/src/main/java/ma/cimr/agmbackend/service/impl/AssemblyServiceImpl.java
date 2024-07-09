@@ -109,6 +109,11 @@ public class AssemblyServiceImpl implements AssemblyService {
 		return assemblyMapper.toResponse(closedAssembly);
 	}
 
+	@Override
+	public boolean hasCurrentAssembly() {
+		return assemblyRepository.existsByClosed(false);
+	}
+
 	private void handleFilesAndDocuments(Assembly assembly, MultipartFile routeSheet, MultipartFile invitationLetter,
 			MultipartFile attendanceSheet, MultipartFile proxy, MultipartFile attendanceForm) {
 		if (routeSheet != null) {

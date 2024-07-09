@@ -35,6 +35,9 @@ public class Action extends BaseEntity {
 	private String description;
 
 	@Column(nullable = true)
+	private String entity;
+
+	@Column(nullable = true)
 	private String responsible;
 
 	@Column(name = "start_date")

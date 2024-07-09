@@ -86,4 +86,10 @@ public class AssemblyController {
 		return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Assemblée en cours clôturée avec succès",
 				closedAssembly);
 	}
+
+	@GetMapping("/current-exists")
+	public ResponseEntity<Boolean> hasCurrentAssembly() {
+		boolean exists = assemblyService.hasCurrentAssembly();
+		return ResponseEntity.ok(exists);
+	}
 }

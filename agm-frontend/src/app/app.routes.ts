@@ -53,11 +53,11 @@ export const routes: Routes = [
                 component: FdrFollowUpComponent,
                 data: { breadcrumb: "Suivi FDR" }
               },
-              {
-                path: "",
-                redirectTo: "assemblee-en-cours",
-                pathMatch: "full"
-              }
+              // {
+              //   path: "",
+              //   redirectTo: "assemblee-en-cours",
+              //   pathMatch: "full"
+              // }
             ]
           },
           {

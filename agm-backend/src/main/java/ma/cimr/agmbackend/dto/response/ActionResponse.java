@@ -3,7 +3,6 @@ package ma.cimr.agmbackend.dto.response;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

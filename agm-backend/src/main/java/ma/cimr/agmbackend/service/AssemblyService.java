@@ -18,4 +18,6 @@ public interface AssemblyService {
 	void deleteCurrentAssembly();
 
 	AssemblyResponse closeCurrentAssembly();
+
+	boolean hasCurrentAssembly();
 }

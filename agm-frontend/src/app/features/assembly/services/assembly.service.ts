@@ -16,4 +16,12 @@ export class AssemblyService {
   createAssembly(data: FormData): Observable<ApiResponse<Assembly>> {
     return this.http.post<ApiResponse<Assembly>>(`${this.apiUrl}/assemblies`, data);
   }
+
+  hasCurrentAssembly(): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/assemblies/current-exists`);
+  }
+
+  deleteCurrentAssembly(): Observable<ApiResponse<void>> {
+    return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/assemblies/current`);
+  }
 }
