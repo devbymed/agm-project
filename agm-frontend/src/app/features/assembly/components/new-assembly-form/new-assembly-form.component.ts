@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angula
 import { Router } from "@angular/router";
 import { ApiResponse } from "@core/models/api-response.model";
 import { Assembly } from "@features/assembly/models/assembly.model";
+import { AssemblyStateService } from "@features/assembly/services/assembly-state.service";
 import { AssemblyService } from "@features/assembly/services/assembly.service";
 import { ButtonComponent } from "@shared/components/button/button.component";
 import { InputComponent } from "@shared/components/form/input/input.component";
@@ -39,7 +40,7 @@ export class NewAssemblyFormComponent implements OnInit {
   proxyFile: File | null = null;
   attendanceFormFile: File | null = null;
 
-  constructor(private fb: FormBuilder, private router: Router, private assemblyService: AssemblyService, private toastr: ToastrService
+  constructor(private fb: FormBuilder, private router: Router, private assemblyService: AssemblyService, private assemblyStateService: AssemblyStateService, private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -114,9 +115,8 @@ export class NewAssemblyFormComponent implements OnInit {
         next: (response: ApiResponse<Assembly>) => {
           this.resetForm();
           this.toastr.success(response.message);
-          setTimeout(() => {
-            window.location.reload();
-          }, 3000);
+          this.assemblyStateService.updateCurrentAssemblyState(true);
+          this.router.navigate(['/preparation-assemblee/nouvelle-assemblee/assemblee-en-cours']);
         },
         error: (error) => {
           console.error('Une erreur est survenue lors de la création de l\'assemblée', error);

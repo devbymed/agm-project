@@ -21,6 +21,10 @@ export class AssemblyService {
     return this.http.get<boolean>(`${this.apiUrl}/assemblies/current-exists`);
   }
 
+  getCurrentAssemblyDetails(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/assemblies/current`);
+  }
+
   deleteCurrentAssembly(): Observable<ApiResponse<void>> {
     return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/assemblies/current`);
   }

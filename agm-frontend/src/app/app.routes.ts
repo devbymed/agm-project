@@ -8,6 +8,7 @@ import LoginComponent from "@core/auth/pages/login/login.component";
 import { AuthorizationsComponent } from "@features/admin/pages/authorizations/authorizations.component";
 import { SettingsComponent } from "@features/admin/pages/settings/settings.component";
 import { UserManagementComponent } from "@features/admin/pages/user-management/user-management.component";
+import { currentAssemblyGuard } from "@features/assembly/guards/current-assembly.guard";
 import { AssemblyDetailsComponent } from "@features/assembly/pages/assembly-details/assembly-details.component";
 import { FdrFollowUpComponent } from "@features/assembly/pages/fdr-follow-up/fdr-follow-up.component";
 import {
@@ -46,18 +47,15 @@ export const routes: Routes = [
               {
                 path: "assemblee-en-cours",
                 component: AssemblyDetailsComponent,
+                canActivate: [currentAssemblyGuard],
                 data: { breadcrumb: "Assemblée en cours" }
               },
               {
                 path: "suivi-fdr",
                 component: FdrFollowUpComponent,
+                canActivate: [currentAssemblyGuard],
                 data: { breadcrumb: "Suivi FDR" }
               },
-              // {
-              //   path: "",
-              //   redirectTo: "assemblee-en-cours",
-              //   pathMatch: "full"
-              // }
             ]
           },
           {

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import { NewAssemblyFormComponent } from "@features/assembly/components/new-assembly-form/new-assembly-form.component";
-import { AssemblyService } from "@features/assembly/services/assembly.service";
+import { AssemblyStateService } from "@features/assembly/services/assembly-state.service";
+import { Subject, takeUntil } from "rxjs";
 
 @Component({
   selector: 'app-new-assembly',
@@ -9,19 +10,25 @@ import { AssemblyService } from "@features/assembly/services/assembly.service";
   imports: [NewAssemblyFormComponent, RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './new-assembly.component.html',
 })
-export class NewAssemblyComponent implements OnInit {
+export class NewAssemblyComponent implements OnInit, OnDestroy {
   hasCurrentAssembly: boolean = false;
+  private destroy$ = new Subject<void>();
 
-  constructor(private router: Router, private assemblyService: AssemblyService) { }
+  constructor(private router: Router, private assemblyStateService: AssemblyStateService) { }
 
   ngOnInit(): void {
-    this.checkCurrentAssembly();
-    // this.router.navigate(['/preparation-assemblee/nouvelle-assemblee/assemblee-en-cours']);
+    this.assemblyStateService.hasCurrentAssembly$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((exists: boolean) => {
+        this.hasCurrentAssembly = exists;
+        if (exists) {
+          this.router.navigate(['/preparation-assemblee/nouvelle-assemblee/assemblee-en-cours']);
+        }
+      });
   }
 
-  checkCurrentAssembly(): void {
-    this.assemblyService.hasCurrentAssembly().subscribe((exists: boolean) => {
-      this.hasCurrentAssembly = exists;
-    });
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -1,11 +1,14 @@
+import { DatePipe, NgIf } from "@angular/common";
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { AssemblyStateService } from "@features/assembly/services/assembly-state.service";
 import { AssemblyService } from "@features/assembly/services/assembly.service";
 import { ButtonComponent } from "@shared/components/button/button.component";
 import { InputComponent } from "@shared/components/form/input/input.component";
 import { SelectComponent } from "@shared/components/form/select/select.component";
 import { ToastrService } from "ngx-toastr";
+import { Subject, takeUntil } from "rxjs";
 
 interface SelectOption {
   value: string;
@@ -15,7 +18,7 @@ interface SelectOption {
 @Component({
   selector: 'app-assembly-details',
   standalone: true,
-  imports: [ReactiveFormsModule, InputComponent, SelectComponent, ButtonComponent],
+  imports: [ReactiveFormsModule, NgIf, DatePipe, InputComponent, SelectComponent, ButtonComponent],
   templateUrl: './assembly-details.component.html',
 })
 export class AssemblyDetailsComponent implements OnInit {
@@ -23,8 +26,11 @@ export class AssemblyDetailsComponent implements OnInit {
   types: SelectOption[] = [];
   years: SelectOption[] = [];
   cities: SelectOption[] = [];
+  currentAssemblyDetails: any = null;
 
-  constructor(private fb: FormBuilder, private router: Router, private assemblyService: AssemblyService, private toastr: ToastrService
+  private destroy$ = new Subject<void>();
+
+  constructor(private fb: FormBuilder, private router: Router, private assemblyService: AssemblyService, private assemblyStateService: AssemblyStateService, private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -52,18 +58,37 @@ export class AssemblyDetailsComponent implements OnInit {
     this.cities = [
       { value: 'Casablanca', label: 'Casablanca' },
     ];
+
+    this.assemblyStateService.currentAssemblyDetails$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((details: any) => {
+        this.currentAssemblyDetails = details;
+      });
+
+    this.assemblyStateService.checkCurrentAssembly();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   deleteCurrentAssembly(): void {
-    this.assemblyService.deleteCurrentAssembly().subscribe((response) => {
-      if (response.status === 'OK') {
-        this.toastr.success(response.message);
-        setTimeout(() => {
-          window.location.reload();
-        }, 3000);
-      } else {
-        console.error(response.message);
-      }
-    });
+    this.assemblyService.deleteCurrentAssembly()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          if (response.status === 'OK') {
+            this.toastr.success(response.message);
+            this.assemblyStateService.updateCurrentAssemblyState(false);
+            this.router.navigate(['/preparation-assemblee/nouvelle-assemblee']);
+          } else {
+            console.error(response.message);
+          }
+        },
+        error: (error) => {
+          console.error('Error deleting assembly:', error);
+        }
+      });
   }
 }
