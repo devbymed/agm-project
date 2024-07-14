@@ -39,7 +39,7 @@ public class AssemblyExcelServiceImpl implements AssemblyExcelService {
 				}
 
 				Action action = new Action();
-				action.setDescription(getCellValue(row.getCell(1))); // Assuming the description is in the 2nd column (index 1)
+				action.setName(getCellValue(row.getCell(1))); // Assuming the description is in the 2nd column (index 1)
 				actions.add(action);
 			}
 		}

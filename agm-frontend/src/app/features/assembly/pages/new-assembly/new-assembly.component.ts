@@ -16,7 +16,7 @@ export class NewAssemblyComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkCurrentAssembly();
-    this.router.navigate(['/preparation-assemblee/nouvelle-assemblee/assemblee-en-cours']);
+    // this.router.navigate(['/preparation-assemblee/nouvelle-assemblee/assemblee-en-cours']);
   }
 
   checkCurrentAssembly(): void {

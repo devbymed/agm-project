@@ -43,8 +43,8 @@ public class ActionServiceImpl implements ActionService {
 		Action action = actionRepository.findById(id)
 				.orElseThrow(() -> new ApiException(ApiExceptionCodes.ACTION_NOT_FOUND));
 
-		if (request.getDescription() != null) {
-			action.setDescription(request.getDescription());
+		if (request.getName() != null) {
+			action.setName(request.getName());
 		}
 		if (request.getResponsible() != null) {
 			action.setResponsible(request.getResponsible());

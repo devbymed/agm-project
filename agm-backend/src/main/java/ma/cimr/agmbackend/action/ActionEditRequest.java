@@ -19,12 +19,13 @@ import lombok.Setter;
 @JsonInclude(value = Include.NON_EMPTY)
 public class ActionEditRequest {
 
-	private String description;
-	private String responsible;
+	private String name;
+	private String entity;
 	private LocalDate startDate;
 	private LocalDate endDate;
-	private String progressStatus;
 	private LocalDate realizationDate;
-	private String observation;
+	private String responsible;
 	private String deliverable;
+	private Integer progressStatus;
+	private String observation;
 }

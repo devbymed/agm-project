@@ -21,13 +21,14 @@ import lombok.Setter;
 public class ActionResponse {
 
 	private Long id;
-	private String description;
-	private String responsible;
+	private String name;
+	private String entity;
 	private LocalDate startDate;
 	private LocalDate endDate;
-	private String progressStatus;
 	private LocalDate realizationDate;
-	private String observation;
+	private String responsible;
 	private String deliverable;
-	// private List<DocumentResponse> attachments;
+	private Integer progressStatus;
+	private String observation;
+	// private List<String> attachments;
 }

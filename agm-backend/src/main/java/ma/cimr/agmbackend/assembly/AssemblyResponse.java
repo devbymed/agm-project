@@ -12,7 +12,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ma.cimr.agmbackend.document.DocumentResponse;
 
 @Getter
 @Setter
@@ -30,9 +29,9 @@ public class AssemblyResponse {
 	private String address;
 	private String city;
 	private boolean closed;
-	private DocumentResponse routeSheet;
-	private DocumentResponse invitationLetter;
-	private DocumentResponse attendanceSheet;
-	private DocumentResponse proxy;
-	private DocumentResponse attendanceForm;
+	private String routeSheet;
+	private String invitationLetter;
+	private String attendanceSheet;
+	private String proxy;
+	private String attendanceForm;
 }

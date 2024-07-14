@@ -3,18 +3,13 @@ package ma.cimr.agmbackend.assembly;
 import static org.mapstruct.ReportingPolicy.IGNORE;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
-import ma.cimr.agmbackend.action.Action;
-import ma.cimr.agmbackend.action.ActionResponse;
+import ma.cimr.agmbackend.action.ActionMapper;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = IGNORE, uses = { ActionMapper.class })
 public interface AssemblyMapper {
 
-	@Mapping(target = "actions", ignore = true)
-	Assembly toEntity(AssemblyCreateRequest dto);
+	Assembly toEntity(AssemblyCreateRequest assemblyCreateRequest);
 
-	AssemblyResponse toResponse(Assembly entity);
-
-	ActionResponse toResponse(Action entity);
+	AssemblyResponse toResponse(Assembly assembly);
 }

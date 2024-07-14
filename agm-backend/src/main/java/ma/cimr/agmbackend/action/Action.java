@@ -18,7 +18,6 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import ma.cimr.agmbackend.assembly.Assembly;
 import ma.cimr.agmbackend.common.BaseEntity;
-import ma.cimr.agmbackend.document.Document;
 
 @Getter
 @Setter
@@ -34,13 +33,10 @@ public class Action extends BaseEntity {
 	private Assembly assembly;
 
 	@Column(nullable = false)
-	private String description;
+	private String name;
 
 	@Column(nullable = true)
 	private String entity;
-
-	@Column(nullable = true)
-	private String responsible;
 
 	@Column(name = "start_date")
 	private LocalDate startDate;
@@ -48,19 +44,23 @@ public class Action extends BaseEntity {
 	@Column(name = "end_date")
 	private LocalDate endDate;
 
-	@Column(name = "progress_status")
-	private String progressStatus;
-
 	@Column(name = "realization_date")
 	private LocalDate realizationDate;
 
-	@Column
-	private String observation;
+	@Column(nullable = true)
+	private String responsible;
 
 	@Column
 	private String deliverable;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	@JoinColumn(name = "action_id")
-	private List<Document> attachments;
+	@Column(name = "progress_status")
+	private Integer progressStatus;
+
+	@Column
+	private String observation;
+
+	// @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch =
+	// FetchType.EAGER)
+	// @JoinColumn(name = "action_id")
+	// private List<String> attachments;
 }

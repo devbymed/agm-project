@@ -55,6 +55,7 @@ spring:
 jwt:
   secret: ${JWT_SECRET}
   expiration: ${JWT_EXPIRATION:604800000}
-
+file:
+  uploads.output-path: ./uploads
 springdoc:
   default-produces-media-type: application/json

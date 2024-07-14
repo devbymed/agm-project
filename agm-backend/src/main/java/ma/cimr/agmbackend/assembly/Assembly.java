@@ -10,9 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +20,6 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import ma.cimr.agmbackend.action.Action;
 import ma.cimr.agmbackend.common.BaseEntity;
-import ma.cimr.agmbackend.document.Document;
 
 @Getter
 @Setter
@@ -56,25 +53,20 @@ public class Assembly extends BaseEntity {
 	@Column(nullable = false)
 	private boolean closed = false;
 
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	@JoinColumn(name = "route_sheet_id", referencedColumnName = "id")
-	private Document routeSheet;
+	@Column(nullable = true)
+	private String routeSheet;
 
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	@JoinColumn(name = "invitation_letter_id", referencedColumnName = "id")
-	private Document invitationLetter;
+	@Column(nullable = true)
+	private String invitationLetter;
 
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	@JoinColumn(name = "attendance_sheet_id", referencedColumnName = "id")
-	private Document attendanceSheet;
+	@Column(nullable = true)
+	private String attendanceSheet;
 
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	@JoinColumn(name = "proxy_id", referencedColumnName = "id")
-	private Document proxy;
+	@Column(nullable = true)
+	private String proxy;
 
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	@JoinColumn(name = "attendance_form_id", referencedColumnName = "id")
-	private Document attendanceForm;
+	@Column(nullable = true)
+	private String attendanceForm;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "assembly")
 	private List<Action> actions;
