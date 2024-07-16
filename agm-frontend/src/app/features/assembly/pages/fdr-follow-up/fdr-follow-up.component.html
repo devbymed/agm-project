@@ -33,59 +33,59 @@
     </div>
   </div>
   <div class="mt-6 flex flex-col">
-    <div class="overflow-x-auto rounded-lg">
+    <div class="overflow-x-auto">
       <div class="inline-block min-w-full align-middle">
-        <div class="overflow-hidden shadow sm:rounded-lg">
+        <div class="overflow-hidden shadow">
           <table
-            class="min-w-full divide-y divide-gray-200 dark:divide-gray-600"
+            class="min-w-full table-fixed border-collapse border border-gray-200"
           >
-            <thead class="bg-gray-50 dark:bg-gray-700">
+            <thead class="bg-gray-50">
               <tr>
                 <th
                   scope="col"
-                  class="p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white"
+                  class="border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white"
                 >
-                  Action
+                  Nom de l'action
                 </th>
                 <th
                   scope="col"
-                  class="p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white"
+                  class="border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white"
                 >
                   Date début
                 </th>
                 <th
                   scope="col"
-                  class="p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white"
+                  class="border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white"
                 >
                   Date fin
                 </th>
                 <th
                   scope="col"
-                  class="p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white"
+                  class="border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white"
                 >
                   Date de réalisation
                 </th>
                 <th
                   scope="col"
-                  class="p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white"
+                  class="border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white"
                 >
                   Responsable
                 </th>
                 <th
                   scope="col"
-                  class="p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white"
+                  class="border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white"
                 >
                   Livrable
                 </th>
                 <th
                   scope="col"
-                  class="p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white"
+                  class="border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white"
                 >
                   État d'avancement
                 </th>
                 <th
                   scope="col"
-                  class="p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white"
+                  class="border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-white"
                 >
                   Observation
                 </th>
@@ -95,91 +95,94 @@
                 ></th>
               </tr>
             </thead>
-            <tbody class="bg-white dark:bg-gray-800">
-              <tr class="hover:bg-gray-50">
+            <tbody class="bg-white">
+              <tr
+                class="hover:bg-gray-50"
+                *ngFor="let action of actions; let i = index"
+              >
                 <td
-                  class="p-4 text-sm font-normal text-gray-500 dark:text-white"
+                  class="border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-white"
                 >
-                  Réservation de la salle de l'AGO
+                  {{ action.name }}
                 </td>
                 <td
-                  class="p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                  class="border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
                 >
-                  19/02/2018
+                  {{ action.startDate | date: "shortDate" }}
                 </td>
                 <td
-                  class="p-4 text-sm font-normal text-gray-500 dark:text-white"
+                  class="border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-white"
                 >
-                  23/02/2028
+                  {{ action.endDate | date: "shortDate" }}
                 </td>
                 <td
-                  class="p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                  class="border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
                 >
-                  10/04/2017
+                  {{ action.realizationDate | date: "shortDate" }}
                 </td>
                 <td
-                  class="p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                  class="border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
                 >
-                  DSI
+                  {{ action.responsible }}
                 </td>
                 <td
-                  class="p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                  class="border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
                 >
-                  Assurance
+                  {{ action.deliverable }}
                 </td>
                 <td
-                  class="p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                  class="border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
                 >
-                  100%
+                  {{ action.progressStatus }}
                 </td>
                 <td
-                  class="p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                  class="border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
                 >
-                  Lorem, ipsum dolor.
+                  {{ action.observation }}
                 </td>
-                <td class="whitespace-nowrap p-4">
-                  <button
-                    type="button"
-                    data-modal-target="add-user-modal"
-                    data-modal-toggle="add-user-modal"
-                    class="inline-flex items-center rounded-lg bg-primary-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                  >
-                    <svg
-                      class="h-4 w-4"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
+                <td class="border border-gray-200 p-4">
+                  <div class="flex">
+                    <button
+                      type="button"
+                      (click)="openEditActionModal(action)"
+                      class="inline-flex items-center rounded-lg px-1 py-1 text-center text-sm font-medium text-primary-700 focus:outline-none"
                     >
-                      <path
-                        d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"
-                      ></path>
-                      <path
-                        fill-rule="evenodd"
-                        d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                        clip-rule="evenodd"
-                      ></path>
-                    </svg>
-                  </button>
-                  <!-- <button
-                    type="button"
-                    data-modal-target="delete-user-modal"
-                    data-modal-toggle="delete-user-modal"
-                    class="inline-flex items-center rounded-lg bg-warning-600 px-3 py-2 text-center text-sm font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900"
-                  >
-                    <svg
-                      class="h-4 w-4"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
+                      <svg
+                        class="h-4 w-4"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"
+                        ></path>
+                        <path
+                          fill-rule="evenodd"
+                          d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                          clip-rule="evenodd"
+                        ></path>
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
+                      (click)="openActionDetailsModal(action)"
+                      class="inline-flex items-center rounded-lg px-3 py-2 text-center text-sm font-medium text-warning-800 focus:outline-none"
                     >
-                      <path
-                        fill-rule="evenodd"
-                        d="M4.998 7.78C6.729 6.345 9.198 5 12 5c2.802 0 5.27 1.345 7.002 2.78a12.713 12.713 0 0 1 2.096 2.183c.253.344.465.682.618.997.14.286.284.658.284 1.04s-.145.754-.284 1.04a6.6 6.6 0 0 1-.618.997 12.712 12.712 0 0 1-2.096 2.183C17.271 17.655 14.802 19 12 19c-2.802 0-5.27-1.345-7.002-2.78a12.712 12.712 0 0 1-2.096-2.183 6.6 6.6 0 0 1-.618-.997C2.144 12.754 2 12.382 2 12s.145-.754.284-1.04c.153-.315.365-.653.618-.997A12.714 12.714 0 0 1 4.998 7.78ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </button> -->
+                      <svg
+                        class="h-4 w-4"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M4.998 7.78C6.729 6.345 9.198 5 12 5c2.802 0 5.27 1.345 7.002 2.78a12.713 12.713 0 0 1 2.096 2.183c.253.344.465.682.618.997.14.286.284.658.284 1.04s-.145.754-.284 1.04a6.6 6.6 0 0 1-.618.997 12.712 12.712 0 0 1-2.096 2.183C17.271 17.655 14.802 19 12 19c-2.802 0-5.27-1.345-7.002-2.78a12.712 12.712 0 0 1-2.096-2.183 6.6 6.6 0 0 1-.618-.997C2.144 12.754 2 12.382 2 12s.145-.754.284-1.04c.153-.315.365-.653.618-.997A12.714 12.714 0 0 1 4.998 7.78ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </div>
                 </td>
               </tr>
               <tr></tr>
@@ -193,7 +196,9 @@
 
 <div
   class="fixed left-0 right-0 top-4 z-50 hidden h-modal items-center justify-center overflow-y-auto overflow-x-hidden sm:h-full md:inset-0"
-  id="add-user-modal"
+  id="editActionModal"
+  tabindex="-1"
+  aria-hidden="true"
 >
   <div class="relative h-full w-full max-w-2xl px-4 md:h-auto">
     <div class="relative rounded-lg bg-white shadow dark:bg-gray-800">
@@ -204,7 +209,7 @@
         <button
           type="button"
           class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-white"
-          data-modal-toggle="add-user-modal"
+          (click)="closeEditActionModal()"
         >
           <svg
             class="h-5 w-5"
@@ -221,8 +226,8 @@
         </button>
       </div>
       <!-- Modal body -->
-      <div class="space-y-6 p-6">
-        <form [formGroup]="updateActionForm">
+      <div class="space-y-6 p-6" *ngIf="selectedAction">
+        <form [formGroup]="updateActionForm" (ngSubmit)="onUpdateAction()">
           <div class="grid grid-cols-6 gap-6">
             <div class="col-span-6 sm:col-span-3">
               <app-input
@@ -230,9 +235,8 @@
                 id="description"
                 name="description"
                 [type]="'text'"
-                formControlName="description"
+                formControlName="name"
                 placeholder="Action"
-                showRequiredIndicator="true"
               />
             </div>
             <div class="col-span-6 sm:col-span-3">
@@ -243,7 +247,6 @@
                 [type]="'text'"
                 formControlName="entity"
                 placeholder="Entité"
-                showRequiredIndicator="true"
               />
             </div>
             <div class="col-span-6 sm:col-span-3">
@@ -254,7 +257,6 @@
                 [type]="'text'"
                 formControlName="responsible"
                 placeholder="Responsable"
-                showRequiredIndicator="true"
               />
             </div>
             <div class="col-span-6 sm:col-span-3">
@@ -264,7 +266,6 @@
                 name="startDate"
                 [type]="'date'"
                 formControlName="startDate"
-                showRequiredIndicator="true"
               />
             </div>
             <div class="col-span-6 sm:col-span-3">
@@ -273,8 +274,7 @@
                 id="endDate"
                 name="endDate"
                 [type]="'date'"
-                formControlName="startDate"
-                showRequiredIndicator="true"
+                formControlName="endDate"
               />
             </div>
             <div class="col-span-6 sm:col-span-3">
@@ -285,7 +285,6 @@
                 [type]="'text'"
                 formControlName="deliverable"
                 placeholder="Livrable"
-                showRequiredIndicator="true"
               />
             </div>
             <div class="col-span-6 sm:col-span-3">
@@ -296,7 +295,6 @@
                 [type]="'text'"
                 formControlName="progressStatus"
                 placeholder="État d'avancement"
-                showRequiredIndicator="true"
               />
             </div>
             <div class="col-span-6 sm:col-span-3">
@@ -306,7 +304,6 @@
                 name="realizationDate"
                 [type]="'date'"
                 formControlName="realizationDate"
-                showRequiredIndicator="true"
               />
             </div>
             <div class="col-span-6">
@@ -317,7 +314,6 @@
                 [type]="'text'"
                 formControlName="observation"
                 placeholder="Observation"
-                showRequiredIndicator="true"
               />
             </div>
           </div>
@@ -332,6 +328,101 @@
             </button>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="fixed left-0 right-0 top-4 z-50 hidden h-modal items-center justify-center overflow-y-auto overflow-x-hidden sm:h-full md:inset-0"
+  id="actionDetailsModal"
+  tabindex="-1"
+  aria-hidden="true"
+>
+  <div class="relative h-full w-full max-w-2xl px-4 md:h-auto">
+    <div class="relative rounded-lg bg-white shadow dark:bg-gray-800">
+      <div
+        class="flex items-start justify-between rounded-t border-b p-5 dark:border-gray-700"
+      >
+        <h3 class="text-xl font-semibold dark:text-white">Consulter action</h3>
+        <button
+          type="button"
+          class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-white"
+          (click)="closeActionDetailsModal()"
+        ></button>
+        <button
+          type="button"
+          class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-white"
+          (click)="closeActionDetailsModal()"
+        >
+          <svg
+            class="h-5 w-5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="space-y-6" *ngIf="selectedAction">
+        <dl class="sm:divide-y sm:divide-gray-200">
+          <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+            <dt class="text-sm font-medium text-gray-500">Action</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              {{ selectedAction.name }}
+              <!-- le nom de l'application ou N/A -->
+            </dd>
+          </div>
+          <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+            <dt class="text-sm font-medium text-gray-500">Date début</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              {{ selectedAction.startDate | date: "shortDate" || "N/A" }}
+            </dd>
+          </div>
+          <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+            <dt class="text-sm font-medium text-gray-500">Date fin</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              {{ selectedAction.endDate | date: "shortDate" }}
+            </dd>
+          </div>
+          <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+            <dt class="text-sm font-medium text-gray-500">
+              Date de réalisation
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              {{ selectedAction.realizationDate | date: "shortDate" }}
+            </dd>
+          </div>
+          <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+            <dt class="text-sm font-medium text-gray-500">Responsable</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              {{ selectedAction.responsible }}
+            </dd>
+          </div>
+          <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+            <dt class="text-sm font-medium text-gray-500">Livrable</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              {{ selectedAction.deliverable }}
+            </dd>
+          </div>
+          <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+            <dt class="text-sm font-medium text-gray-500">État d'avancement</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              {{ selectedAction.progressStatus }}
+            </dd>
+          </div>
+          <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+            <dt class="text-sm font-medium text-gray-500">Observation</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              {{ selectedAction.observation }}
+            </dd>
+          </div>
+        </dl>
       </div>
     </div>
   </div>

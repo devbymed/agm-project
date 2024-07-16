@@ -26,6 +26,6 @@ public class ActionEditRequest {
 	private LocalDate realizationDate;
 	private String responsible;
 	private String deliverable;
-	private Integer progressStatus;
+	private String progressStatus;
 	private String observation;
 }

@@ -9,8 +9,9 @@ public interface AssemblyService {
 
 	AssemblyResponse getCurrentAssembly();
 
-	AssemblyResponse updateAssembly(Long id, AssemblyCreateRequest request, MultipartFile routeSheet,
-			MultipartFile invitationLetter, MultipartFile attendanceSheet, MultipartFile proxy, MultipartFile attendanceForm);
+	AssemblyResponse updateCurrentAssembly(AssemblyEditRequest request, MultipartFile routeSheet,
+			MultipartFile invitationLetter, MultipartFile attendanceSheet, MultipartFile proxy,
+			MultipartFile attendanceForm);
 
 	void deleteCurrentAssembly();
 

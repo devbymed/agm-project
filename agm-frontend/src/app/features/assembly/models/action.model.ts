@@ -2,13 +2,13 @@ import { Document } from "@core/models/document.model";
 
 export interface Action {
   id: number;
-  description: string;
-  responsible: string;
-  startDate: string;
-  endDate: string;
-  progressStatus: string;
+  name: string;
+  entity: string;
+  startDate?: string;
+  endDate?: string;
   realizationDate?: string;
-  observation?: string;
+  responsible?: string;
   deliverable?: string;
-  attachments: Document[];
+  progressStatus: number;
+  observation?: string;
 }

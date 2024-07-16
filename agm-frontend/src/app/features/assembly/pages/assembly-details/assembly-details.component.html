@@ -31,7 +31,7 @@
         Veuillez compléter la création de l'assemblée par les informations
         suivantes:
       </p> -->
-      <form [formGroup]="assemblyDetailsForm">
+      <form [formGroup]="assemblyDetailsForm" (ngSubmit)="onSubmit()">
         <div class="grid grid-cols-6 gap-6">
           <div class="col-span-6 sm:col-span-3">
             <app-select
@@ -110,6 +110,7 @@
               type="file"
               name="routeSheet"
               #routeSheetInput
+              (change)="onFileChange($event, 'routeSheet')"
               required
             />
           </div>
@@ -126,6 +127,7 @@
               type="file"
               name="invitationLetter"
               #invitationLetterInput
+              (change)="onFileChange($event, 'invitationLetter')"
               required
             />
           </div>
@@ -142,6 +144,7 @@
               type="file"
               name="attendanceSheet"
               #attendanceSheetInput
+              (change)="onFileChange($event, 'attendanceSheet')"
               required
             />
           </div>
@@ -157,6 +160,7 @@
               type="file"
               name="proxy"
               #proxyInput
+              (change)="onFileChange($event, 'proxy')"
               required
             />
           </div>
@@ -173,11 +177,17 @@
               type="file"
               name="attendanceForm"
               #attendanceFormInput
+              (change)="onFileChange($event, 'attendanceForm')"
               required
             />
           </div>
           <div class="sm:col-full col-span-6 flex justify-end gap-2">
-            <app-button type="button" buttonType="light">Clôturer</app-button>
+            <app-button
+              type="button"
+              buttonType="light"
+              (click)="closeCurrentAssembly()"
+              >Clôturer</app-button
+            >
             <app-button
               type="button"
               buttonType="light"

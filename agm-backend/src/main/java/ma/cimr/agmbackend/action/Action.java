@@ -51,7 +51,7 @@ public class Action extends BaseEntity {
 	private String deliverable;
 
 	@Column(name = "progress_status")
-	private Integer progressStatus;
+	private String progressStatus;
 
 	@Column
 	private String observation;

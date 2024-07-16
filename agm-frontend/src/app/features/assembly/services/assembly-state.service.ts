@@ -48,6 +48,10 @@ export class AssemblyStateService {
     });
   }
 
+  updateCurrentAssemblyDetails(details: any): void {
+    this.currentAssemblyDetailsSubject.next(details);
+  }
+
   updateCurrentAssemblyState(state: boolean): void {
     this.hasCurrentAssemblySubject.next(state);
     if (!state) {

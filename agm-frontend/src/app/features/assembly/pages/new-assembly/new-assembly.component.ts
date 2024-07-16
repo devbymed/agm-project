@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import { NewAssemblyFormComponent } from "@features/assembly/components/new-assembly-form/new-assembly-form.component";
 import { AssemblyStateService } from "@features/assembly/services/assembly-state.service";
+import { initFlowbite } from "flowbite";
 import { Subject, takeUntil } from "rxjs";
 
 @Component({
@@ -25,6 +26,7 @@ export class NewAssemblyComponent implements OnInit, OnDestroy {
           this.router.navigate(['/preparation-assemblee/nouvelle-assemblee/assemblee-en-cours']);
         }
       });
+    initFlowbite();
   }
 
   ngOnDestroy(): void {

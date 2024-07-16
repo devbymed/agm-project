@@ -1,8 +1,9 @@
-package ma.cimr.agmbackend.action;
+package ma.cimr.agmbackend.assembly;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -18,16 +19,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(value = NON_NULL)
-public class ActionResponse {
-
-	private Long id;
-	private String name;
-	private String entity;
-	private LocalDate startDate;
-	private LocalDate endDate;
-	private LocalDate realizationDate;
-	private String responsible;
-	private String deliverable;
-	private String progressStatus;
-	private String observation;
+public class AssemblyEditRequest {
+	private AssemblyType type;
+	private Integer year;
+	private LocalDate day;
+	private LocalTime time;
+	private String address;
+	private String city;
 }

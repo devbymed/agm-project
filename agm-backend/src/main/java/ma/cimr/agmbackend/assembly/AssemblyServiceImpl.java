@@ -64,42 +64,62 @@ public class AssemblyServiceImpl implements AssemblyService {
 	}
 
 	@Override
-	public AssemblyResponse updateAssembly(Long id, AssemblyCreateRequest request, MultipartFile routeSheet,
-			MultipartFile invitationLetter, MultipartFile attendanceSheet,
-			MultipartFile proxy, MultipartFile attendanceForm) {
-		Assembly assembly = assemblyRepository.findById(id)
+	public AssemblyResponse updateCurrentAssembly(AssemblyEditRequest request, MultipartFile routeSheet,
+			MultipartFile invitationLetter, MultipartFile attendanceSheet, MultipartFile proxy,
+			MultipartFile attendanceForm) {
+		Assembly assembly = assemblyRepository.findByClosed(false)
 				.orElseThrow(() -> new ApiException(ApiExceptionCodes.ASSEMBLY_NOT_FOUND));
 
-		// Update assembly fields from request
-		assembly.setType(request.getType());
-		assembly.setYear(request.getYear());
-		assembly.setDay(request.getDay());
-		assembly.setTime(request.getTime());
-		assembly.setAddress(request.getAddress());
-		assembly.setCity(request.getCity());
+		// Mettre à jour les champs de l'assemblée depuis la requête
+		if (request.getType() != null) {
+			assembly.setType(request.getType());
+		}
+		if (request.getYear() != null) {
+			assembly.setYear(request.getYear());
+		}
+		if (request.getDay() != null) {
+			assembly.setDay(request.getDay());
+		}
+		if (request.getTime() != null) {
+			assembly.setTime(request.getTime());
+		}
+		if (request.getAddress() != null) {
+			assembly.setAddress(request.getAddress());
+		}
+		if (request.getCity() != null) {
+			assembly.setCity(request.getCity());
+		}
 
-		// Gérer l'upload des fichiers et définir les chemins
-		String routeSheetPath = normalizePath(fileStorageService.saveFile(routeSheet, "routeSheets"));
-		String invitationLetterPath = normalizePath(fileStorageService.saveFile(invitationLetter, "invitationLetters"));
-		String attendanceSheetPath = normalizePath(fileStorageService.saveFile(attendanceSheet, "attendanceSheets"));
-		String proxyPath = normalizePath(fileStorageService.saveFile(proxy, "proxies"));
-		String attendanceFormPath = normalizePath(fileStorageService.saveFile(attendanceForm, "attendanceForms"));
-
-		assembly.setRouteSheet(routeSheetPath);
-		assembly.setInvitationLetter(invitationLetterPath);
-		assembly.setAttendanceSheet(attendanceSheetPath);
-		assembly.setProxy(proxyPath);
-		assembly.setAttendanceForm(attendanceFormPath);
-
-		// Read actions from route sheet
+		// Gérer les fichiers et documents
 		if (routeSheet != null) {
+			String routeSheetPath = normalizePath(fileStorageService.saveFile(routeSheet, "routeSheets"));
+			assembly.setRouteSheet(routeSheetPath);
+
+			// Réextraire les actions depuis le nouveau fichier Excel
 			try {
 				List<Action> actions = excelService.readActionsFromExcel(routeSheet);
 				actions.forEach(action -> action.setAssembly(assembly));
+				assembly.getActions().clear(); // Supprimer les anciennes actions
 				assembly.setActions(actions);
 			} catch (IOException e) {
 				throw new ApiException(ApiExceptionCodes.DOCUMENT_UPLOAD_FAILED, e);
 			}
+		}
+		if (invitationLetter != null) {
+			String invitationLetterPath = normalizePath(fileStorageService.saveFile(invitationLetter, "invitationLetters"));
+			assembly.setInvitationLetter(invitationLetterPath);
+		}
+		if (attendanceSheet != null) {
+			String attendanceSheetPath = normalizePath(fileStorageService.saveFile(attendanceSheet, "attendanceSheets"));
+			assembly.setAttendanceSheet(attendanceSheetPath);
+		}
+		if (proxy != null) {
+			String proxyPath = normalizePath(fileStorageService.saveFile(proxy, "proxies"));
+			assembly.setProxy(proxyPath);
+		}
+		if (attendanceForm != null) {
+			String attendanceFormPath = normalizePath(fileStorageService.saveFile(attendanceForm, "attendanceForms"));
+			assembly.setAttendanceForm(attendanceFormPath);
 		}
 
 		Assembly updatedAssembly = assemblyRepository.save(assembly);

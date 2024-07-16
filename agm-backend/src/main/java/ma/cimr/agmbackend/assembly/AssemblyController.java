@@ -58,15 +58,15 @@ public class AssemblyController {
 		return ApiResponseFormatter.generateResponse(HttpStatus.CREATED, "Assemblée créée avec succès", createdAssembly);
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<ApiResponse> updateAssembly(@PathVariable Long id,
-			@ModelAttribute @Valid AssemblyCreateRequest request,
-			@RequestParam("routeSheet") MultipartFile routeSheet,
-			@RequestParam("invitationLetter") MultipartFile invitationLetter,
-			@RequestParam("attendanceSheet") MultipartFile attendanceSheet,
-			@RequestParam("proxy") MultipartFile proxy,
-			@RequestParam("attendanceForm") MultipartFile attendanceForm) {
-		AssemblyResponse updatedAssembly = assemblyService.updateAssembly(id, request, routeSheet, invitationLetter,
+	@PatchMapping("/current")
+	public ResponseEntity<ApiResponse> updateCurrentAssembly(
+			@Valid @ModelAttribute AssemblyEditRequest request,
+			@RequestParam(value = "routeSheet", required = false) MultipartFile routeSheet,
+			@RequestParam(value = "invitationLetter", required = false) MultipartFile invitationLetter,
+			@RequestParam(value = "attendanceSheet", required = false) MultipartFile attendanceSheet,
+			@RequestParam(value = "proxy", required = false) MultipartFile proxy,
+			@RequestParam(value = "attendanceForm", required = false) MultipartFile attendanceForm) {
+		AssemblyResponse updatedAssembly = assemblyService.updateCurrentAssembly(request, routeSheet, invitationLetter,
 				attendanceSheet, proxy, attendanceForm);
 		return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Assemblée mise à jour avec succès", updatedAssembly);
 	}

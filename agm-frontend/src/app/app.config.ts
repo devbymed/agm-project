@@ -1,4 +1,4 @@
-import { ApplicationConfig, ErrorHandler } from "@angular/core";
+import { ApplicationConfig, ErrorHandler, LOCALE_ID } from "@angular/core";
 import { provideRouter } from "@angular/router";
 
 import { provideHttpClient, withInterceptors } from "@angular/common/http";
@@ -24,6 +24,10 @@ export const appConfig: ApplicationConfig = {
     {
       provide: ErrorHandler,
       useClass: ErrorHandlerService
+    },
+    {
+      provide: LOCALE_ID,
+      useValue: 'fr'
     }
   ]
 };
