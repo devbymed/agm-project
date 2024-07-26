@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable, inject } from '@angular/core';
 import { AuthResponse } from '@core/auth/models/auth-response.model';
 import { ApiResponse } from '@core/models/api-response.model';
+import { Profile } from "@core/models/profile.model";
 import { User } from "@core/models/user.model";
 import { StorageService } from "@core/services/storage.service";
 import { environment } from '@env/environment';
@@ -50,6 +51,11 @@ export class AuthService {
   private getUserFromStorage(): User | null {
     return this.storageService.get<User>('user');
   }
+
+  // getUserProfile(): Profile | null {
+  //   const user = this.getUserFromStorage();
+  //   return user ? user.profile : null; // Assurez-vous que le modèle User a un champ profile
+  // }
 
   logout(): void {
     this.storageService.clear();

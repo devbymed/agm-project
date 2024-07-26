@@ -1,1 +1,36 @@
-<p>member-convocation works!</p>
+<div class="md:flex">
+  <ul
+    class="flex-column space-y mb-4 max-w-max space-y-4 whitespace-nowrap text-sm font-medium text-gray-500 md:mb-0 md:me-4"
+  >
+    <li>
+      <a
+        class="inline-flex w-full items-center rounded-lg bg-gray-50 px-4 py-3 hover:bg-gray-100 hover:bg-none hover:text-gray-900"
+        routerLink="/preparation-assemblee/convocation-adherents/liste-adherents"
+        routerLinkActive="bg-primary-700 text-white hover:bg-primary-700 hover:text-white"
+      >
+        Liste des adhérents
+      </a>
+    </li>
+    <li>
+      <a
+        class="inline-flex w-full items-center rounded-lg bg-gray-50 px-4 py-3 hover:bg-gray-100 hover:text-gray-900 dark:hover:text-white"
+        routerLink="/preparation-assemblee/convocation-adherents/convocation"
+        routerLinkActive="bg-primary-700 text-white hover:bg-primary-700 hover:text-white"
+      >
+        Convocation
+      </a>
+    </li>
+    <li>
+      <a
+        class="inline-flex w-full items-center rounded-lg bg-gray-50 px-4 py-3 hover:bg-gray-100 hover:text-gray-900 dark:hover:text-white"
+        routerLink="/preparation-assemblee/convocation-adherents/gestion-retours-courriers"
+        routerLinkActive="bg-primary-700 text-white hover:bg-primary-700 hover:text-white"
+      >
+        Gestion des retours courriers
+      </a>
+    </li>
+  </ul>
+  <div class="text-medium w-full rounded-lg bg-gray-50 text-gray-500">
+    <router-outlet></router-outlet>
+  </div>
+</div>

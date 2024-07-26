@@ -21,8 +21,10 @@
     [ngClass]="{
       'pr-10': type === 'password',
       'border-red-500 text-sm focus:border-red-500 focus:ring-red-500':
-        control.touched && control.invalid
+        control.touched && control.invalid,
+      'cursor-not-allowed bg-gray-100': disabled
     }"
+    [disabled]="disabled"
   />
   @if (type === "password") {
     <button

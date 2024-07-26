@@ -11,9 +11,12 @@ import { UserManagementComponent } from "@features/admin/pages/user-management/u
 import { currentAssemblyGuard } from "@features/assembly/guards/current-assembly.guard";
 import { AssemblyDetailsComponent } from "@features/assembly/pages/assembly-details/assembly-details.component";
 import { FdrFollowUpComponent } from "@features/assembly/pages/fdr-follow-up/fdr-follow-up.component";
+import { InvitationsComponent } from "@features/assembly/pages/invitations/invitations.component";
+import { MailManagementComponent } from "@features/assembly/pages/mail-management/mail-management.component";
 import {
   MembersConvocationComponent
 } from "@features/assembly/pages/members-convocation/members-convocation.component";
+import { MembersListComponent } from "@features/assembly/pages/members-list/members-list.component";
 import { NewAssemblyComponent } from "@features/assembly/pages/new-assembly/new-assembly.component";
 import { MainLayoutComponent } from "./core/layout/main-layout/main-layout.component";
 
@@ -61,7 +64,29 @@ export const routes: Routes = [
           {
             path: "convocation-adherents",
             component: MembersConvocationComponent,
-            data: { breadcrumb: "Convocation des adhérents" }
+            data: { breadcrumb: "Convocation des adhérents" },
+            children: [
+              {
+                path: "liste-adherents",
+                component: MembersListComponent,
+                data: { breadcrumb: "Liste des adhérents" }
+              },
+              {
+                path: "convocation",
+                component: InvitationsComponent,
+                data: { breadcrumb: "Convocation" }
+              },
+              {
+                path: "gestion-retours-courriers",
+                component: MailManagementComponent,
+                data: { breadcrumb: "Gestion des retours courriers" }
+              },
+              {
+                path: "",
+                redirectTo: "liste-adherents",
+                pathMatch: "full"
+              }
+            ]
           },
           {
             path: "",

@@ -46,6 +46,7 @@ export class InputComponent extends BaseControlValueAccessorService<string> {
   @Input({ required: true }) id: string;
   @Input({ required: true }) type: string;
   @Input() placeholder: string = '';
+  @Input() disabled = false;
   @Input({ transform: booleanAttribute }) required = false;
   @Input({ transform: booleanAttribute }) showRequiredIndicator = false;
   @ViewChild(InputTypeDirective) inputTypeDirective: InputTypeDirective;

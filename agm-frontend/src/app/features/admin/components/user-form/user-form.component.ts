@@ -33,6 +33,8 @@ export class UserFormComponent implements OnChanges, OnDestroy {
   private subscriptions: Subscription = new Subscription();
   formTitle: string = 'Ajouter un utilisateur';
   errorMessage: string | null = null;
+  isEditMode: boolean = false;
+
 
   constructor(
     private fb: FormBuilder,
@@ -67,6 +69,9 @@ export class UserFormComponent implements OnChanges, OnDestroy {
           profileId: this.user?.profile.id.toString()
         }
       );
+      this.userForm.get('firstName')?.disable();
+      this.userForm.get('lastName')?.disable();
+      this.isEditMode = true;
       this.formTitle = 'Modifier utilisateur';
     } else {
       this.resetForm();
@@ -109,6 +114,9 @@ export class UserFormComponent implements OnChanges, OnDestroy {
         profileId: ''
       },
     );
+    this.userForm.get('firstName')?.enable();
+    this.userForm.get('lastName')?.enable();
+    this.isEditMode = false;
     this.errorMessage = null;
     this.formTitle = 'Ajouter un utilisateur';
   }

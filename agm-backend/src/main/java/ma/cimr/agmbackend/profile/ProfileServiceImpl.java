@@ -59,9 +59,9 @@ public class ProfileServiceImpl implements ProfileService {
 				.orElseThrow(() -> new ApiException(ApiExceptionCodes.PROFILE_NOT_FOUND));
 
 		// Mettre à jour le nom du profil si fourni
-		if (profileEditRequest.getName() != null) {
-			profile.setName(profileEditRequest.getName());
-		}
+		// if (profileEditRequest.getName() != null) {
+		// profile.setName(profileEditRequest.getName());
+		// }
 
 		// Mettre à jour les permissions du profil si fournies
 		if (profileEditRequest.getPermissionIds() != null) {

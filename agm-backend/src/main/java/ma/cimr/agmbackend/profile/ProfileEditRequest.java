@@ -19,8 +19,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonInclude(value = NON_EMPTY)
 public class ProfileEditRequest {
-
-	private String name;
-
 	private List<Long> permissionIds;
 }

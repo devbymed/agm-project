@@ -1,5 +1,47 @@
-<div class="grid grid-cols-1 gap-4 xl:grid-cols-3">
-  <div class="col-span-2 xl:col-auto"></div>
+<div class="container grid grid-cols-1 gap-4 xl:grid-cols-3">
+  <div class="col-span-2 xl:col-auto">
+    <div
+      class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6 2xl:col-span-2"
+    >
+      <h3 class="mb-4 text-xl font-semibold text-gray-500">
+        Ajouter un profile
+      </h3>
+      <form [formGroup]="newProfileForm" (ngSubmit)="addProfile()">
+        <!-- <div class="mb-5" *ngIf="errorMessage">
+          <app-alert [message]="errorMessage" type="danger"></app-alert>
+        </div> -->
+        <div class="mb-5">
+          <app-input
+            label="Nom du profile"
+            id="name"
+            name="name"
+            [type]="'text'"
+            placeholder="Nom du profile"
+            formControlName="name"
+            showRequiredIndicator="true"
+          />
+        </div>
+        <div class="mb-5">
+          <label class="mb-2 block text-sm font-medium text-gray-500">
+            Accès
+            <span class="font-medium text-red-600">*</span>
+          </label>
+          <p-treeSelect
+            class="md:w-20rem w-full"
+            containerStyleClass="w-full"
+            placeholder="Sélectionner un/des accès"
+            [options]="nodes"
+            formControlName="permissions"
+            selectionMode="checkbox"
+          />
+        </div>
+        <div class="flex gap-2">
+          <app-button type="submit">Valider</app-button>
+          <app-button type="button" buttonType="light">Annuler</app-button>
+        </div>
+      </form>
+    </div>
+  </div>
   <div class="col-span-2">
     <div
       class="space-y-6 rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6 2xl:col-span-2"
@@ -45,7 +87,43 @@
                         selectionMode="checkbox"
                         [(selection)]="selectedNodes[profile.name]"
                       ></p-tree>
+                      <div class="mt-2 flex justify-end">
+                        <button
+                          (click)="updateProfile(profile)"
+                          *ngIf="
+                            userProfile !== 'Gestionnaire' ||
+                            profile.name !== 'Gestionnaire'
+                          "
+                          class="rounded-lg bg-primary-700 px-2 py-2 text-xs text-white"
+                        >
+                          <svg
+                            class="h-6 w-6 text-white"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7.414A2 2 0 0 0 20.414 6L18 3.586A2 2 0 0 0 16.586 3H5Zm10 11a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7V5h8v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1Z"
+                              clip-rule="evenodd"
+                            />
+                          </svg>
+                        </button>
+                      </div>
                     </td>
+                    <!-- <td
+                      class="border border-gray-200 p-4 text-sm font-normal text-gray-500"
+                    >
+                      <button
+                        (click)="updateProfile(profile)"
+                        class="rounded bg-blue-500 px-4 py-2 text-white"
+                      >
+                        Sauvegarder
+                      </button>
+                    </td> -->
                   </tr>
                 </tbody>
               </table>

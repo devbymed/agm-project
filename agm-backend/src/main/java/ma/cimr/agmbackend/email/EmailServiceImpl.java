@@ -30,7 +30,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendEmail(String to, String firstName, String subject, String temporaryPassword,
+    public void sendEmail(String to, String firstName, String subject, String username, String temporaryPassword,
             EmailTemplateName emailTemplateName)
             throws MessagingException {
 
@@ -41,6 +41,7 @@ public class EmailServiceImpl implements EmailService {
 
         Map<String, Object> properties = new HashMap<>();
         properties.put("firstName", firstName);
+        properties.put("username", username);
         properties.put("temporaryPassword", temporaryPassword);
 
         Context context = new Context();

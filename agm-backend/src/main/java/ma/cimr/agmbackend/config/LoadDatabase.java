@@ -86,16 +86,23 @@ public class LoadDatabase {
 				"/preparation-assemblee/convocation-adherents/convocation/consultation-affectations", convocation);
 		createPermissionIfNotFound("INVITATION_STATUS_CONSULTATION", "Consultation état des convocations",
 				"/preparation-assemblee/convocation-adherents/convocation/consultation-etat-convocations", convocation);
-		Permission regroupements = createPermissionIfNotFound("GROUPINGS", "Regroupements",
-				"/preparation-assemblee/regroupements", convocationAdherents);
-		createPermissionIfNotFound("SCANNING", "Numérisation", "/preparation-assemblee/regroupements/numerisation",
-				regroupements);
-		createPermissionIfNotFound("QUALIFICATION", "Qualification", "/preparation-assemblee/regroupements/qualification",
-				regroupements);
-		createPermissionIfNotFound("ELIGIBLE_MEMBER_LIST", "Liste des adhérents éligibles par regroupement",
-				"/preparation-assemblee/regroupements/liste-adherents-eligibles", regroupements);
-		createPermissionIfNotFound("GROUPINGS_CONSULTATION", "Consultations des regroupements",
-				"/preparation-assemblee/regroupements/consultation-regroupements", regroupements);
+		// Permission regroupements = createPermissionIfNotFound("GROUPINGS",
+		// "Regroupements",
+		// "/preparation-assemblee/regroupements", convocationAdherents);
+		// createPermissionIfNotFound("SCANNING", "Numérisation",
+		// "/preparation-assemblee/regroupements/numerisation",
+		// regroupements);
+		// createPermissionIfNotFound("QUALIFICATION", "Qualification",
+		// "/preparation-assemblee/regroupements/qualification",
+		// regroupements);
+		// createPermissionIfNotFound("ELIGIBLE_MEMBER_LIST", "Liste des adhérents
+		// éligibles par regroupement",
+		// "/preparation-assemblee/regroupements/liste-adherents-eligibles",
+		// regroupements);
+		// createPermissionIfNotFound("GROUPINGS_CONSULTATION", "Consultations des
+		// regroupements",
+		// "/preparation-assemblee/regroupements/consultation-regroupements",
+		// regroupements);
 		createPermissionIfNotFound("MAIL_RETURN_MANAGEMENT", "Gestion des retours courriers",
 				"/preparation-assemblee/convocation-adherents/gestion-retours-courriers", convocationAdherents);
 

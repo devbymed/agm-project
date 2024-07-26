@@ -2,6 +2,7 @@ package ma.cimr.agmbackend.assembly;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,21 +26,27 @@ public class AssemblyExcelServiceImpl implements AssemblyExcelService {
 		List<Action> actions = new ArrayList<>();
 
 		try (InputStream is = file.getInputStream(); Workbook workbook = new XSSFWorkbook(is)) {
-			Sheet sheet = workbook.getSheetAt(0); // Assuming data is in the first sheet
+			Sheet sheet = workbook.getSheetAt(0);
 
 			for (Row row : sheet) {
-				if (row.getRowNum() < 7) { // Skip the header rows, adjust as needed
+				if (row.getRowNum() < 7) {
 					continue;
 				}
 
 				Cell firstCell = row.getCell(1);
 				if (firstCell == null || firstCell.getCellType() == CellType.BLANK) {
-					// Skip empty rows
 					continue;
 				}
 
 				Action action = new Action();
-				action.setName(getCellValue(row.getCell(1))); // Assuming the description is in the 2nd column (index 1)
+				action.setName(getCellValue(row.getCell(1)));
+				action.setStartDate(getCellDateValue(row.getCell(2)));
+				action.setEndDate(getCellDateValue(row.getCell(3)));
+				action.setRealizationDate(getCellDateValue(row.getCell(4)));
+				action.setResponsible(getCellValue(row.getCell(5)));
+				action.setDeliverable(getCellValue(row.getCell(6)));
+				action.setObservation(getCellValue(row.getCell(7)));
+				action.setProgressStatus(getCellValue(row.getCell(8)));
 				actions.add(action);
 			}
 		}
@@ -70,5 +77,12 @@ public class AssemblyExcelServiceImpl implements AssemblyExcelService {
 			default:
 				return null;
 		}
+	}
+
+	private LocalDate getCellDateValue(Cell cell) {
+		if (cell == null || cell.getCellType() != CellType.NUMERIC || !DateUtil.isCellDateFormatted(cell)) {
+			return null;
+		}
+		return cell.getLocalDateTimeCellValue().toLocalDate();
 	}
 }

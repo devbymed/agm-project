@@ -32,7 +32,7 @@ export class FdrFollowUpComponent implements OnInit, OnDestroy {
     this.initModals();
     this.updateActionForm = this.fb.group({
       name: [''],
-      entity: [''],
+      // entity: [''],
       responsible: [''],
       startDate: [''],
       endDate: [''],

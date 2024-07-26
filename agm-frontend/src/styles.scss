@@ -99,3 +99,65 @@
 .p-tree .p-tree-container .p-treenode .p-treenode-content .p-checkbox {
   margin-right: 0.3rem;
 }
+
+.p-treeselect {
+  width: 100%;
+}
+
+.p-checkbox .p-checkbox-box .p-icon {
+  width: 0.6rem;
+}
+
+.p-checkbox-box.p-highlight::before {
+  content: "\2713"; /* Code Unicode pour une coche */
+  font-size: 1rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Assurez-vous que l'icône par défaut est masquée */
+.p-checkbox-box.p-highlight .p-checkbox-icon {
+  display: none;
+}
+
+.container {
+  overflow: hidden; /* Assurez-vous que le conteneur principal ne provoque pas de défilement */
+}
+
+.p-treeselect .p-treeselect-label-container {
+  overflow: hidden;
+  flex: 1 1 auto;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  // padding: 0.5rem;
+  border-radius: 0.375rem; /* rounded-lg */
+  // border: 1px solid #d1d5db; /* border-gray-300 */
+  background-color: #f9fafb; /* bg-gray-50 */
+  color: #6b7280; /* text-gray-500 */
+  font-size: 0.875rem; /* sm:text-sm */
+}
+
+.p-treeselect .p-treeselect-label-container:focus-within {
+  border-color: #3b82f6; /* focus:border-primary-500 */
+  outline: none; /* focus:outline-none */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); /* focus:ring-primary-500 */
+}
+
+.p-treeselect .p-treeselect-trigger {
+  border-radius: 0.375rem; /* rounded-lg */
+  padding: 0.5rem;
+  background-color: #f9fafb; /* bg-gray-50 */
+  color: #6b7280; /* text-gray-500 */
+  font-size: 0.875rem; /* sm:text-sm */
+}
+
+.p-treeselect .p-treeselect-items {
+  background-color: #f9fafb; /* bg-gray-50 */
+}
+
+.p-treeselect .p-treeselect-item {
+  color: #6b7280; /* text-gray-500 */
+}

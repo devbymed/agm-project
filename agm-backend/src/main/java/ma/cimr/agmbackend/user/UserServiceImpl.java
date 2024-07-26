@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
         LOGGER.info(String.format("* Email sent to %s %s: %s", user.getFirstName(),
                 user.getLastName(), user.getEmail()));
         emailService.sendEmail(user.getEmail(), user.getFirstName(),
-                "Bienvenue sur l'application de gestion des assemblées générales de la CIMR",
+                "Bienvenue sur l'application de gestion des assemblées générales de la CIMR", user.getUsername(),
                 generatedPassword, EmailTemplateName.NEW_USER);
     }
 

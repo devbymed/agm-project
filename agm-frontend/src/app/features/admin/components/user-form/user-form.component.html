@@ -16,7 +16,8 @@
         [type]="'text'"
         placeholder="Prénom"
         formControlName="firstName"
-        showRequiredIndicator="true"
+        [disabled]="userForm.get('firstName')?.disabled || false"
+        [showRequiredIndicator]="!isEditMode"
       />
     </div>
     <div class="mb-5">
@@ -27,7 +28,8 @@
         [type]="'text'"
         placeholder="Nom"
         formControlName="lastName"
-        showRequiredIndicator="true"
+        [disabled]="userForm.get('lastName')?.disabled || false"
+        [showRequiredIndicator]="!isEditMode"
       />
     </div>
     <div class="mb-5">

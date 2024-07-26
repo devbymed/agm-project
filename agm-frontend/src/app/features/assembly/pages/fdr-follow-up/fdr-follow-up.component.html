@@ -229,7 +229,7 @@
       <div class="space-y-6 p-6" *ngIf="selectedAction">
         <form [formGroup]="updateActionForm" (ngSubmit)="onUpdateAction()">
           <div class="grid grid-cols-6 gap-6">
-            <div class="col-span-6 sm:col-span-3">
+            <div class="col-span-6">
               <app-input
                 label="Action"
                 id="description"
@@ -237,9 +237,10 @@
                 [type]="'text'"
                 formControlName="name"
                 placeholder="Action"
+                [disabled]="true"
               />
             </div>
-            <div class="col-span-6 sm:col-span-3">
+            <!-- <div class="col-span-6 sm:col-span-3">
               <app-input
                 label="Entité"
                 id="entity"
@@ -248,7 +249,7 @@
                 formControlName="entity"
                 placeholder="Entité"
               />
-            </div>
+            </div> -->
             <div class="col-span-6 sm:col-span-3">
               <app-input
                 label="Responsable"
