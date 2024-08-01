@@ -26,23 +26,11 @@ public class AssemblyController {
 
 	private final AssemblyService assemblyService;
 
-	// @GetMapping
-	// public ResponseEntity<ApiResponse> getAssemblies() {
-	// List<AssemblyResponse> assemblies = assemblyService.getAssemblies();
-	// return ApiResponseFormatter.generateResponse(HttpStatus.OK, assemblies);
-	// }
-
 	@GetMapping("/current")
 	public ResponseEntity<ApiResponse> getCurrentAssembly() {
 		AssemblyResponse currentAssembly = assemblyService.getCurrentAssembly();
 		return ApiResponseFormatter.generateResponse(HttpStatus.OK, currentAssembly);
 	}
-
-	// @GetMapping("/{id}")
-	// public ResponseEntity<ApiResponse> getAssembly(@PathVariable Long id) {
-	// AssemblyResponse assembly = assemblyService.getAssembly(id);
-	// return ApiResponseFormatter.generateResponse(HttpStatus.OK, assembly);
-	// }
 
 	@PostMapping
 	public ResponseEntity<ApiResponse> createAssembly(@ModelAttribute @Valid AssemblyCreateRequest request,

@@ -19,6 +19,7 @@ public enum ApiExceptionCodes {
 	PROFILE_NOT_FOUND("Profil non trouvé", HttpStatus.NOT_FOUND),
 	PROFILE_ALREADY_EXISTS("Ce profil existe déjà", HttpStatus.BAD_REQUEST),
 	PERMISSION_NOT_FOUND("Permission non trouvée", HttpStatus.NOT_FOUND),
+	REASON_NOT_FOUND("Motif non trouvé", HttpStatus.NOT_FOUND),
 	ASSEMBLY_NOT_FOUND("Assemblée non trouvée", HttpStatus.NOT_FOUND),
 	ASSEMBLY_ALREADY_CLOSED("L'assemblée est déjà clôturée", HttpStatus.BAD_REQUEST),
 	ACTION_NOT_FOUND("Action non trouvée", HttpStatus.NOT_FOUND),
