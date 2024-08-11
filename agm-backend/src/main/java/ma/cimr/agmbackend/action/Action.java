@@ -1,14 +1,19 @@
 package ma.cimr.agmbackend.action;
 
+import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.FetchType.EAGER;
+
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,7 +30,7 @@ import ma.cimr.agmbackend.common.BaseEntity;
 @Table(name = "actions")
 public class Action extends BaseEntity {
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = EAGER)
 	@JoinColumn(name = "assembly_id", nullable = false)
 	private Assembly assembly;
 
@@ -50,14 +55,13 @@ public class Action extends BaseEntity {
 	@Column
 	private String deliverable;
 
-	@Column(name = "progress_status")
-	private String progressStatus;
+	@Builder.Default
+	@Column(name = "progress_status", nullable = false)
+	private Integer progressStatus = 0;
 
 	@Column
 	private String observation;
 
-	// @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch =
-	// FetchType.EAGER)
-	// @JoinColumn(name = "action_id")
-	// private List<String> attachments;
+	@OneToMany(mappedBy = "action", cascade = ALL, fetch = EAGER)
+	private List<ActionAttachment> attachments;
 }

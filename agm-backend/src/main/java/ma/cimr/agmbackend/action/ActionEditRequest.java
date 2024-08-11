@@ -1,6 +1,9 @@
 package ma.cimr.agmbackend.action;
 
 import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -26,6 +29,7 @@ public class ActionEditRequest {
 	private LocalDate realizationDate;
 	private String responsible;
 	private String deliverable;
-	private String progressStatus;
+	private Integer progressStatus;
 	private String observation;
+	private List<MultipartFile> attachments;
 }

@@ -1,4 +1,4 @@
-import { Document } from "@core/models/document.model";
+import { ActionAttachment } from "./action-attachment.model";
 
 export interface Action {
   id: number;
@@ -11,4 +11,5 @@ export interface Action {
   deliverable?: string;
   progressStatus: number;
   observation?: string;
+  attachments?: ActionAttachment[]; // Ajout des pièces jointes
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,7 +44,7 @@ public class ActionController {
 
 	@PatchMapping("/{id}")
 	public ResponseEntity<ApiResponse> updateAction(@PathVariable Long id,
-			@Valid @RequestBody ActionEditRequest request) {
+			@Valid @ModelAttribute ActionEditRequest request) {
 		ActionResponse updatedAction = actionService.updateAction(id, request);
 		return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Action mise à jour avec succès", updatedAction);
 	}

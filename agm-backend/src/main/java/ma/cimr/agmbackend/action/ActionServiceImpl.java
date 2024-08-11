@@ -3,16 +3,19 @@ package ma.cimr.agmbackend.action;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 import ma.cimr.agmbackend.exception.ApiException;
 import ma.cimr.agmbackend.exception.ApiExceptionCodes;
+import ma.cimr.agmbackend.file.FileStorageService;
 
 @Service
 @RequiredArgsConstructor
 public class ActionServiceImpl implements ActionService {
 
 	private final ActionRepository actionRepository;
+	private final FileStorageService fileStorageService;
 	private final ActionMapper actionMapper;
 
 	@Override
@@ -66,6 +69,23 @@ public class ActionServiceImpl implements ActionService {
 		}
 		if (request.getDeliverable() != null) {
 			action.setDeliverable(request.getDeliverable());
+		}
+
+		if (request.getAttachments() != null && !request.getAttachments().isEmpty()) {
+			for (MultipartFile file : request.getAttachments()) {
+				String filePath = fileStorageService.saveFile(file, "actions/" + id);
+
+				if (filePath != null) {
+					ActionAttachment attachment = ActionAttachment.builder()
+							.action(action)
+							.fileName(file.getOriginalFilename())
+							.fileType(file.getContentType())
+							.filePath(filePath)
+							.build();
+
+					action.getAttachments().add(attachment);
+				}
+			}
 		}
 
 		Action updatedAction = actionRepository.save(action);

@@ -40,13 +40,13 @@ public class AssemblyExcelServiceImpl implements AssemblyExcelService {
 
 				Action action = new Action();
 				action.setName(getCellValue(row.getCell(1)));
-				action.setStartDate(getCellDateValue(row.getCell(2)));
-				action.setEndDate(getCellDateValue(row.getCell(3)));
-				action.setRealizationDate(getCellDateValue(row.getCell(4)));
-				action.setResponsible(getCellValue(row.getCell(5)));
-				action.setDeliverable(getCellValue(row.getCell(6)));
-				action.setObservation(getCellValue(row.getCell(7)));
-				action.setProgressStatus(getCellValue(row.getCell(8)));
+				// action.setStartDate(getCellDateValue(row.getCell(2)));
+				// action.setEndDate(getCellDateValue(row.getCell(3)));
+				// action.setRealizationDate(getCellDateValue(row.getCell(4)));
+				// action.setResponsible(getCellValue(row.getCell(5)));
+				// action.setDeliverable(getCellValue(row.getCell(6)));
+				// action.setObservation(getCellValue(row.getCell(7)));
+				// action.setProgressStatus(getCellValue(row.getCell(8)));
 				actions.add(action);
 			}
 		}

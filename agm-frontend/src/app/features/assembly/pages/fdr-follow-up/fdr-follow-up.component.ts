@@ -1,19 +1,19 @@
-import { DatePipe, NgFor, NgIf, NgStyle } from "@angular/common";
+import { DatePipe, NgClass, NgFor, NgIf, NgStyle, PercentPipe } from "@angular/common";
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ApiResponse } from "@core/models/api-response.model";
 import { Action } from "@features/assembly/models/action.model";
 import { ActionService } from "@features/assembly/services/action.service";
 import { AssemblyStateService } from "@features/assembly/services/assembly-state.service";
 import { InputComponent } from "@shared/components/form/input/input.component";
-import { Modal } from "flowbite";
+import { Modal, initFlowbite } from "flowbite";
 import { ToastrService } from "ngx-toastr";
 import { Subject, takeUntil } from "rxjs";
 
 @Component({
   selector: 'app-fdr-follow-up',
   standalone: true,
-  imports: [NgIf, NgFor, NgStyle, DatePipe, InputComponent, ReactiveFormsModule],
+  imports: [NgIf, NgFor, NgStyle, NgClass, DatePipe, PercentPipe, InputComponent, ReactiveFormsModule],
   templateUrl: './fdr-follow-up.component.html',
 })
 export class FdrFollowUpComponent implements OnInit, OnDestroy {
@@ -29,15 +29,16 @@ export class FdrFollowUpComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    initFlowbite();
     this.initModals();
     this.updateActionForm = this.fb.group({
       name: [''],
-      // entity: [''],
-      responsible: [''],
-      startDate: [''],
-      endDate: [''],
+      entity: ['', Validators.required],
+      responsible: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
       deliverable: [''],
-      progressStatus: [''],
+      progressStatus: ['', Validators.required],
       realizationDate: [''],
       observation: [''],
     });
