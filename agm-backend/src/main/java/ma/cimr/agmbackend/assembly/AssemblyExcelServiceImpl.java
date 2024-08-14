@@ -2,7 +2,6 @@ package ma.cimr.agmbackend.assembly;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,10 +78,11 @@ public class AssemblyExcelServiceImpl implements AssemblyExcelService {
 		}
 	}
 
-	private LocalDate getCellDateValue(Cell cell) {
-		if (cell == null || cell.getCellType() != CellType.NUMERIC || !DateUtil.isCellDateFormatted(cell)) {
-			return null;
-		}
-		return cell.getLocalDateTimeCellValue().toLocalDate();
-	}
+	// private LocalDate getCellDateValue(Cell cell) {
+	// if (cell == null || cell.getCellType() != CellType.NUMERIC ||
+	// !DateUtil.isCellDateFormatted(cell)) {
+	// return null;
+	// }
+	// return cell.getLocalDateTimeCellValue().toLocalDate();
+	// }
 }

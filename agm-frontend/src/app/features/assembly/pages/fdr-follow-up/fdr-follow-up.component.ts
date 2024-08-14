@@ -6,7 +6,7 @@ import { Action } from "@features/assembly/models/action.model";
 import { ActionService } from "@features/assembly/services/action.service";
 import { AssemblyStateService } from "@features/assembly/services/assembly-state.service";
 import { InputComponent } from "@shared/components/form/input/input.component";
-import { Modal, initFlowbite } from "flowbite";
+import { Modal } from "flowbite";
 import { ToastrService } from "ngx-toastr";
 import { Subject, takeUntil } from "rxjs";
 
@@ -23,13 +23,13 @@ export class FdrFollowUpComponent implements OnInit, OnDestroy {
   editActionModal: Modal | null = null;
   actionDetailsModal: Modal | null = null;
   selectedAction: Action | null = null;
+  dropdownOpen: boolean[] = [];
   private destroy$ = new Subject<void>();
 
   constructor(private fb: FormBuilder, private assemblyStateService: AssemblyStateService, private actionService: ActionService, private toastr: ToastrService
   ) { }
 
   ngOnInit() {
-    initFlowbite();
     this.initModals();
     this.updateActionForm = this.fb.group({
       name: [''],
@@ -52,6 +52,21 @@ export class FdrFollowUpComponent implements OnInit, OnDestroy {
       });
   }
 
+  toggleDropdown(index: number): void {
+    // Si le dropdown à cet index est déjà ouvert, le fermer
+    if (this.dropdownOpen[index]) {
+      this.dropdownOpen[index] = false;
+    } else {
+      // Sinon, fermer tous les autres dropdowns et ouvrir celui-ci
+      this.closeAllDropdowns();
+      this.dropdownOpen[index] = true;
+    }
+  }
+
+  closeAllDropdowns(): void {
+    this.dropdownOpen = this.dropdownOpen.map(() => false);
+  }
+
   initModals(): void {
     const editActionModalElement = document.getElementById('editActionModal');
     if (editActionModalElement) {
@@ -65,6 +80,7 @@ export class FdrFollowUpComponent implements OnInit, OnDestroy {
   }
 
   openEditActionModal(action: Action): void {
+    this.closeAllDropdowns(); // Fermer les dropdowns
     this.selectedAction = action;
     this.updateActionForm.patchValue({
       id: action.id,
@@ -74,7 +90,7 @@ export class FdrFollowUpComponent implements OnInit, OnDestroy {
       startDate: action.startDate || '',
       endDate: action.endDate || '',
       deliverable: action.deliverable || '',
-      progressStatus: action.progressStatus || '',
+      progressStatus: action.progressStatus > 0 ? action.progressStatus : '',
       realizationDate: action.realizationDate || '',
       observation: action.observation || '',
     });
@@ -91,6 +107,7 @@ export class FdrFollowUpComponent implements OnInit, OnDestroy {
   }
 
   openActionDetailsModal(action: Action): void {
+    this.closeAllDropdowns(); // Fermer les dropdowns
     this.selectedAction = action;
     if (this.actionDetailsModal) {
       this.actionDetailsModal.show();
@@ -119,6 +136,7 @@ export class FdrFollowUpComponent implements OnInit, OnDestroy {
 
   onUpdateAction(): void {
     console.log('Updating action:', this.updateActionForm.value);
+    this.updateActionForm.markAllAsTouched();
     if (this.updateActionForm.valid && this.selectedAction) {
       this.actionService.updateAction(this.selectedAction.id, this.updateActionForm.value)
         .pipe(takeUntil(this.destroy$))

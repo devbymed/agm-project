@@ -24,7 +24,8 @@ public enum ApiExceptionCodes {
 	ASSEMBLY_ALREADY_CLOSED("L'assemblée est déjà clôturée", HttpStatus.BAD_REQUEST),
 	ACTION_NOT_FOUND("Action non trouvée", HttpStatus.NOT_FOUND),
 	DOCUMENT_UPLOAD_FAILED("Échec du téléchargement du document", HttpStatus.INTERNAL_SERVER_ERROR),
-	INVALID_DOCUMENT_FORMAT("Format de document invalide", HttpStatus.BAD_REQUEST);
+	INVALID_DOCUMENT_FORMAT("Format de document invalide", HttpStatus.BAD_REQUEST),
+	MEMBER_NOT_FOUND("Membre non trouvé", HttpStatus.NOT_FOUND);
 
 	private final String message;
 	private final HttpStatus status;

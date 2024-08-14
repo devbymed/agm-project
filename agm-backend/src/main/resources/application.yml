@@ -34,10 +34,11 @@ spring:
         "[show_sql]": false
         "[globally_quoted_identifiers]": true
         # "[format_sql]": true
+    defer-datasource-initialization: true
   sql:
     init:
-      mode: never
-      continue-on-error: true
+      mode: always
+      # continue-on-error: true
   mail:
     host: ${MAIL_HOST}
     port: ${MAIL_PORT}

@@ -1,5 +1,7 @@
 package ma.cimr.agmbackend.common;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
+
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -27,7 +29,7 @@ import lombok.experimental.SuperBuilder;
 public class BaseEntity {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
 
 	@CreatedDate

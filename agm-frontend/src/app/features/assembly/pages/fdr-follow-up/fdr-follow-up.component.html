@@ -32,11 +32,11 @@
     </div>
   </div>
   <div class="mt-6 flex flex-col">
-    <div class="overflow-x-auto">
-      <div class="inline-block min-w-full align-middle">
-        <div class="overflow-hidden shadow">
+    <div class="max-h-[450px] overflow-x-auto overflow-y-auto">
+      <div class="inline-block min-w-full overflow-x-auto align-middle">
+        <div class="overflow-hidden overflow-x-auto shadow">
           <table
-            class="min-w-full table-fixed border-collapse border border-gray-200"
+            class="min-w-full table-auto border-collapse divide-y overflow-x-auto border border-gray-200"
           >
             <thead class="bg-gray-50">
               <tr>
@@ -102,12 +102,11 @@
             </thead>
             <tbody class="bg-white">
               <tr *ngFor="let action of actions; let i = index">
-                <td class="border border-white border-r-gray-200 pr-2">
+                <td class="relative border border-white border-r-gray-200 pr-2">
                   <button
-                    id="dropdownComment1Button"
-                    data-dropdown-toggle="dropdownComment1"
                     class="inline-flex items-center rounded-lg bg-white p-2 text-center text-sm font-medium text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-50"
                     type="button"
+                    (click)="toggleDropdown(i)"
                   >
                     <svg
                       class="h-5 w-5 text-gray-500"
@@ -123,25 +122,36 @@
                   </button>
                   <!-- Dropdown menu -->
                   <div
-                    id="dropdownComment1"
-                    class="z-50 hidden w-36 divide-y divide-gray-100 rounded bg-white shadow"
+                    id="operationsDropdownMenu"
+                    [ngClass]="{
+                      hidden: !dropdownOpen[i],
+                      block: dropdownOpen[i]
+                    }"
+                    class="absolute left-0 top-full z-50 w-36 divide-y divide-gray-100 rounded bg-white shadow-lg"
                   >
                     <ul
                       class="py-1 text-sm text-gray-700"
                       aria-labelledby="dropdownMenuIconHorizontalButton"
                     >
                       <li>
-                        <a class="block px-4 py-2 hover:bg-gray-100"
+                        <a
+                          class="block cursor-pointer px-4 py-2 hover:bg-gray-100"
+                          type="button"
+                          (click)="openEditActionModal(action)"
                           >Modifier</a
                         >
                       </li>
                       <li>
-                        <a class="block px-4 py-2 hover:bg-gray-100"
+                        <a
+                          class="block cursor-pointer px-4 py-2 hover:bg-gray-100"
+                          (click)="openActionDetailsModal(action)"
                           >Consulter</a
                         >
                       </li>
                       <li>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100"
+                        <a
+                          class="block cursor-pointer px-4 py-2 hover:bg-gray-100"
+                          type="button"
                           >Clôturer</a
                         >
                       </li>
@@ -149,7 +159,7 @@
                   </div>
                 </td>
                 <td
-                  class="max-w-xs overflow-hidden truncate border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-white"
+                  class="max-w-xs truncate border border-gray-200 p-4 text-sm font-normal text-gray-500"
                 >
                   {{ action.name }}
                 </td>
@@ -169,7 +179,7 @@
                   {{ action.realizationDate | date: "shortDate" }}
                 </td>
                 <td
-                  class="border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                  class="tuncate max-w-xs border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
                 >
                   {{ action.responsible }}
                 </td>
@@ -186,12 +196,12 @@
                   </span>
                 </td>
                 <td
-                  class="border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                  class="max-w-xs truncate border border-gray-200 p-4 text-sm font-normal text-gray-500"
                 >
                   {{ action.observation }}
                 </td>
                 <td
-                  class="border border-white pl-2 text-sm font-normal text-gray-500"
+                  class="border border-white p-2 text-sm font-normal text-gray-500"
                 >
                   <div>
                     <svg
@@ -217,7 +227,7 @@
                   </div>
                 </td>
                 <td
-                  class="border border-white pl-2 text-sm font-normal text-gray-500"
+                  class="border border-white pr-4 text-sm font-normal text-gray-500"
                 >
                   <div
                     [ngClass]="{
@@ -315,7 +325,10 @@
         </button>
       </div>
       <!-- Modal body -->
-      <div class="space-y-6 p-6" *ngIf="selectedAction">
+      <div
+        class="max-h-[75vh] space-y-6 overflow-y-auto p-6"
+        *ngIf="selectedAction"
+      >
         <form [formGroup]="updateActionForm" (ngSubmit)="onUpdateAction()">
           <div class="grid grid-cols-6 gap-6">
             <div class="col-span-6">
@@ -524,7 +537,9 @@
           <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
             <dt class="text-sm font-medium text-gray-500">État d'avancement</dt>
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-              {{ selectedAction.progressStatus }}
+              <span *ngIf="selectedAction.progressStatus > 0">
+                {{ selectedAction.progressStatus }}
+              </span>
             </dd>
           </div>
           <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
