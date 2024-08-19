@@ -21,7 +21,7 @@ public class MemberController {
 
 	@GetMapping
 	public ResponseEntity<ApiResponse> getEligibleMembersForAssembly() {
-		List<Member> eligibleMembers = memberService.extractEligibleMembers();
+		List<Member> eligibleMembers = memberService.getEligibleMembers();
 		return ApiResponseFormatter.generateResponse(HttpStatus.OK, eligibleMembers);
 	}
 }

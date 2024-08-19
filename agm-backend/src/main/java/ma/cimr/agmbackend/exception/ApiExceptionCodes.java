@@ -21,6 +21,7 @@ public enum ApiExceptionCodes {
 	PERMISSION_NOT_FOUND("Permission non trouvée", HttpStatus.NOT_FOUND),
 	REASON_NOT_FOUND("Motif non trouvé", HttpStatus.NOT_FOUND),
 	ASSEMBLY_NOT_FOUND("Assemblée non trouvée", HttpStatus.NOT_FOUND),
+	CURRENT_ASSEMBLY_NOT_FOUND("Aucune assemblée en cours trouvée", HttpStatus.NOT_FOUND),
 	ASSEMBLY_ALREADY_CLOSED("L'assemblée est déjà clôturée", HttpStatus.BAD_REQUEST),
 	ACTION_NOT_FOUND("Action non trouvée", HttpStatus.NOT_FOUND),
 	DOCUMENT_UPLOAD_FAILED("Échec du téléchargement du document", HttpStatus.INTERNAL_SERVER_ERROR),

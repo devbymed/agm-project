@@ -1,15 +1,9 @@
 package ma.cimr.agmbackend.member;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -71,18 +65,4 @@ public class Member extends BaseEntity {
 
 	@Column(name = "dtr_year")
 	private int dtrYear;
-
-	@Override
-	public String toString() {
-		return "Member{" +
-				"memberNumber='" + memberNumber + '\'' +
-				", type='" + type + '\'' +
-				", companyName='" + companyName + '\'' +
-				", workforce=" + workforce +
-				", dbrTrimester=" + dbrTrimester +
-				", dbrYear=" + dbrYear +
-				", dtrTrimester=" + dtrTrimester +
-				", dtrYear=" + dtrYear +
-				'}';
-	}
 }
