@@ -17,11 +17,11 @@ import ma.cimr.agmbackend.exception.ApiExceptionCodes;
 public class MemberServiceImpl implements MemberService {
 
 	private final MemberRepository memberRepository;
-
 	private final AssemblyRepository assemblyRepository;
+	private final MemberMapper memberMapper;
 
 	@Override
-	public List<Member> getEligibleMembers() {
+	public List<MemberResponse> getEligibleMembers() {
 		// Récupérer l'assemblée en cours (celle qui n'est pas fermée)
 		Assembly currentAssembly = assemblyRepository.findByClosed(false)
 				.orElseThrow(() -> new ApiException(ApiExceptionCodes.CURRENT_ASSEMBLY_NOT_FOUND));
@@ -32,6 +32,7 @@ public class MemberServiceImpl implements MemberService {
 
 		return memberRepository.findAll().stream()
 				.filter(member -> isEligible(member, contributionDeadline))
+				.map(memberMapper::toResponse)
 				.collect(Collectors.toList());
 	}
 
@@ -55,5 +56,20 @@ public class MemberServiceImpl implements MemberService {
 		// Et si le nombre d'affiliés est supérieur à 50
 		return member.getDtrYear() >= contributionDeadline.getYear() &&
 				member.getWorkforce() > 50;
+	}
+
+	@Override
+	public MemberResponse updateMember(String memberNumber, MemberEditRequest memberEditRequest) {
+		Member member = memberRepository.findByMemberNumber(memberNumber)
+				.orElseThrow(() -> new ApiException(ApiExceptionCodes.MEMBER_NOT_FOUND));
+
+		member.setAddress1(memberEditRequest.getAddress1());
+		member.setAddress2(memberEditRequest.getAddress2());
+		member.setCity(memberEditRequest.getCity());
+		member.setPhone1(memberEditRequest.getPhone1());
+		member.setPhone2(memberEditRequest.getPhone2());
+
+		Member updatedMember = memberRepository.save(member);
+		return memberMapper.toResponse(updatedMember);
 	}
 }

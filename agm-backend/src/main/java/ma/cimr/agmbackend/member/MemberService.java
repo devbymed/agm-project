@@ -4,5 +4,7 @@ import java.util.List;
 
 public interface MemberService {
 	// List<MemberResponse> getEligibleMembersForAssembly();
-	List<Member> getEligibleMembers();
+	List<MemberResponse> getEligibleMembers();
+
+	MemberResponse updateMember(String memberNumber, MemberEditRequest memberEditRequest);
 }

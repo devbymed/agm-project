@@ -52,19 +52,19 @@
                 </th>
                 <th
                   scope="col"
-                  class="border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
                 >
                   Date début
                 </th>
                 <th
                   scope="col"
-                  class="border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
                 >
                   Date fin
                 </th>
                 <th
                   scope="col"
-                  class="border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
                 >
                   Date de réalisation
                 </th>
@@ -538,7 +538,7 @@
             <dt class="text-sm font-medium text-gray-500">État d'avancement</dt>
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
               <span *ngIf="selectedAction.progressStatus > 0">
-                {{ selectedAction.progressStatus }}
+                {{ selectedAction.progressStatus / 100 | percent: "1.0-0" }}
               </span>
             </dd>
           </div>

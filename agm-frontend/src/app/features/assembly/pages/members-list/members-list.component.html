@@ -1,1 +1,380 @@
-<p>member-list works!</p>
+<div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
+  <div class="flex flex-col">
+    <div class="mb-6">
+      <h3 class="text-xl font-semibold text-gray-500">
+        Liste des informations sur les adhérents admissibles d'office
+      </h3>
+    </div>
+    <div class="sm:flex">
+      <div
+        class="mb-3 hidden items-center dark:divide-gray-700 sm:mb-0 sm:flex sm:divide-x sm:divide-gray-100"
+      >
+        <form class="lg:pr-3">
+          <div class="relative mt-1 flex items-center lg:w-64 xl:w-96">
+            <input
+              type="text"
+              name="member_number"
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+              placeholder="Rechercher un adhérent"
+            />
+            <button
+              type="button"
+              class="ml-2 rounded-lg bg-primary-700 p-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:ring-0"
+            >
+              Rechercher
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="ml-auto flex items-center space-x-2 sm:space-x-3">
+        <a
+          href="#"
+          class="inline-flex w-1/2 items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-center text-sm font-medium text-red-600 hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:w-auto"
+        >
+          <svg
+            class="-ml-1 mr-2 h-5 w-5 text-red-600"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          PDF
+        </a>
+        <a
+          href="#"
+          class="inline-flex w-1/2 items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-center text-sm font-medium text-primary-700 hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:w-auto"
+        >
+          <svg
+            class="-ml-1 mr-2 h-5 w-5 text-primary-700"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          CSV
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="mt-6 flex flex-col">
+    <div class="max-h-[450px] overflow-x-auto overflow-y-auto">
+      <div class="inline-block min-w-full overflow-x-auto align-middle">
+        <div class="overflow-hidden overflow-x-auto shadow">
+          <table
+            class="min-w-full table-auto border-collapse divide-y overflow-x-auto border border-gray-200"
+          >
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" *ngIf="members.length > 0"></th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                >
+                  N° Adhérent
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                >
+                  Type
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                >
+                  Raison sociale
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                >
+                  Adresse 1
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                >
+                  Adresse 2
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                >
+                  Ville
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                >
+                  Téléphone 1
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                >
+                  Téléphone 2
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                >
+                  Date adhésion
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                >
+                  Effectif
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                >
+                  Titre
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                >
+                  Trimestre DBR
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                >
+                  Année DBR
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                >
+                  Trimestre DTR
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                >
+                  Année DTR
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white">
+              <tr *ngIf="members.length === 0">
+                <td
+                  colspan="16"
+                  class="border border-gray-200 p-4 text-center text-sm font-normal text-gray-500"
+                >
+                  Aucun utilisateur trouvé.
+                </td>
+              </tr>
+              <tr *ngFor="let member of members; let i = index">
+                <td
+                  class="w-4 border border-gray-200 p-4"
+                  *ngIf="members.length > 0"
+                >
+                  <div class="flex items-center">
+                    <input
+                      type="checkbox"
+                      class="h-4 w-4 rounded border-gray-300 bg-gray-50 checked:bg-primary-500 checked:ring-primary-500 focus:ring-0 focus:ring-offset-0"
+                      name="selectedMember"
+                      (click)="onSelectMember(member)"
+                    />
+                  </div>
+                </td>
+                <td
+                  class="whitespace-nowrap border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                >
+                  {{ member.memberNumber }}
+                </td>
+                <td
+                  class="whitespace-nowrap border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                >
+                  {{ member.type }}
+                </td>
+                <td
+                  class="whitespace-nowrap border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                >
+                  {{ member.companyName }}
+                </td>
+                <td
+                  class="whitespace-nowrap border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                >
+                  {{ member.address1 }}
+                </td>
+                <td
+                  class="whitespace-nowrap border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                >
+                  {{ member.address2 }}
+                </td>
+                <td
+                  class="whitespace-nowrap border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                >
+                  {{ member.city }}
+                </td>
+                <td
+                  class="whitespace-nowrap border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                >
+                  {{ member.phone1 }}
+                </td>
+                <td
+                  class="whitespace-nowrap border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                >
+                  {{ member.phone2 }}
+                </td>
+                <td
+                  class="whitespace-nowrap border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                >
+                  {{ member.membershipDate }}
+                </td>
+                <td
+                  class="whitespace-nowrap border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                >
+                  {{ member.workforce }}
+                </td>
+                <td
+                  class="whitespace-nowrap border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                >
+                  {{ member.title }}
+                </td>
+                <td
+                  class="whitespace-nowrap border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                >
+                  {{ member.dbrTrimester }}
+                </td>
+                <td
+                  class="whitespace-nowrap border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                >
+                  {{ member.dbrYear }}
+                </td>
+                <td
+                  class="whitespace-nowrap border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                >
+                  {{ member.dtrTrimester }}
+                </td>
+                <td
+                  class="whitespace-nowrap border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                >
+                  {{ member.dtrYear }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex justify-end gap-2 pt-3 sm:pt-6">
+    <app-button type="button" buttonType="default" (click)="onEdit()"
+      >Éditer</app-button
+    >
+  </div>
+</div>
+
+<div class="mt-6 grid grid-cols-1 xl:grid-cols-3 xl:gap-4">
+  <div class="col-span-2">
+    <div
+      class="mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6 2xl:col-span-2"
+    >
+      <h3 class="mb-6 text-xl font-semibold text-gray-500">
+        Révision des données adhérent
+      </h3>
+      <form
+        [formGroup]="editForm"
+        (ngSubmit)="onSubmit()"
+        class="grid grid-cols-6 gap-6"
+      >
+        <div class="col-span-6 sm:col-span-3">
+          <app-input
+            label="N° Adhérent"
+            id="memberNumber"
+            name="memberNumber"
+            [type]="'text'"
+            placeholder="N° Adhérent"
+            formControlName="memberNumber"
+            [disabled]="true"
+          />
+        </div>
+        <div class="col-span-6 sm:col-span-3"></div>
+        <div class="col-span-6 sm:col-span-3">
+          <app-input
+            label="Raison sociale"
+            id="companyName"
+            name="companyName"
+            [type]="'text'"
+            placeholder="Raison sociale"
+            formControlName="companyName"
+            [disabled]="true"
+          />
+        </div>
+        <div class="col-span-6 sm:col-span-3"></div>
+        <div class="col-span-6 sm:col-span-3">
+          <app-input
+            label="Adresse 1"
+            id="address1"
+            name="address1"
+            [type]="'text'"
+            placeholder="Adresse 1"
+            formControlName="address1"
+          />
+        </div>
+        <div class="col-span-6 sm:col-span-3">
+          <app-input
+            label="Adresse 2"
+            id="address2"
+            name="address2"
+            [type]="'text'"
+            placeholder="Adresse 2"
+            formControlName="address2"
+          />
+        </div>
+        <div class="col-span-6 sm:col-span-3">
+          <app-input
+            label="Ville"
+            id="city"
+            name="city"
+            [type]="'text'"
+            placeholder="Ville"
+            formControlName="city"
+          />
+        </div>
+        <div class="col-span-6 sm:col-span-3"></div>
+        <div class="col-span-6 sm:col-span-3">
+          <app-input
+            label="Téléphone 1"
+            id="phone1"
+            name="phone1"
+            [type]="'text'"
+            placeholder="Téléphone 1"
+            formControlName="phone1"
+          />
+        </div>
+        <div class="col-span-6 sm:col-span-3">
+          <app-input
+            label="Téléphone 2"
+            id="phone2"
+            name="phone2"
+            [type]="'text'"
+            placeholder="Téléphone 2"
+            formControlName="phone2"
+          />
+        </div>
+        <div class="col-span-6 flex justify-end gap-2">
+          <app-button type="button" buttonType="light" (click)="resetForm()"
+            >Annuler</app-button
+          >
+          <app-button type="submit">Confirmer</app-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
