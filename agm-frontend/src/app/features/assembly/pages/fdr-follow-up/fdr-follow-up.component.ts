@@ -1,19 +1,49 @@
-import { DatePipe, NgClass, NgFor, NgIf, NgStyle, PercentPipe } from "@angular/common";
+import {
+  DatePipe,
+  NgClass,
+  NgFor,
+  NgIf,
+  NgStyle,
+  PercentPipe,
+} from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { ApiResponse } from "@core/models/api-response.model";
-import { Action } from "@features/assembly/models/action.model";
-import { ActionService } from "@features/assembly/services/action.service";
-import { AssemblyStateService } from "@features/assembly/services/assembly-state.service";
-import { InputComponent } from "@shared/components/form/input/input.component";
-import { Modal } from "flowbite";
-import { ToastrService } from "ngx-toastr";
-import { Subject, takeUntil } from "rxjs";
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { ApiResponse } from '@core/models/api-response.model';
+import { Action } from '@features/assembly/models/action.model';
+import { ActionService } from '@features/assembly/services/action.service';
+import { AssemblyStateService } from '@features/assembly/services/assembly-state.service';
+import { InputComponent } from '@shared/components/form/input/input.component';
+import { SelectComponent } from '@shared/components/form/select/select.component';
+import { TextareaComponent } from '@shared/components/textarea/textarea.component';
+import { Modal } from 'flowbite';
+import { ToastrService } from 'ngx-toastr';
+import { Subject, takeUntil } from 'rxjs';
+
+interface SelectOption {
+  value: string;
+  label: string;
+}
 
 @Component({
   selector: 'app-fdr-follow-up',
   standalone: true,
-  imports: [NgIf, NgFor, NgStyle, NgClass, DatePipe, PercentPipe, InputComponent, ReactiveFormsModule],
+  imports: [
+    NgIf,
+    NgFor,
+    NgStyle,
+    NgClass,
+    DatePipe,
+    PercentPipe,
+    InputComponent,
+    SelectComponent,
+    TextareaComponent,
+    ReactiveFormsModule,
+  ],
   templateUrl: './fdr-follow-up.component.html',
 })
 export class FdrFollowUpComponent implements OnInit, OnDestroy {
@@ -26,8 +56,26 @@ export class FdrFollowUpComponent implements OnInit, OnDestroy {
   dropdownOpen: boolean[] = [];
   private destroy$ = new Subject<void>();
 
-  constructor(private fb: FormBuilder, private assemblyStateService: AssemblyStateService, private actionService: ActionService, private toastr: ToastrService
-  ) { }
+  progressStatusOptions: SelectOption[] = [
+    { value: '0', label: '0%' },
+    { value: '10', label: '10%' },
+    { value: '20', label: '20%' },
+    { value: '30', label: '30%' },
+    { value: '40', label: '40%' },
+    { value: '50', label: '50%' },
+    { value: '60', label: '60%' },
+    { value: '70', label: '70%' },
+    { value: '80', label: '80%' },
+    { value: '90', label: '90%' },
+    { value: '100', label: '100%' },
+  ];
+
+  constructor(
+    private fb: FormBuilder,
+    private assemblyStateService: AssemblyStateService,
+    private actionService: ActionService,
+    private toastr: ToastrService,
+  ) {}
 
   ngOnInit() {
     this.initModals();
@@ -73,7 +121,8 @@ export class FdrFollowUpComponent implements OnInit, OnDestroy {
       this.editActionModal = new Modal(editActionModalElement);
     }
 
-    const actionDetailsModalElement = document.getElementById('actionDetailsModal');
+    const actionDetailsModalElement =
+      document.getElementById('actionDetailsModal');
     if (actionDetailsModalElement) {
       this.actionDetailsModal = new Modal(actionDetailsModalElement);
     }
@@ -102,6 +151,7 @@ export class FdrFollowUpComponent implements OnInit, OnDestroy {
   closeEditActionModal(): void {
     if (this.editActionModal) {
       this.editActionModal.hide();
+      this.updateActionForm.reset();
     }
     this.selectedAction = null;
   }
@@ -122,7 +172,8 @@ export class FdrFollowUpComponent implements OnInit, OnDestroy {
   }
 
   loadActions(): void {
-    this.actionService.getActions()
+    this.actionService
+      .getActions()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response: ApiResponse<Action[]>) => {
@@ -130,15 +181,35 @@ export class FdrFollowUpComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.error('Error loading actions:', error);
-        }
+        },
       });
   }
 
   onUpdateAction(): void {
     console.log('Updating action:', this.updateActionForm.value);
     this.updateActionForm.markAllAsTouched();
+
     if (this.updateActionForm.valid && this.selectedAction) {
-      this.actionService.updateAction(this.selectedAction.id, this.updateActionForm.value)
+      const formData = new FormData();
+
+      // Ajouter les valeurs du formulaire au FormData
+      Object.keys(this.updateActionForm.value).forEach((key) => {
+        formData.append(key, this.updateActionForm.get(key)?.value);
+      });
+
+      // Ajouter les fichiers au FormData
+      const fileInput = document.getElementById(
+        'actionAttachment',
+      ) as HTMLInputElement;
+      if (fileInput && fileInput.files && fileInput.files.length > 0) {
+        for (let i = 0; i < fileInput.files.length; i++) {
+          formData.append('attachments', fileInput.files[i]);
+        }
+      }
+
+      // Envoyer le FormData via le service
+      this.actionService
+        .updateAction(this.selectedAction.id, formData)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (response: ApiResponse<Action>) => {
@@ -150,7 +221,7 @@ export class FdrFollowUpComponent implements OnInit, OnDestroy {
           },
           error: (error) => {
             console.error('Error updating action:', error);
-          }
+          },
         });
     }
   }

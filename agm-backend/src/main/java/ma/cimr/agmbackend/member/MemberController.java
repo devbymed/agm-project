@@ -19,7 +19,6 @@ import ma.cimr.agmbackend.util.ApiResponseFormatter;
 @RequestMapping("members")
 @RequiredArgsConstructor
 public class MemberController {
-
 	private final MemberService memberService;
 
 	@GetMapping

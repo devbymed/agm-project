@@ -49,6 +49,9 @@ public class ActionServiceImpl implements ActionService {
 		if (request.getName() != null) {
 			action.setName(request.getName());
 		}
+		if (request.getEntity() != null) {
+			action.setEntity(request.getEntity());
+		}
 		if (request.getResponsible() != null) {
 			action.setResponsible(request.getResponsible());
 		}

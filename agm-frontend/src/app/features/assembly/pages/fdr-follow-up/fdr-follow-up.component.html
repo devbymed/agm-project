@@ -405,19 +405,19 @@
                 id="actionAttachment"
                 type="file"
                 name="actionAttachment"
-                required
+                multiple
               />
             </div>
 
             <div class="col-span-6 sm:col-span-3">
-              <app-input
+              <app-select
                 label="État d'avancement"
                 id="progressStatus"
                 name="progressStatus"
-                [type]="'text'"
+                [options]="progressStatusOptions"
+                placeholder="Sélectionner un état d'avancement"
                 formControlName="progressStatus"
-                placeholder="État d'avancement"
-                showRequiredIndicator="true"
+                size="5"
               />
             </div>
             <div class="col-span-6 sm:col-span-3">
@@ -430,14 +430,13 @@
               />
             </div>
             <div class="col-span-6">
-              <app-input
+              <app-textarea
                 label="Observation"
                 id="observation"
                 name="observation"
-                [type]="'text'"
                 formControlName="observation"
                 placeholder="Observation"
-              />
+              ></app-textarea>
             </div>
           </div>
           <div
@@ -493,7 +492,10 @@
         </button>
       </div>
       <!-- Modal body -->
-      <div class="space-y-6" *ngIf="selectedAction">
+      <div
+        class="max-h-[75vh] space-y-6 overflow-y-auto"
+        *ngIf="selectedAction"
+      >
         <dl class="sm:divide-y sm:divide-gray-200">
           <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
             <dt class="text-sm font-medium text-gray-500">Action</dt>
