@@ -19,6 +19,8 @@ import lombok.Setter;
 public class ActionAttachmentResponse {
 	private Long id;
 	private String fileName;
+	private String originalFileName;
 	private String fileType;
 	private String filePath;
+	private Long fileSize;
 }

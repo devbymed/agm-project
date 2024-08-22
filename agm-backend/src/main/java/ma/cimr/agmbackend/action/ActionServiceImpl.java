@@ -76,14 +76,17 @@ public class ActionServiceImpl implements ActionService {
 
 		if (request.getAttachments() != null && !request.getAttachments().isEmpty()) {
 			for (MultipartFile file : request.getAttachments()) {
-				String filePath = fileStorageService.saveFile(file, "actions/" + id);
+				String subDir = "actions/" + id;
+				String fileName = fileStorageService.save(file, subDir);
 
-				if (filePath != null) {
+				if (fileName != null) {
 					ActionAttachment attachment = ActionAttachment.builder()
 							.action(action)
-							.fileName(file.getOriginalFilename())
+							.fileName(fileName) // Stocke le nom de fichier complet avec UUID
+							.originalFileName(file.getOriginalFilename()) // Stocke le nom original du fichier
 							.fileType(file.getContentType())
-							.filePath(filePath)
+							.filePath(subDir + "/" + fileName)
+							.fileSize(file.getSize()) // Stocke la taille du fichier
 							.build();
 
 					action.getAttachments().add(attachment);

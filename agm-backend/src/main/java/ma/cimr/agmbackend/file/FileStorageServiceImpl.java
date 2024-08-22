@@ -1,61 +1,107 @@
 package ma.cimr.agmbackend.file;
 
-import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.annotation.Nonnull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class FileStorageServiceImpl implements FileStorageService {
 
-	@Value("${file.uploads.output-path}")
-	private String fileUploadPath;
+	private final Path root;
+
+	public FileStorageServiceImpl(@Value("${file.uploads.output-path}") String uploadDir) {
+		this.root = Paths.get(uploadDir).toAbsolutePath().normalize();
+		init(); // Initialize the folder when the service is created
+	}
 
 	@Override
-	public String saveFile(@Nonnull MultipartFile sourceFile, @Nonnull String fileUploadSubPath) {
-		final String finalUploadPath = fileUploadPath + File.separator + fileUploadSubPath;
-		File targetFolder = new File(finalUploadPath);
-
-		if (!targetFolder.exists()) {
-			boolean folderCreated = targetFolder.mkdirs();
-			if (!folderCreated) {
-				log.warn("Failed to create the target folder: " + targetFolder);
-				return null;
-			}
-		}
-
-		String fileExtension = getFileExtension(sourceFile.getOriginalFilename());
-		String targetFilePath = finalUploadPath + File.separator + System.currentTimeMillis() + "." + fileExtension;
-		Path targetPath = Paths.get(targetFilePath);
+	public void init() {
 		try {
-			Files.write(targetPath, sourceFile.getBytes());
-			// log.info("File saved to: " + targetFilePath);
-			return targetFilePath;
+			Files.createDirectories(root);
 		} catch (IOException e) {
-			log.error("File was not saved", e);
-			return null;
+			throw new RuntimeException("Could not initialize folder for upload!", e);
 		}
 	}
 
-	private String getFileExtension(String fileName) {
-		if (fileName == null || fileName.isEmpty()) {
-			return "";
+	@Override
+	public String save(MultipartFile file, String subDir) {
+		try {
+			// Générer un nom de fichier unique
+			String uniqueFileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+			log.info("Saving file with name: " + uniqueFileName);
+
+			// Construire le chemin cible avec le sous-répertoire
+			Path targetLocation = this.root.resolve(Paths.get(subDir)).normalize().resolve(uniqueFileName);
+			Files.createDirectories(targetLocation.getParent()); // Crée le sous-répertoire s'il n'existe pas
+
+			// Sauvegarder le fichier
+			Files.copy(file.getInputStream(), targetLocation);
+
+			// Retourner le nom de fichier complet (avec UUID)
+			return uniqueFileName;
+		} catch (FileAlreadyExistsException e) {
+			throw new RuntimeException("A file with that name already exists.", e);
+		} catch (IOException e) {
+			throw new RuntimeException("Could not store the file. Error: " + e.getMessage(), e);
 		}
-		int lastDotIndex = fileName.lastIndexOf(".");
-		if (lastDotIndex == -1) {
-			return "";
+	}
+
+	@Override
+	public Resource load(String filename) {
+		try {
+			Path file = root.resolve(filename).normalize();
+			log.info("Attempting to load file from path: " + file.toString());
+
+			Resource resource = new UrlResource(file.toUri());
+
+			if (resource.exists() && resource.isReadable()) {
+				return resource;
+			} else {
+				throw new RuntimeException("Could not read the file at path: " + file.toString());
+			}
+		} catch (MalformedURLException e) {
+			throw new RuntimeException("Error: " + e.getMessage(), e);
 		}
-		return fileName.substring(lastDotIndex + 1).toLowerCase();
+	}
+
+	@Override
+	public void deleteFile(String filePath) {
+		try {
+			Path path = this.root.resolve(filePath).normalize();
+			Files.deleteIfExists(path);
+		} catch (IOException e) {
+			throw new RuntimeException("Could not delete the file. Error: " + e.getMessage(), e);
+		}
+	}
+
+	@Override
+	public void deleteAll() {
+		FileSystemUtils.deleteRecursively(root.toFile());
+	}
+
+	@Override
+	public Stream<Path> loadAll() {
+		try {
+			return Files.walk(this.root, 1)
+					.filter(path -> !path.equals(this.root))
+					.map(this.root::relativize);
+		} catch (IOException e) {
+			throw new RuntimeException("Could not load the files!", e);
+		}
 	}
 }

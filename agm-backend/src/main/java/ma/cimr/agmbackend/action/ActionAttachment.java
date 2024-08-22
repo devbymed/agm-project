@@ -31,8 +31,14 @@ public class ActionAttachment extends BaseEntity {
 	private String fileName;
 
 	@Column(nullable = false)
+	private String originalFileName;
+
+	@Column(nullable = false)
 	private String fileType;
 
 	@Column(nullable = false)
 	private String filePath;
+
+	@Column(nullable = false)
+	private Long fileSize;
 }

@@ -1,5 +1,6 @@
 import {
   DatePipe,
+  DecimalPipe,
   NgClass,
   NgFor,
   NgIf,
@@ -15,6 +16,7 @@ import {
 } from '@angular/forms';
 import { ApiResponse } from '@core/models/api-response.model';
 import { Action } from '@features/assembly/models/action.model';
+import { FileSizePipe } from '@features/assembly/pipes/file-size.pipe';
 import { ActionService } from '@features/assembly/services/action.service';
 import { AssemblyStateService } from '@features/assembly/services/assembly-state.service';
 import { InputComponent } from '@shared/components/form/input/input.component';
@@ -39,6 +41,8 @@ interface SelectOption {
     NgClass,
     DatePipe,
     PercentPipe,
+    DecimalPipe,
+    FileSizePipe,
     InputComponent,
     SelectComponent,
     TextareaComponent,
@@ -224,6 +228,14 @@ export class FdrFollowUpComponent implements OnInit, OnDestroy {
           },
         });
     }
+  }
+
+  onDownloadAttachment(actionId: number, fileName: string): void {
+    this.actionService.downloadAttachment(actionId, fileName);
+  }
+
+  getFileType(fileType: string): string {
+    return this.actionService.getReadableFileType(fileType);
   }
 
   ngOnDestroy(): void {

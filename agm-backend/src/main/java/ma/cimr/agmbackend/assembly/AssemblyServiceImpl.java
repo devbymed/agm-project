@@ -28,21 +28,11 @@ public class AssemblyServiceImpl implements AssemblyService {
 		Assembly assembly = assemblyMapper.toEntity(request);
 
 		// Gérer l'upload des fichiers et définir les chemins
-		String routeSheetPath = normalizePath(fileStorageService.saveFile(routeSheet, "routeSheets"));
-		String invitationLetterPath = normalizePath(fileStorageService.saveFile(invitationLetter, "invitationLetters"));
-		String attendanceSheetPath = normalizePath(fileStorageService.saveFile(attendanceSheet, "attendanceSheets"));
-		String proxyPath = normalizePath(fileStorageService.saveFile(proxy, "proxies"));
-		String attendanceFormPath = normalizePath(fileStorageService.saveFile(attendanceForm, "attendanceForms"));
-
-		// Set paths in assembly
-		assembly.setRouteSheet(routeSheetPath);
-		assembly.setInvitationLetter(invitationLetterPath);
-		assembly.setAttendanceSheet(attendanceSheetPath);
-		assembly.setProxy(proxyPath);
-		assembly.setAttendanceForm(attendanceFormPath);
-
-		// Read actions from route sheet
 		if (routeSheet != null) {
+			fileStorageService.save(routeSheet, "routeSheets");
+			assembly.setRouteSheet("routeSheets/" + routeSheet.getOriginalFilename());
+
+			// Lire les actions depuis la feuille de route
 			try {
 				List<Action> actions = excelService.readActionsFromExcel(routeSheet);
 				actions.forEach(action -> action.setAssembly(assembly));
@@ -50,6 +40,23 @@ public class AssemblyServiceImpl implements AssemblyService {
 			} catch (IOException e) {
 				throw new ApiException(ApiExceptionCodes.DOCUMENT_UPLOAD_FAILED, e);
 			}
+		}
+
+		if (invitationLetter != null) {
+			fileStorageService.save(invitationLetter, "invitationLetters");
+			assembly.setInvitationLetter("invitationLetters/" + invitationLetter.getOriginalFilename());
+		}
+		if (attendanceSheet != null) {
+			fileStorageService.save(attendanceSheet, "attendanceSheets");
+			assembly.setAttendanceSheet("attendanceSheets/" + attendanceSheet.getOriginalFilename());
+		}
+		if (proxy != null) {
+			fileStorageService.save(proxy, "proxies");
+			assembly.setProxy("proxies/" + proxy.getOriginalFilename());
+		}
+		if (attendanceForm != null) {
+			fileStorageService.save(attendanceForm, "attendanceForms");
+			assembly.setAttendanceForm("attendanceForms/" + attendanceForm.getOriginalFilename());
 		}
 
 		Assembly savedAssembly = assemblyRepository.save(assembly);
@@ -65,8 +72,8 @@ public class AssemblyServiceImpl implements AssemblyService {
 
 	@Override
 	public AssemblyResponse updateCurrentAssembly(AssemblyEditRequest request, MultipartFile routeSheet,
-			MultipartFile invitationLetter, MultipartFile attendanceSheet, MultipartFile proxy,
-			MultipartFile attendanceForm) {
+			MultipartFile invitationLetter, MultipartFile attendanceSheet,
+			MultipartFile proxy, MultipartFile attendanceForm) {
 		Assembly assembly = assemblyRepository.findByClosed(false)
 				.orElseThrow(() -> new ApiException(ApiExceptionCodes.ASSEMBLY_NOT_FOUND));
 
@@ -92,8 +99,8 @@ public class AssemblyServiceImpl implements AssemblyService {
 
 		// Gérer les fichiers et documents
 		if (routeSheet != null) {
-			String routeSheetPath = normalizePath(fileStorageService.saveFile(routeSheet, "routeSheets"));
-			assembly.setRouteSheet(routeSheetPath);
+			fileStorageService.save(routeSheet, "routeSheets");
+			assembly.setRouteSheet("routeSheets/" + routeSheet.getOriginalFilename());
 
 			// Réextraire les actions depuis le nouveau fichier Excel
 			try {
@@ -106,20 +113,20 @@ public class AssemblyServiceImpl implements AssemblyService {
 			}
 		}
 		if (invitationLetter != null) {
-			String invitationLetterPath = normalizePath(fileStorageService.saveFile(invitationLetter, "invitationLetters"));
-			assembly.setInvitationLetter(invitationLetterPath);
+			fileStorageService.save(invitationLetter, "invitationLetters");
+			assembly.setInvitationLetter("invitationLetters/" + invitationLetter.getOriginalFilename());
 		}
 		if (attendanceSheet != null) {
-			String attendanceSheetPath = normalizePath(fileStorageService.saveFile(attendanceSheet, "attendanceSheets"));
-			assembly.setAttendanceSheet(attendanceSheetPath);
+			fileStorageService.save(attendanceSheet, "attendanceSheets");
+			assembly.setAttendanceSheet("attendanceSheets/" + attendanceSheet.getOriginalFilename());
 		}
 		if (proxy != null) {
-			String proxyPath = normalizePath(fileStorageService.saveFile(proxy, "proxies"));
-			assembly.setProxy(proxyPath);
+			fileStorageService.save(proxy, "proxies");
+			assembly.setProxy("proxies/" + proxy.getOriginalFilename());
 		}
 		if (attendanceForm != null) {
-			String attendanceFormPath = normalizePath(fileStorageService.saveFile(attendanceForm, "attendanceForms"));
-			assembly.setAttendanceForm(attendanceFormPath);
+			fileStorageService.save(attendanceForm, "attendanceForms");
+			assembly.setAttendanceForm("attendanceForms/" + attendanceForm.getOriginalFilename());
 		}
 
 		Assembly updatedAssembly = assemblyRepository.save(assembly);
@@ -130,6 +137,22 @@ public class AssemblyServiceImpl implements AssemblyService {
 	public void deleteCurrentAssembly() {
 		Assembly currentAssembly = assemblyRepository.findByClosed(false)
 				.orElseThrow(() -> new ApiException(ApiExceptionCodes.ASSEMBLY_NOT_FOUND));
+		// Supprimer les fichiers associés
+		if (currentAssembly.getRouteSheet() != null) {
+			fileStorageService.deleteFile(currentAssembly.getRouteSheet());
+		}
+		if (currentAssembly.getInvitationLetter() != null) {
+			fileStorageService.deleteFile(currentAssembly.getInvitationLetter());
+		}
+		if (currentAssembly.getAttendanceSheet() != null) {
+			fileStorageService.deleteFile(currentAssembly.getAttendanceSheet());
+		}
+		if (currentAssembly.getProxy() != null) {
+			fileStorageService.deleteFile(currentAssembly.getProxy());
+		}
+		if (currentAssembly.getAttendanceForm() != null) {
+			fileStorageService.deleteFile(currentAssembly.getAttendanceForm());
+		}
 		assemblyRepository.delete(currentAssembly);
 	}
 
@@ -150,9 +173,5 @@ public class AssemblyServiceImpl implements AssemblyService {
 	@Override
 	public boolean hasCurrentAssembly() {
 		return assemblyRepository.existsByClosed(false);
-	}
-
-	private String normalizePath(String path) {
-		return path.replace("\\", "/");
 	}
 }
