@@ -34,4 +34,10 @@ public class MemberController {
 		MemberResponse updatedMember = memberService.updateMember(memberNumber, memberEditRequest);
 		return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Adhérent mis à jour avec succès", updatedMember);
 	}
+
+	@GetMapping("/search/{memberNumber}")
+	public ResponseEntity<ApiResponse> searchMemberEligibility(@PathVariable String memberNumber) {
+		MemberEligibilityResponse eligibilityResponse = memberService.searchMemberEligibility(memberNumber);
+		return ApiResponseFormatter.generateResponse(HttpStatus.OK, eligibilityResponse);
+	}
 }

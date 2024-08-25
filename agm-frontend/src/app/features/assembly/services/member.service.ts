@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ApiResponse } from '@core/models/api-response.model';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
+import { MemberEligibility } from '../models/member-eligibility';
 import { Member } from '../models/member.model';
 
 @Injectable({
@@ -24,6 +25,14 @@ export class MemberService {
     return this.http.patch<ApiResponse<Member>>(
       `${this.apiUrl}/members/${memberNumber}`,
       updateData,
+    );
+  }
+
+  searchMember(
+    memberNumber: string,
+  ): Observable<ApiResponse<MemberEligibility>> {
+    return this.http.get<ApiResponse<MemberEligibility>>(
+      `${this.apiUrl}/members/search/${memberNumber}`,
     );
   }
 }

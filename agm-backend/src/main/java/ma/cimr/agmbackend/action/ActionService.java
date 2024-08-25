@@ -8,6 +8,8 @@ public interface ActionService {
 
 	ActionResponse getActionById(Long id);
 
+	List<ActionResponse> getOverdueUnclosedActions();
+
 	ActionResponse closeAction(Long id);
 
 	ActionResponse updateAction(Long id, ActionEditRequest request);

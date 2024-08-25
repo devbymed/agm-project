@@ -72,4 +72,47 @@ public class MemberServiceImpl implements MemberService {
 		Member updatedMember = memberRepository.save(member);
 		return memberMapper.toResponse(updatedMember);
 	}
+
+	@Override
+	public MemberEligibilityResponse searchMemberEligibility(String memberNumber) {
+		Member member = memberRepository.findByMemberNumber(memberNumber)
+				.orElseThrow(() -> new ApiException(ApiExceptionCodes.MEMBER_NOT_FOUND));
+
+		// Récupérer l'assemblée en cours (celle qui n'est pas fermée)
+		Assembly currentAssembly = assemblyRepository.findByClosed(false)
+				.orElseThrow(() -> new ApiException(ApiExceptionCodes.CURRENT_ASSEMBLY_NOT_FOUND));
+
+		LocalDate agDate = currentAssembly.getDay();
+		LocalDate firstDayOfConvocationMonth = agDate.withDayOfMonth(1).minusMonths(1);
+		LocalDate contributionDeadline = firstDayOfConvocationMonth.minusMonths(6);
+
+		String eligibilityStatus;
+		if (isEligible(member, contributionDeadline)) {
+			eligibilityStatus = "éligible";
+		} else if (isEligibleByGrouping(member, contributionDeadline)) {
+			eligibilityStatus = "éligible par regroupement";
+		} else {
+			eligibilityStatus = "non éligible";
+		}
+
+		MemberResponse memberResponse = memberMapper.toResponse(member);
+
+		return new MemberEligibilityResponse(member.getMemberNumber(), member.getCompanyName(), eligibilityStatus,
+				memberResponse);
+	}
+
+	private boolean isEligibleByGrouping(Member member, LocalDate contributionDeadline) {
+		// Vérifier si le nombre d'affiliés est inférieur à 50
+		if (member.getWorkforce() < 50) {
+			// Vérifier si les contributions sont à jour
+			boolean contributionCheck = member.getDtrYear() >= contributionDeadline.getYear();
+
+			return contributionCheck;
+		}
+
+		// Si le membre a un effectif de 50 ou plus, il n'est pas éligible par
+		// regroupement
+		return false;
+	}
+
 }

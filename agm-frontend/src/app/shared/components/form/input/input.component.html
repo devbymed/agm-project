@@ -1,12 +1,14 @@
-<label [for]="id" class="mb-2 block text-sm font-medium text-gray-500">
-  {{ label }}
-  @if (
-    showRequiredIndicator &&
-    (required || control.hasValidator(Validators.required))
-  ) {
-    <span class="font-medium text-red-600">*</span>
-  }
-</label>
+@if (label) {
+  <label [for]="id" class="mb-2 block text-sm font-medium text-gray-500">
+    {{ label }}
+    @if (
+      showRequiredIndicator &&
+      (required || control.hasValidator(Validators.required))
+    ) {
+      <span class="font-medium text-red-600">*</span>
+    }
+  </label>
+}
 <div class="relative">
   <input
     #input

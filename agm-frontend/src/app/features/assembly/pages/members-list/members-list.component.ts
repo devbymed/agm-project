@@ -1,11 +1,18 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ApiResponse } from '@core/models/api-response.model';
+import { MemberEligibility } from '@features/assembly/models/member-eligibility';
 import { Member } from '@features/assembly/models/member.model';
 import { MemberService } from '@features/assembly/services/member.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { InputComponent } from '@shared/components/form/input/input.component';
+import { Modal } from 'flowbite';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -18,6 +25,9 @@ export class MembersListComponent implements OnInit {
   members: Member[] = [];
   selectedMember: Member | null = null;
   editForm: FormGroup;
+  searchForm: FormGroup;
+  searchMemberModal: Modal | null = null;
+  memberEligibility: MemberEligibility | null = null;
   errorMessage: string | null = null;
 
   constructor(
@@ -34,10 +44,37 @@ export class MembersListComponent implements OnInit {
       phone1: [''],
       phone2: [''],
     });
+
+    this.searchForm = this.fb.group({
+      memberNumber: ['', [Validators.required]],
+    });
   }
 
   ngOnInit(): void {
+    this.initModals();
     this.loadMembers();
+  }
+
+  initModals(): void {
+    const searchMemberElement = document.getElementById('searchMemberModal');
+    if (searchMemberElement) {
+      this.searchMemberModal = new Modal(searchMemberElement);
+    }
+  }
+
+  openSearchMemberModal(): void {
+    this.searchForm.reset();
+    if (this.searchMemberModal) {
+      this.searchMemberModal.show();
+    }
+  }
+
+  closeSearchMemberModal(): void {
+    this.searchForm.reset();
+    if (this.searchMemberModal) {
+      this.searchMemberModal.hide();
+      // this.updateActionForm.reset();
+    }
   }
 
   loadMembers(): void {
@@ -87,6 +124,30 @@ export class MembersListComponent implements OnInit {
             console.error('Erreur lors de la mise à jour du membre', err);
           },
         });
+    }
+  }
+
+  searchMember(): void {
+    if (this.searchForm.valid) {
+      const memberNumber = this.searchForm.get('memberNumber')?.value;
+      this.memberService.searchMember(memberNumber).subscribe({
+        next: (response: ApiResponse<MemberEligibility>) => {
+          if (response.status === 'OK') {
+            this.memberEligibility = response.data || null;
+            this.openSearchMemberModal(); // Ouvrir le modal avec les résultats
+          } else {
+            this.errorMessage = response.message || 'Adhérent on éligible.';
+            this.memberEligibility = null;
+            this.openSearchMemberModal(); // Ouvrir le modal pour afficher le message d'erreur
+          }
+        },
+        error: (error) => {
+          console.error('Erreur lors de la recherche du membre', error);
+          this.errorMessage = 'Erreur lors de la recherche du membre.';
+          this.memberEligibility = null;
+          this.openSearchMemberModal(); // Ouvrir le modal pour afficher le message d'erreur
+        },
+      });
     }
   }
 

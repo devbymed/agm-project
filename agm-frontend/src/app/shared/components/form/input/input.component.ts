@@ -42,7 +42,7 @@ export class InputComponent extends BaseControlValueAccessorService<string> {
   protected readonly Validators = Validators;
   isPasswordVisible = false;
 
-  @Input({ required: true }) label: string;
+  @Input({ required: false }) label: string;
   @Input({ required: true }) id: string;
   @Input({ required: true }) type: string;
   @Input() placeholder: string = '';

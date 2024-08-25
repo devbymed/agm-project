@@ -1,6 +1,8 @@
 package ma.cimr.agmbackend.action;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +31,15 @@ public class ActionServiceImpl implements ActionService {
 		Action action = actionRepository.findById(id)
 				.orElseThrow(() -> new ApiException(ApiExceptionCodes.ACTION_NOT_FOUND));
 		return actionMapper.toResponse(action);
+	}
+
+	@Override
+	public List<ActionResponse> getOverdueUnclosedActions() {
+		LocalDate currentDate = LocalDate.now();
+		List<Action> actions = actionRepository.findOverdueUnclosedActions(currentDate);
+		return actions.stream()
+				.map(actionMapper::toResponse)
+				.collect(Collectors.toList());
 	}
 
 	@Override

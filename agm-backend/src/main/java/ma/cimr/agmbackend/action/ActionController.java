@@ -39,6 +39,12 @@ public class ActionController {
 		return ApiResponseFormatter.generateResponse(HttpStatus.OK, action);
 	}
 
+	@GetMapping("/overdue-unclosed")
+	public ResponseEntity<ApiResponse> getOverdueUnclosedActions() {
+		List<ActionResponse> overdueActions = actionService.getOverdueUnclosedActions();
+		return ApiResponseFormatter.generateResponse(HttpStatus.OK, overdueActions);
+	}
+
 	@PatchMapping("/{id}/close")
 	public ResponseEntity<ApiResponse> closeAction(@PathVariable Long id) {
 		ActionResponse closedAction = actionService.closeAction(id);

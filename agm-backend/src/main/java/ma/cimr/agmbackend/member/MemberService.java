@@ -7,4 +7,6 @@ public interface MemberService {
 	List<MemberResponse> getEligibleMembers();
 
 	MemberResponse updateMember(String memberNumber, MemberEditRequest memberEditRequest);
+
+	MemberEligibilityResponse searchMemberEligibility(String memberNumber);
 }

@@ -21,6 +21,12 @@ export class ActionService {
     return this.http.get<ApiResponse<Action>>(`${this.apiUrl}/actions/${id}`);
   }
 
+  getOverdueUnclosedActions(): Observable<ApiResponse<Action[]>> {
+    return this.http.get<ApiResponse<Action[]>>(
+      `${this.apiUrl}/actions/overdue-unclosed`,
+    );
+  }
+
   updateAction(id: number, data: FormData): Observable<ApiResponse<Action>> {
     return this.http.patch<ApiResponse<Action>>(
       `${this.apiUrl}/actions/${id}`,

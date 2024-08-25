@@ -52,6 +52,7 @@ interface SelectOption {
 })
 export class FdrFollowUpComponent implements OnInit, OnDestroy {
   actions: Action[] = [];
+  isFiltered: boolean = false;
   updateActionForm: FormGroup;
   currentAssemblyDetails: any = null;
   editActionModal: Modal | null = null;
@@ -187,6 +188,29 @@ export class FdrFollowUpComponent implements OnInit, OnDestroy {
           console.error('Error loading actions:', error);
         },
       });
+  }
+
+  onFilterOverdueUnclosed(): void {
+    this.closeAllDropdowns();
+    if (this.isFiltered) {
+      // Réafficher toutes les actions
+      this.loadActions();
+      this.isFiltered = false; // Réinitialiser l'état du filtre
+    } else {
+      // Appliquer le filtre pour les actions échues non encore clôturées
+      this.actionService.getOverdueUnclosedActions().subscribe({
+        next: (response: ApiResponse<Action[]>) => {
+          this.actions = response.data || [];
+          this.isFiltered = true; // Indiquer que les actions sont filtrées
+        },
+        error: (error) => {
+          console.error('Error fetching overdue actions:', error);
+        },
+        complete: () => {
+          console.log('Fetching overdue actions complete.');
+        },
+      });
+    }
   }
 
   onUpdateAction(): void {
