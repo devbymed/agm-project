@@ -14,4 +14,5 @@ export interface Member {
   dbrYear: number;
   dtrTrimester: number;
   dtrYear: number;
+  isSelected: boolean;
 }

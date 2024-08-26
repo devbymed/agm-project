@@ -1,9 +1,13 @@
 package ma.cimr.agmbackend.member;
 
+import static jakarta.persistence.FetchType.EAGER;
+
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import ma.cimr.agmbackend.common.BaseEntity;
+import ma.cimr.agmbackend.user.User;
 
 @Getter
 @Setter
@@ -65,4 +70,8 @@ public class Member extends BaseEntity {
 
 	@Column(name = "dtr_year")
 	private int dtrYear;
+
+	@ManyToOne(fetch = EAGER)
+	@JoinColumn(name = "agent_id")
+	private User agent;
 }

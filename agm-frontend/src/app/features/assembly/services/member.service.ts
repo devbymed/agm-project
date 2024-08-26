@@ -35,4 +35,21 @@ export class MemberService {
       `${this.apiUrl}/members/search/${memberNumber}`,
     );
   }
+
+  assignMembersToAgent(
+    memberNumbers: string[],
+    agentId: number,
+  ): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(`${this.apiUrl}/members/assign`, {
+      memberNumbers,
+      agentId,
+    });
+  }
+
+  autoAssignMembers(): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(
+      `${this.apiUrl}/members/auto-assign`,
+      {},
+    );
+  }
 }

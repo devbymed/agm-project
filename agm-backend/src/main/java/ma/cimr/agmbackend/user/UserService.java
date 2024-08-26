@@ -19,4 +19,6 @@ public interface UserService {
 	UserResponse updateUser(Long id, UserEditRequest userEditRequest);
 
 	void deleteUser(Long id);
+
+	List<UserResponse> getAgents();
 }

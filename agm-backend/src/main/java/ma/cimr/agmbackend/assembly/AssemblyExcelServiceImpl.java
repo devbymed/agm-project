@@ -28,7 +28,7 @@ public class AssemblyExcelServiceImpl implements AssemblyExcelService {
 			Sheet sheet = workbook.getSheetAt(0);
 
 			for (Row row : sheet) {
-				if (row.getRowNum() < 7) {
+				if (row.getRowNum() < 6) {
 					continue;
 				}
 
@@ -38,14 +38,7 @@ public class AssemblyExcelServiceImpl implements AssemblyExcelService {
 				}
 
 				Action action = new Action();
-				action.setName(getCellValue(row.getCell(1)));
-				// action.setStartDate(getCellDateValue(row.getCell(2)));
-				// action.setEndDate(getCellDateValue(row.getCell(3)));
-				// action.setRealizationDate(getCellDateValue(row.getCell(4)));
-				// action.setResponsible(getCellValue(row.getCell(5)));
-				// action.setDeliverable(getCellValue(row.getCell(6)));
-				// action.setObservation(getCellValue(row.getCell(7)));
-				// action.setProgressStatus(getCellValue(row.getCell(8)));
+				action.setName(getCellValue(row.getCell(3)));
 				actions.add(action);
 			}
 		}
@@ -77,12 +70,4 @@ public class AssemblyExcelServiceImpl implements AssemblyExcelService {
 				return null;
 		}
 	}
-
-	// private LocalDate getCellDateValue(Cell cell) {
-	// if (cell == null || cell.getCellType() != CellType.NUMERIC ||
-	// !DateUtil.isCellDateFormatted(cell)) {
-	// return null;
-	// }
-	// return cell.getLocalDateTimeCellValue().toLocalDate();
-	// }
 }

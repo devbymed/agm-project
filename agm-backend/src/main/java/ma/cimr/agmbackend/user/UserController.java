@@ -61,4 +61,10 @@ public class UserController {
 		userService.deleteUser(id);
 		return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Utilisateur supprimé avec succès");
 	}
+
+	@GetMapping("/agents")
+	public ResponseEntity<ApiResponse> getAgents() {
+		List<UserResponse> agents = userService.getAgents();
+		return ApiResponseFormatter.generateResponse(HttpStatus.OK, agents);
+	}
 }

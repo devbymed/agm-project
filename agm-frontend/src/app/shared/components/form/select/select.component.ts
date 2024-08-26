@@ -1,8 +1,8 @@
-import { NgClass, NgFor } from "@angular/common";
+import { NgClass, NgFor } from '@angular/common';
 import { Component, Input, booleanAttribute, forwardRef } from '@angular/core';
-import { FormsModule, NG_VALUE_ACCESSOR, Validators } from "@angular/forms";
-import { BaseControlValueAccessorService } from "@core/services/base-control-value-accessor.service";
-import { ValidationErrorService } from "@core/services/validation-error.service";
+import { FormsModule, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { BaseControlValueAccessorService } from '@core/services/base-control-value-accessor.service';
+import { ValidationErrorService } from '@core/services/validation-error.service';
 
 interface SelectOption {
   value: string;
@@ -25,7 +25,7 @@ interface SelectOption {
 export class SelectComponent extends BaseControlValueAccessorService<string> {
   protected readonly Validators = Validators;
 
-  @Input({ required: true }) label: string;
+  @Input({ required: false }) label: string;
   @Input({ required: true }) id: string;
   @Input({ required: true }) name: string;
   @Input() options: SelectOption[] = [];

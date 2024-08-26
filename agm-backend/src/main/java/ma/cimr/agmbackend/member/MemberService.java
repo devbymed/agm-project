@@ -9,4 +9,8 @@ public interface MemberService {
 	MemberResponse updateMember(String memberNumber, MemberEditRequest memberEditRequest);
 
 	MemberEligibilityResponse searchMemberEligibility(String memberNumber);
+
+	void assignMembersToAgent(List<String> memberNumbers, Long agentId);
+
+	void autoAssignMembers();
 }

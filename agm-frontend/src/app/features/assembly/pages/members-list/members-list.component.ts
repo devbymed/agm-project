@@ -97,7 +97,30 @@ export class MembersListComponent implements OnInit {
   }
 
   onSelectMember(member: Member): void {
-    this.selectedMember = member;
+    if (
+      this.selectedMember &&
+      this.selectedMember.memberNumber === member.memberNumber
+    ) {
+      // Si le même membre est cliqué à nouveau, le désélectionner
+      this.selectedMember = null;
+    } else {
+      // Sinon, mettre à jour le membre sélectionné
+      this.selectedMember = member;
+    }
+    this.updateCheckboxState();
+  }
+
+  updateCheckboxState(): void {
+    this.members.forEach((m) => {
+      if (
+        this.selectedMember &&
+        m.memberNumber === this.selectedMember.memberNumber
+      ) {
+        m['isSelected'] = true;
+      } else {
+        m['isSelected'] = false;
+      }
+    });
   }
 
   onEdit(): void {

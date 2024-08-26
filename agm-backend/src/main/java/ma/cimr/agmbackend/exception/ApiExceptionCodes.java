@@ -19,6 +19,7 @@ public enum ApiExceptionCodes {
 	PROFILE_NOT_FOUND("Profil non trouvé", HttpStatus.NOT_FOUND),
 	PROFILE_ALREADY_EXISTS("Ce profil existe déjà", HttpStatus.BAD_REQUEST),
 	PERMISSION_NOT_FOUND("Permission non trouvée", HttpStatus.NOT_FOUND),
+	NO_AGENTS_AVAILABLE("Aucun agent disponible", HttpStatus.NOT_FOUND),
 	REASON_NOT_FOUND("Motif non trouvé", HttpStatus.NOT_FOUND),
 	ASSEMBLY_NOT_FOUND("Assemblée non trouvée", HttpStatus.NOT_FOUND),
 	CURRENT_ASSEMBLY_NOT_FOUND("Aucune assemblée en cours trouvée", HttpStatus.NOT_FOUND),
@@ -26,7 +27,10 @@ public enum ApiExceptionCodes {
 	ACTION_NOT_FOUND("Action non trouvée", HttpStatus.NOT_FOUND),
 	DOCUMENT_UPLOAD_FAILED("Échec du téléchargement du document", HttpStatus.INTERNAL_SERVER_ERROR),
 	INVALID_DOCUMENT_FORMAT("Format de document invalide", HttpStatus.BAD_REQUEST),
-	MEMBER_NOT_FOUND("Membre non trouvé", HttpStatus.NOT_FOUND);
+	MEMBER_NOT_FOUND("Membre non trouvé", HttpStatus.NOT_FOUND),
+	MEMBERS_NOT_ELIGIBLE("Aucun membre éligible trouvé", HttpStatus.NOT_FOUND),
+	MEMBER_ALREADY_ASSIGNED("Le membre est déjà affecté à un agent", HttpStatus.BAD_REQUEST),
+	NO_ELIGIBLE_MEMBERS_TO_ASSIGN("Aucun membre éligible à affecter", HttpStatus.NOT_FOUND);
 
 	private final String message;
 	private final HttpStatus status;

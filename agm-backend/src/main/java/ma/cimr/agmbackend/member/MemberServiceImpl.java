@@ -11,12 +11,15 @@ import ma.cimr.agmbackend.assembly.Assembly;
 import ma.cimr.agmbackend.assembly.AssemblyRepository;
 import ma.cimr.agmbackend.exception.ApiException;
 import ma.cimr.agmbackend.exception.ApiExceptionCodes;
+import ma.cimr.agmbackend.user.User;
+import ma.cimr.agmbackend.user.UserRepository;
 
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
 	private final MemberRepository memberRepository;
+	private final UserRepository userRepository;
 	private final AssemblyRepository assemblyRepository;
 	private final MemberMapper memberMapper;
 
@@ -42,6 +45,13 @@ public class MemberServiceImpl implements MemberService {
 		} else {
 			return isType2To4Eligible(member, contributionDeadline);
 		}
+	}
+
+	private boolean isEligible(Member member) {
+		LocalDate agDate = LocalDate.now(); // ou récupérer la date de l'assemblée courante
+		LocalDate firstDayOfConvocationMonth = agDate.withDayOfMonth(1).minusMonths(1);
+		LocalDate contributionDeadline = firstDayOfConvocationMonth.minusMonths(6);
+		return isEligible(member, contributionDeadline);
 	}
 
 	private boolean isType1Eligible(Member member, LocalDate contributionDeadline) {
@@ -113,6 +123,55 @@ public class MemberServiceImpl implements MemberService {
 		// Si le membre a un effectif de 50 ou plus, il n'est pas éligible par
 		// regroupement
 		return false;
+	}
+
+	@Override
+	public void assignMembersToAgent(List<String> memberNumbers, Long agentId) {
+		User agent = userRepository.findById(agentId)
+				.orElseThrow(() -> new ApiException(ApiExceptionCodes.USER_NOT_FOUND));
+
+		// Récupérer les membres éligibles parmi les membres sélectionnés
+		List<Member> eligibleMembers = memberRepository.findAllByMemberNumberIn(memberNumbers).stream()
+				.filter(this::isEligible)
+				.collect(Collectors.toList());
+
+		if (eligibleMembers.isEmpty()) {
+			throw new ApiException(ApiExceptionCodes.MEMBERS_NOT_ELIGIBLE);
+		}
+
+		eligibleMembers.forEach(member -> {
+			if (member.getAgent() != null) {
+				throw new ApiException(ApiExceptionCodes.MEMBER_ALREADY_ASSIGNED);
+			}
+			member.setAgent(agent);
+		});
+		memberRepository.saveAll(eligibleMembers);
+	}
+
+	@Override
+	public void autoAssignMembers() {
+		// Récupérer tous les membres éligibles non affectés
+		List<Member> unassignedEligibleMembers = memberRepository.findAllByAgentIsNull().stream()
+				.filter(this::isEligible)
+				.collect(Collectors.toList());
+
+		List<User> agents = userRepository.findAllByProfileName("Agent de relance");
+
+		if (agents.isEmpty()) {
+			throw new ApiException(ApiExceptionCodes.NO_AGENTS_AVAILABLE);
+		}
+
+		if (unassignedEligibleMembers.isEmpty()) {
+			throw new ApiException(ApiExceptionCodes.NO_ELIGIBLE_MEMBERS_TO_ASSIGN);
+		}
+
+		int agentIndex = 0;
+		for (Member member : unassignedEligibleMembers) {
+			User agent = agents.get(agentIndex);
+			member.setAgent(agent);
+			memberRepository.save(member);
+			agentIndex = (agentIndex + 1) % agents.size();
+		}
 	}
 
 }

@@ -6,6 +6,7 @@ import static ma.cimr.agmbackend.exception.ApiExceptionCodes.USER_NOT_FOUND;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
@@ -114,5 +115,13 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new ApiException(USER_NOT_FOUND));
         userRepository.delete(user);
+    }
+
+    @Override
+    public List<UserResponse> getAgents() {
+        List<User> agents = userRepository.findAllByProfileName("Agent de relance");
+        return agents.stream()
+                .map(userMapper::toUserResponse)
+                .collect(Collectors.toList());
     }
 }
