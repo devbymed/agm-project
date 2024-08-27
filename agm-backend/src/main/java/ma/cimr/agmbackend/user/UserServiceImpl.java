@@ -23,6 +23,7 @@ import ma.cimr.agmbackend.email.EmailService;
 import ma.cimr.agmbackend.email.EmailTemplateName;
 import ma.cimr.agmbackend.exception.ApiException;
 import ma.cimr.agmbackend.profile.ProfileRepository;
+import ma.cimr.agmbackend.util.SecurePasswordGenerator;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -76,8 +77,8 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByEmail(userCreateRequest.getEmail())) {
             throw new ApiException(EMAIL_ALREADY_EXISTS);
         }
-        String generatedPassword = "password";
-        // String generatedPassword = SecurePasswordGenerator.generateSecurePassword(8);
+        // String generatedPassword = "password";
+        String generatedPassword = SecurePasswordGenerator.generateSecurePassword(8);
         LOGGER.info(String.format("* Generated password for %s %s: %s", userCreateRequest.getFirstName(),
                 userCreateRequest.getLastName(), generatedPassword));
         User user = userMapper.toUser(userCreateRequest);
