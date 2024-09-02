@@ -1,9 +1,29 @@
 package ma.cimr.agmbackend.member;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.xmlbeans.XmlCursor;
+import org.apache.xmlbeans.XmlObject;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTxbxContent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +37,11 @@ import ma.cimr.agmbackend.user.UserRepository;
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
+
+	private final Logger log = LoggerFactory.getLogger(MemberServiceImpl.class);
+
+	@Value("${file.uploads.output-path}")
+	private String baseUploadPath;
 
 	private final MemberRepository memberRepository;
 	private final UserRepository userRepository;
@@ -174,4 +199,214 @@ public class MemberServiceImpl implements MemberService {
 		}
 	}
 
+	// private String generateOutputPath(Member member, String documentType, Long
+	// assemblyId) throws IOException {
+	// String baseDirectory = "uploads/assemblies/";
+	// String memberNumber = member.getMemberNumber();
+
+	// String directoryPath = baseDirectory + assemblyId + "/members/" +
+	// memberNumber + "/";
+	// Files.createDirectories(Paths.get(directoryPath)); // Créer le répertoire si
+	// nécessaire
+
+	// return directoryPath + documentType + ".docx";
+	// }
+
+	@Override
+	public void generateDocumentsForMember(Long memberId) throws FileNotFoundException {
+		Member member = memberRepository.findById(memberId)
+				.orElseThrow(() -> new ApiException(ApiExceptionCodes.MEMBER_NOT_FOUND));
+
+		// Récupérer l'assemblée en cours
+		Assembly currentAssembly = assemblyRepository.findByClosed(false)
+				.orElseThrow(() -> new ApiException(ApiExceptionCodes.CURRENT_ASSEMBLY_NOT_FOUND));
+
+		// Définir le chemin de base pour les fichiers
+		String memberFolder = Paths.get(baseUploadPath, "assemblies", String.valueOf(currentAssembly.getId()),
+				"members", member.getMemberNumber()).toString();
+
+		// Créer le répertoire si nécessaire
+		new File(memberFolder).mkdirs();
+
+		// Générer les documents personnalisés avec des noms uniques
+		String invitationLetterPath = generateInvitationLetter(member, currentAssembly, memberFolder);
+		String attendanceSheetPath = generateAttendanceSheet(member, currentAssembly, memberFolder);
+		String proxyPath = generateProxy(member, currentAssembly, memberFolder);
+
+		// Sauvegarder les chemins des fichiers dans l'entité Member
+		member.setInvitationLetterPath(invitationLetterPath);
+		member.setAttendanceSheetPath(attendanceSheetPath);
+		member.setProxyPath(proxyPath);
+		member.setEditionDate(LocalDate.now());
+		memberRepository.save(member);
+	}
+
+	private String generateInvitationLetter(Member member, Assembly assembly, String memberFolder)
+			throws FileNotFoundException {
+
+		String templatePath = Paths.get(baseUploadPath, assembly.getInvitationLetter()).toString();
+
+		// Générer un nom de fichier unique en utilisant un UUID
+		String uniqueFilename = "invitation_letter_" + member.getMemberNumber() + "_" + UUID.randomUUID() + ".docx";
+		String outputPath = Paths.get(memberFolder, uniqueFilename).toString();
+
+		log.info("Chemin du modèle de convocation: " + templatePath);
+		log.info("Chemin du document généré: " + outputPath);
+
+		File templateFile = new File(templatePath);
+		if (!templateFile.exists()) {
+			log.error("Le fichier modèle n'existe pas : " + templateFile.getAbsolutePath());
+			throw new FileNotFoundException("Le fichier modèle n'a pas été trouvé : " + templatePath);
+		}
+
+		try (FileInputStream fis = new FileInputStream(templateFile);
+				XWPFDocument document = new XWPFDocument(fis)) {
+			// Remplacer les placeholders par les informations du membre
+			for (XWPFParagraph paragraph : document.getParagraphs()) {
+
+				for (XWPFRun run : paragraph.getRuns()) {
+					String text = run.getText(0);
+
+					if (text != null) {
+						text = text.replace("$Type", assembly.getType().name())
+								.replace("$Jour",
+										assembly.getDay().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
+								.replace("$Heure", assembly.getTime().toString())
+								.replace("$Adresse", assembly.getAddress())
+								.replace("$N° Adhérent", member.getMemberNumber());
+						run.setText(text, 0);
+					}
+				}
+			}
+
+			// Replace placeholders in text boxes
+			XmlCursor cursor = document.getDocument().newCursor();
+			while (cursor.hasNextToken()) {
+				cursor.toNextToken();
+				XmlObject obj = cursor.getObject();
+				if (obj instanceof CTTxbxContent) {
+					CTTxbxContent ctTxbxContent = (CTTxbxContent) obj;
+					for (CTP ctp : ctTxbxContent.getPList()) {
+						for (CTText ctText : ctp.getRArray(0).getTArray()) {
+							String text = ctText.getStringValue();
+							if (text != null) {
+								text = text.replace("$Raison sociale", member.getCompanyName())
+										.replace("$Ville", member.getCity());
+								ctText.setStringValue(text);
+							}
+						}
+					}
+				}
+			}
+
+			// Sauvegarder le nouveau document
+			Files.createDirectories(Paths.get(outputPath).getParent()); // Ensure directories exist
+			try (FileOutputStream fos = new FileOutputStream(outputPath)) {
+				document.write(fos);
+			}
+		} catch (IOException e) {
+			throw new RuntimeException("Error generating document", e);
+		}
+
+		return outputPath;
+	}
+
+	private String generateAttendanceSheet(Member member, Assembly assembly, String memberFolder)
+			throws FileNotFoundException {
+		String templatePath = Paths.get(baseUploadPath, assembly.getAttendanceSheet()).toString();
+
+		// Générer un nom de fichier unique en utilisant un UUID
+		String uniqueFilename = "attendance_sheet_" + member.getMemberNumber() + "_" + UUID.randomUUID() + ".docx";
+		String outputPath = Paths.get(memberFolder, uniqueFilename).toString();
+
+		log.info("Chemin du modèle de la feuille de présence: " + templatePath);
+		log.info("Chemin du document généré: " + outputPath);
+
+		File templateFile = new File(templatePath);
+		if (!templateFile.exists()) {
+			log.error("Le fichier modèle n'existe pas : " + templateFile.getAbsolutePath());
+			throw new FileNotFoundException("Le fichier modèle n'a pas été trouvé : " + templatePath);
+		}
+
+		try (FileInputStream fis = new FileInputStream(templateFile);
+				XWPFDocument document = new XWPFDocument(fis)) {
+
+			// Remplacer les placeholders par les informations du membre
+			for (XWPFParagraph paragraph : document.getParagraphs()) {
+				for (XWPFRun run : paragraph.getRuns()) {
+					String text = run.getText(0);
+					if (text != null) {
+						text = text.replace("$TYPE", assembly.getType().name())
+								.replace("$JOUR", assembly.getDay().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
+								.replace("$Raison sociale", member.getCompanyName())
+								.replace("$Adresse1", member.getAddress1())
+								// .replace("$Adresse2", member.getAddress2())
+								.replace("$N°Adhérent", member.getMemberNumber())
+								.replace("$Effectif", String.valueOf(member.getWorkforce()));
+						run.setText(text, 0);
+					}
+				}
+			}
+
+			// Sauvegarder le nouveau document
+			try (FileOutputStream fos = new FileOutputStream(outputPath)) {
+				document.write(fos);
+			}
+		} catch (IOException e) {
+			throw new RuntimeException("Error generating document", e);
+		}
+
+		return outputPath;
+	}
+
+	private String generateProxy(Member member, Assembly assembly, String memberFolder) throws FileNotFoundException {
+
+		String templatePath = Paths.get(baseUploadPath, assembly.getProxy()).toString();
+
+		// Générer un nom de fichier unique en utilisant un UUID
+		String uniqueFilename = "proxy_" + member.getMemberNumber() + "_" + UUID.randomUUID() + ".docx";
+		String outputPath = Paths.get(memberFolder, uniqueFilename).toString();
+
+		log.info("Chemin du modèle de pouvoir: " + templatePath);
+		log.info("Chemin du document généré: " + outputPath);
+
+		File templateFile = new File(templatePath);
+		if (!templateFile.exists()) {
+			log.error("Le fichier modèle n'existe pas : " + templateFile.getAbsolutePath());
+			throw new FileNotFoundException("Le fichier modèle n'a pas été trouvé : " + templatePath);
+		}
+
+		try (FileInputStream fis = new FileInputStream(templateFile);
+				XWPFDocument document = new XWPFDocument(fis)) {
+
+			for (XWPFParagraph paragraph : document.getParagraphs()) {
+				for (XWPFRun run : paragraph.getRuns()) {
+					String text = run.getText(0);
+					System.out.println(text);
+					if (text != null) {
+						text = text.replace("$Type", assembly.getType().name())
+								.replace("$Jour", assembly.getDay().format(DateTimeFormatter.ofPattern(
+										"dd/MM/yyyy")))
+								.replace("$Raison sociale", member.getCompanyName())
+								.replace("$N°Adhérent", member.getMemberNumber())
+								.replace("$Effectif", String.valueOf(member.getWorkforce()))
+								.replace("$date", assembly.getDay().format(DateTimeFormatter.ofPattern(
+										"dd/MM/yyyy")))
+								.replace("$heure", assembly.getTime().toString())
+								.replace("$Adresse", assembly.getAddress());
+						run.setText(text, 0);
+					}
+				}
+			}
+
+			// Sauvegarder le nouveau document
+			try (FileOutputStream fos = new FileOutputStream(outputPath)) {
+				document.write(fos);
+			}
+		} catch (IOException e) {
+			throw new RuntimeException("Error generating document", e);
+		}
+
+		return outputPath;
+	}
 }

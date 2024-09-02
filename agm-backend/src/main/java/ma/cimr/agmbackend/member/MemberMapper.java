@@ -13,7 +13,6 @@ public interface MemberMapper {
 
 	// Map une entité Member vers un DTO MemberResponse
 	@Mapping(source = "agent", target = "agentFullName", qualifiedByName = "concatNames")
-	@Mapping(source = "agent.id", target = "agentId")
 	MemberResponse toResponse(Member member);
 
 	// Map une liste d'entités Member vers une liste de DTOs MemberResponse

@@ -1,5 +1,6 @@
 package ma.cimr.agmbackend.member;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -52,5 +53,12 @@ public class MemberController {
 	public ResponseEntity<ApiResponse> autoAssignMembers() {
 		memberService.autoAssignMembers();
 		return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Affectation automatique réussie");
+	}
+
+	@PostMapping("/generate-documents")
+	public ResponseEntity<ApiResponse> generateDocuments(@RequestBody GenerateMemberDocumentsRequest request)
+			throws IOException {
+		memberService.generateDocumentsForMember(request.getMemberId());
+		return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Documents générés avec succès");
 	}
 }

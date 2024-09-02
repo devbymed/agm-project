@@ -1,5 +1,7 @@
 package ma.cimr.agmbackend.assembly;
 
+import static jakarta.persistence.EnumType.STRING;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -7,7 +9,6 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
@@ -30,7 +31,7 @@ import ma.cimr.agmbackend.common.BaseEntity;
 @Table(name = "assemblies")
 public class Assembly extends BaseEntity {
 
-	@Enumerated(EnumType.STRING)
+	@Enumerated(STRING)
 	@Column(nullable = false)
 	private AssemblyType type;
 

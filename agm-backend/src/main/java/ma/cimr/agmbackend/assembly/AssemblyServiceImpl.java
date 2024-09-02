@@ -43,16 +43,16 @@ public class AssemblyServiceImpl implements AssemblyService {
 		}
 
 		if (invitationLetter != null) {
-			fileStorageService.save(invitationLetter, "invitationLetters");
-			assembly.setInvitationLetter("invitationLetters/" + invitationLetter.getOriginalFilename());
+			String invitationLetterFilename = fileStorageService.save(invitationLetter, "invitationLetters");
+			assembly.setInvitationLetter("invitationLetters/" + invitationLetterFilename);
 		}
 		if (attendanceSheet != null) {
-			fileStorageService.save(attendanceSheet, "attendanceSheets");
-			assembly.setAttendanceSheet("attendanceSheets/" + attendanceSheet.getOriginalFilename());
+			String attendanceSheetFilename = fileStorageService.save(attendanceSheet, "attendanceSheets");
+			assembly.setAttendanceSheet("attendanceSheets/" + attendanceSheetFilename);
 		}
 		if (proxy != null) {
-			fileStorageService.save(proxy, "proxies");
-			assembly.setProxy("proxies/" + proxy.getOriginalFilename());
+			String proxyFilename = fileStorageService.save(proxy, "proxies");
+			assembly.setProxy("proxies/" + proxyFilename);
 		}
 		if (attendanceForm != null) {
 			fileStorageService.save(attendanceForm, "attendanceForms");

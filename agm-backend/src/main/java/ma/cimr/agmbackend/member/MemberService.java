@@ -1,5 +1,6 @@
 package ma.cimr.agmbackend.member;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public interface MemberService {
@@ -13,4 +14,6 @@ public interface MemberService {
 	void assignMembersToAgent(List<String> memberNumbers, Long agentId);
 
 	void autoAssignMembers();
+
+	void generateDocumentsForMember(Long memberId) throws FileNotFoundException;
 }

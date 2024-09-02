@@ -34,6 +34,9 @@ public class MemberResponse {
 	private int dbrYear;
 	private int dtrTrimester;
 	private int dtrYear;
-	private Long agentId;
+	// private Long agentId;
 	private String agentFullName;
+	private String status; // Statut
+	private LocalDate assignmentDate;
+	private LocalDate editionDate;
 }

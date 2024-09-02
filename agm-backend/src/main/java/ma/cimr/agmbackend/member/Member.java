@@ -1,5 +1,6 @@
 package ma.cimr.agmbackend.member;
 
+import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.EAGER;
 
 import java.time.LocalDate;
@@ -8,6 +9,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -74,4 +76,23 @@ public class Member extends BaseEntity {
 	@ManyToOne(fetch = EAGER)
 	@JoinColumn(name = "agent_id")
 	private User agent;
+
+	// Champs liés à la convocation
+	@Column(name = "status")
+	private String status;
+
+	@Column(name = "assignment_date")
+	private LocalDate assignmentDate;
+
+	@Column(name = "edition_date")
+	private LocalDate editionDate;
+
+	@Column(name = "invitation_letter_path")
+	private String invitationLetterPath;
+
+	@Column(name = "attendance_sheet_path")
+	private String attendanceSheetPath;
+
+	@Column(name = "proxy_path")
+	private String proxyPath;
 }
