@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApiResponse } from '@core/models/api-response.model';
 import { environment } from '@env/environment';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { MemberEligibility } from '../models/member-eligibility';
 import { Member } from '../models/member.model';
 
@@ -13,6 +13,13 @@ export class MemberService {
   private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
+
+  generateDocuments(memberId: number): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(
+      `${this.apiUrl}/members/generate-documents`,
+      { memberId },
+    );
+  }
 
   getEligibleMembers(): Observable<ApiResponse<Member[]>> {
     return this.http.get<ApiResponse<Member[]>>(`${this.apiUrl}/members`);
@@ -51,5 +58,29 @@ export class MemberService {
       `${this.apiUrl}/members/auto-assign`,
       {},
     );
+  }
+
+  downloadFile(filepath: string) {
+    const fileUrl = `${this.apiUrl}/members/download?filepath=${encodeURIComponent(filepath)}`;
+    this.http
+      .get(fileUrl, { responseType: 'blob' })
+      .pipe(
+        tap({
+          next: (blob) => {
+            const blobUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = filepath.split('/').pop()!;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(blobUrl);
+          },
+          error: (error) => {
+            console.error('Error downloading the file:', error);
+          },
+        }),
+      )
+      .subscribe();
   }
 }

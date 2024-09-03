@@ -1,15 +1,15 @@
 package ma.cimr.agmbackend.member;
 
-import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.EAGER;
 
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -77,9 +77,9 @@ public class Member extends BaseEntity {
 	@JoinColumn(name = "agent_id")
 	private User agent;
 
-	// Champs liés à la convocation
+	@Enumerated(STRING)
 	@Column(name = "status")
-	private String status;
+	private MemberInvitationStatus status;
 
 	@Column(name = "assignment_date")
 	private LocalDate assignmentDate;

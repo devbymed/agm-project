@@ -2,10 +2,13 @@ package ma.cimr.agmbackend.member;
 
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Map;
 
 public interface MemberService {
 	// List<MemberResponse> getEligibleMembersForAssembly();
 	List<MemberResponse> getEligibleMembers();
+
+	MemberResponse getMemberById(Long memberId);
 
 	MemberResponse updateMember(String memberNumber, MemberEditRequest memberEditRequest);
 
@@ -15,5 +18,5 @@ public interface MemberService {
 
 	void autoAssignMembers();
 
-	void generateDocumentsForMember(Long memberId) throws FileNotFoundException;
+	Map<String, String> generateDocumentsForMember(Long memberId) throws FileNotFoundException;
 }

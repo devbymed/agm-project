@@ -115,8 +115,10 @@ export class MemberAllocationComponent implements OnInit {
             next: (response) => {
               if (response.status === 'OK') {
                 this.toastr.success(response.message);
-                this.form.reset(); // Clear form
-                this.selectedMemberNumbers = []; // Clear selection
+                this.form.reset({
+                  agent: '',
+                });
+                this.selectedMemberNumbers = [];
               }
             },
             error: (error) => {

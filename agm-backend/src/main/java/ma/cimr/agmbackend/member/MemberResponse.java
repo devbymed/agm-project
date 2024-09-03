@@ -19,6 +19,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonInclude(value = NON_NULL)
 public class MemberResponse {
+	private Long id;
 	private String memberNumber;
 	private String type;
 	private String companyName;
@@ -36,7 +37,10 @@ public class MemberResponse {
 	private int dtrYear;
 	// private Long agentId;
 	private String agentFullName;
-	private String status; // Statut
+	private MemberInvitationStatus status;
 	private LocalDate assignmentDate;
 	private LocalDate editionDate;
+	private String invitationLetterPath;
+	private String attendanceSheetPath;
+	private String proxyPath;
 }

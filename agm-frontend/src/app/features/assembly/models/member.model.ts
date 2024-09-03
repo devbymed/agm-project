@@ -1,4 +1,5 @@
 export interface Member {
+  id: number;
   memberNumber: string;
   type: string;
   companyName: string;
@@ -14,5 +15,12 @@ export interface Member {
   dbrYear: number;
   dtrTrimester: number;
   dtrYear: number;
+  agentFullName: string;
+  status: string;
+  assignmentDate: Date;
+  editionDate: Date;
+  invitationLetterPath: string;
+  attendanceSheetPath: string;
+  proxyPath: string;
   isSelected: boolean;
 }

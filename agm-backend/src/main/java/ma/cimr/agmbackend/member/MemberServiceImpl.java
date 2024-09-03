@@ -9,7 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -94,6 +96,13 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public MemberResponse getMemberById(Long memberId) {
+		Member member = memberRepository.findById(memberId)
+				.orElseThrow(() -> new ApiException(ApiExceptionCodes.MEMBER_NOT_FOUND));
+		return memberMapper.toResponse(member);
+	}
+
+	@Override
 	public MemberResponse updateMember(String memberNumber, MemberEditRequest memberEditRequest) {
 		Member member = memberRepository.findByMemberNumber(memberNumber)
 				.orElseThrow(() -> new ApiException(ApiExceptionCodes.MEMBER_NOT_FOUND));
@@ -169,13 +178,14 @@ public class MemberServiceImpl implements MemberService {
 				throw new ApiException(ApiExceptionCodes.MEMBER_ALREADY_ASSIGNED);
 			}
 			member.setAgent(agent);
+			member.setStatus(MemberInvitationStatus.Affectée);
+			member.setAssignmentDate(LocalDate.now());
 		});
 		memberRepository.saveAll(eligibleMembers);
 	}
 
 	@Override
 	public void autoAssignMembers() {
-		// Récupérer tous les membres éligibles non affectés
 		List<Member> unassignedEligibleMembers = memberRepository.findAllByAgentIsNull().stream()
 				.filter(this::isEligible)
 				.collect(Collectors.toList());
@@ -194,61 +204,57 @@ public class MemberServiceImpl implements MemberService {
 		for (Member member : unassignedEligibleMembers) {
 			User agent = agents.get(agentIndex);
 			member.setAgent(agent);
+			member.setStatus(MemberInvitationStatus.Affectée);
+			member.setAssignmentDate(LocalDate.now());
 			memberRepository.save(member);
 			agentIndex = (agentIndex + 1) % agents.size();
 		}
 	}
 
-	// private String generateOutputPath(Member member, String documentType, Long
-	// assemblyId) throws IOException {
-	// String baseDirectory = "uploads/assemblies/";
-	// String memberNumber = member.getMemberNumber();
-
-	// String directoryPath = baseDirectory + assemblyId + "/members/" +
-	// memberNumber + "/";
-	// Files.createDirectories(Paths.get(directoryPath)); // Créer le répertoire si
-	// nécessaire
-
-	// return directoryPath + documentType + ".docx";
-	// }
-
 	@Override
-	public void generateDocumentsForMember(Long memberId) throws FileNotFoundException {
+	public Map<String, String> generateDocumentsForMember(Long memberId) throws FileNotFoundException {
 		Member member = memberRepository.findById(memberId)
 				.orElseThrow(() -> new ApiException(ApiExceptionCodes.MEMBER_NOT_FOUND));
 
-		// Récupérer l'assemblée en cours
 		Assembly currentAssembly = assemblyRepository.findByClosed(false)
 				.orElseThrow(() -> new ApiException(ApiExceptionCodes.CURRENT_ASSEMBLY_NOT_FOUND));
 
-		// Définir le chemin de base pour les fichiers
-		String memberFolder = Paths.get(baseUploadPath, "assemblies", String.valueOf(currentAssembly.getId()),
-				"members", member.getMemberNumber()).toString();
+		String memberFolder = normalizePath(
+				Paths.get(baseUploadPath, "assemblies", String.valueOf(currentAssembly.getId()),
+						"members", member.getMemberNumber()).toString());
 
-		// Créer le répertoire si nécessaire
 		new File(memberFolder).mkdirs();
 
-		// Générer les documents personnalisés avec des noms uniques
 		String invitationLetterPath = generateInvitationLetter(member, currentAssembly, memberFolder);
 		String attendanceSheetPath = generateAttendanceSheet(member, currentAssembly, memberFolder);
 		String proxyPath = generateProxy(member, currentAssembly, memberFolder);
 
-		// Sauvegarder les chemins des fichiers dans l'entité Member
+		member.setStatus(MemberInvitationStatus.Editée);
 		member.setInvitationLetterPath(invitationLetterPath);
 		member.setAttendanceSheetPath(attendanceSheetPath);
 		member.setProxyPath(proxyPath);
 		member.setEditionDate(LocalDate.now());
 		memberRepository.save(member);
+
+		Map<String, String> generatedDocuments = new HashMap<>();
+		generatedDocuments.put("invitationLetter", invitationLetterPath);
+		generatedDocuments.put("attendanceSheet", attendanceSheetPath);
+		generatedDocuments.put("proxy", proxyPath);
+
+		return generatedDocuments;
+	}
+
+	private String normalizePath(String path) {
+		return path.replace("\\", "/");
 	}
 
 	private String generateInvitationLetter(Member member, Assembly assembly, String memberFolder)
 			throws FileNotFoundException {
 
-		String templatePath = Paths.get(baseUploadPath, assembly.getInvitationLetter()).toString();
+		String templatePath = normalizePath(Paths.get(baseUploadPath, assembly.getInvitationLetter()).toString());
 
-		// Générer un nom de fichier unique en utilisant un UUID
 		String uniqueFilename = "invitation_letter_" + member.getMemberNumber() + "_" + UUID.randomUUID() + ".docx";
-		String outputPath = Paths.get(memberFolder, uniqueFilename).toString();
+		String outputPath = normalizePath(Paths.get(memberFolder, uniqueFilename).toString());
 
 		log.info("Chemin du modèle de convocation: " + templatePath);
 		log.info("Chemin du document généré: " + outputPath);
@@ -261,7 +267,6 @@ public class MemberServiceImpl implements MemberService {
 
 		try (FileInputStream fis = new FileInputStream(templateFile);
 				XWPFDocument document = new XWPFDocument(fis)) {
-			// Remplacer les placeholders par les informations du membre
 			for (XWPFParagraph paragraph : document.getParagraphs()) {
 
 				for (XWPFRun run : paragraph.getRuns()) {
@@ -279,7 +284,6 @@ public class MemberServiceImpl implements MemberService {
 				}
 			}
 
-			// Replace placeholders in text boxes
 			XmlCursor cursor = document.getDocument().newCursor();
 			while (cursor.hasNextToken()) {
 				cursor.toNextToken();
@@ -299,7 +303,6 @@ public class MemberServiceImpl implements MemberService {
 				}
 			}
 
-			// Sauvegarder le nouveau document
 			Files.createDirectories(Paths.get(outputPath).getParent()); // Ensure directories exist
 			try (FileOutputStream fos = new FileOutputStream(outputPath)) {
 				document.write(fos);
@@ -313,11 +316,10 @@ public class MemberServiceImpl implements MemberService {
 
 	private String generateAttendanceSheet(Member member, Assembly assembly, String memberFolder)
 			throws FileNotFoundException {
-		String templatePath = Paths.get(baseUploadPath, assembly.getAttendanceSheet()).toString();
+		String templatePath = normalizePath(Paths.get(baseUploadPath, assembly.getAttendanceSheet()).toString());
 
-		// Générer un nom de fichier unique en utilisant un UUID
 		String uniqueFilename = "attendance_sheet_" + member.getMemberNumber() + "_" + UUID.randomUUID() + ".docx";
-		String outputPath = Paths.get(memberFolder, uniqueFilename).toString();
+		String outputPath = normalizePath(Paths.get(memberFolder, uniqueFilename).toString());
 
 		log.info("Chemin du modèle de la feuille de présence: " + templatePath);
 		log.info("Chemin du document généré: " + outputPath);
@@ -331,7 +333,6 @@ public class MemberServiceImpl implements MemberService {
 		try (FileInputStream fis = new FileInputStream(templateFile);
 				XWPFDocument document = new XWPFDocument(fis)) {
 
-			// Remplacer les placeholders par les informations du membre
 			for (XWPFParagraph paragraph : document.getParagraphs()) {
 				for (XWPFRun run : paragraph.getRuns()) {
 					String text = run.getText(0);
@@ -340,7 +341,6 @@ public class MemberServiceImpl implements MemberService {
 								.replace("$JOUR", assembly.getDay().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
 								.replace("$Raison sociale", member.getCompanyName())
 								.replace("$Adresse1", member.getAddress1())
-								// .replace("$Adresse2", member.getAddress2())
 								.replace("$N°Adhérent", member.getMemberNumber())
 								.replace("$Effectif", String.valueOf(member.getWorkforce()));
 						run.setText(text, 0);
@@ -348,7 +348,6 @@ public class MemberServiceImpl implements MemberService {
 				}
 			}
 
-			// Sauvegarder le nouveau document
 			try (FileOutputStream fos = new FileOutputStream(outputPath)) {
 				document.write(fos);
 			}
@@ -361,11 +360,10 @@ public class MemberServiceImpl implements MemberService {
 
 	private String generateProxy(Member member, Assembly assembly, String memberFolder) throws FileNotFoundException {
 
-		String templatePath = Paths.get(baseUploadPath, assembly.getProxy()).toString();
+		String templatePath = normalizePath(Paths.get(baseUploadPath, assembly.getProxy()).toString());
 
-		// Générer un nom de fichier unique en utilisant un UUID
 		String uniqueFilename = "proxy_" + member.getMemberNumber() + "_" + UUID.randomUUID() + ".docx";
-		String outputPath = Paths.get(memberFolder, uniqueFilename).toString();
+		String outputPath = normalizePath(Paths.get(memberFolder, uniqueFilename).toString());
 
 		log.info("Chemin du modèle de pouvoir: " + templatePath);
 		log.info("Chemin du document généré: " + outputPath);
@@ -382,7 +380,6 @@ public class MemberServiceImpl implements MemberService {
 			for (XWPFParagraph paragraph : document.getParagraphs()) {
 				for (XWPFRun run : paragraph.getRuns()) {
 					String text = run.getText(0);
-					System.out.println(text);
 					if (text != null) {
 						text = text.replace("$Type", assembly.getType().name())
 								.replace("$Jour", assembly.getDay().format(DateTimeFormatter.ofPattern(
@@ -399,7 +396,6 @@ public class MemberServiceImpl implements MemberService {
 				}
 			}
 
-			// Sauvegarder le nouveau document
 			try (FileOutputStream fos = new FileOutputStream(outputPath)) {
 				document.write(fos);
 			}
