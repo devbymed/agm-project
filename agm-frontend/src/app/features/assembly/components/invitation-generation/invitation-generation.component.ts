@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-invitation-generation',
   standalone: true,
-  imports: [NgIf, NgFor, ReactiveFormsModule, InputComponent, ButtonComponent],
+  imports: [NgIf, NgFor, DatePipe, ReactiveFormsModule, InputComponent, ButtonComponent],
   templateUrl: './invitation-generation.component.html',
   styles: ``,
 })
@@ -42,6 +42,12 @@ export class InvitationGenerationComponent implements OnInit {
     });
 
     this.loadMembers();
+
+    this.memberService.memberStatusUpdated$.subscribe((updatedMembers) => {
+      if (updatedMembers) {
+        this.members = updatedMembers;
+      }
+    });
   }
 
   loadMembers(): void {
@@ -104,6 +110,9 @@ export class InvitationGenerationComponent implements OnInit {
       next: (response) => {
         if (response.status === 'OK') {
           this.downloadLinks = response.data;
+          this.memberService.getEligibleMembers().subscribe((res) => {
+            this.memberService.notifyMemberStatusUpdate(res.data || []);
+          });
           this.toastr.success('Documents générés avec succès.');
         } else {
           this.toastr.error('Erreur lors de la génération des documents.');

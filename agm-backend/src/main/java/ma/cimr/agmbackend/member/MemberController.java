@@ -3,7 +3,6 @@ package ma.cimr.agmbackend.member;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -77,15 +76,25 @@ public class MemberController {
 				generatedDocuments);
 	}
 
-	@GetMapping("/{memberId}/generated-documents")
-	public ResponseEntity<ApiResponse> getGeneratedDocuments(@PathVariable Long memberId) {
-		MemberResponse member = memberService.getMemberById(memberId);
-		Map<String, String> generatedDocuments = new HashMap<>();
-		generatedDocuments.put("invitationLetter", member.getInvitationLetterPath());
-		generatedDocuments.put("attendanceSheet", member.getAttendanceSheetPath());
-		generatedDocuments.put("proxy", member.getProxyPath());
-		return ApiResponseFormatter.generateResponse(HttpStatus.OK, generatedDocuments);
+	@PatchMapping("/reassign-agent")
+	public ResponseEntity<ApiResponse> reassignAgentForMember(
+			@RequestParam String memberNumber,
+			@RequestParam Long newAgentId) {
+		memberService.changeAgentForMember(memberNumber, newAgentId);
+		return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Agent réassigné avec succès");
 	}
+
+	// @GetMapping("/{memberId}/generated-documents")
+	// public ResponseEntity<ApiResponse> getGeneratedDocuments(@PathVariable Long
+	// memberId) {
+	// MemberResponse member = memberService.getMemberById(memberId);
+	// Map<String, String> generatedDocuments = new HashMap<>();
+	// generatedDocuments.put("invitationLetter", member.getInvitationLetterPath());
+	// generatedDocuments.put("attendanceSheet", member.getAttendanceSheetPath());
+	// generatedDocuments.put("proxy", member.getProxyPath());
+	// return ApiResponseFormatter.generateResponse(HttpStatus.OK,
+	// generatedDocuments);
+	// }
 
 	@GetMapping("/download")
 	public ResponseEntity<Resource> downloadFile(@RequestParam String filepath) {

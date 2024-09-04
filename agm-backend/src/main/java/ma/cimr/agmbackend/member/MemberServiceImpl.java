@@ -212,6 +212,27 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public void changeAgentForMember(String memberNumber, Long newAgentId) {
+		// Retrieve the member by memberNumber
+		Member member = memberRepository.findByMemberNumber(memberNumber)
+				.orElseThrow(() -> new ApiException(ApiExceptionCodes.MEMBER_NOT_FOUND));
+
+		// Ensure the member has the status "Affectée"
+		if (!MemberInvitationStatus.Affectée.equals(member.getStatus())) {
+			throw new ApiException(ApiExceptionCodes.INVALID_MEMBER_STATUS); // Custom exception message
+		}
+
+		// Retrieve the new agent by their ID
+		User newAgent = userRepository.findById(newAgentId)
+				.orElseThrow(() -> new ApiException(ApiExceptionCodes.USER_NOT_FOUND));
+
+		// Update the agent and save the changes
+		member.setAgent(newAgent);
+		member.setAssignmentDate(LocalDate.now()); // Update the assignment date
+		memberRepository.save(member);
+	}
+
+	@Override
 	public Map<String, String> generateDocumentsForMember(Long memberId) throws FileNotFoundException {
 		Member member = memberRepository.findById(memberId)
 				.orElseThrow(() -> new ApiException(ApiExceptionCodes.MEMBER_NOT_FOUND));

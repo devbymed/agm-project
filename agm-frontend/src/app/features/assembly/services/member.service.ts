@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApiResponse } from '@core/models/api-response.model';
 import { environment } from '@env/environment';
-import { Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { MemberEligibility } from '../models/member-eligibility';
 import { Member } from '../models/member.model';
 
@@ -11,6 +11,11 @@ import { Member } from '../models/member.model';
 })
 export class MemberService {
   private apiUrl = environment.apiUrl;
+
+  private memberStatusUpdatedSource = new BehaviorSubject<Member[] | null>(
+    null,
+  );
+  memberStatusUpdated$ = this.memberStatusUpdatedSource.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -58,6 +63,26 @@ export class MemberService {
       `${this.apiUrl}/members/auto-assign`,
       {},
     );
+  }
+
+  reassignAgent(
+    memberNumber: string,
+    newAgentId: number,
+  ): Observable<ApiResponse<void>> {
+    return this.http.patch<ApiResponse<void>>(
+      `${this.apiUrl}/members/reassign-agent`,
+      null,
+      {
+        params: {
+          memberNumber: memberNumber,
+          newAgentId: newAgentId.toString(),
+        },
+      },
+    );
+  }
+
+  notifyMemberStatusUpdate(members: Member[]) {
+    this.memberStatusUpdatedSource.next(members);
   }
 
   downloadFile(filepath: string) {

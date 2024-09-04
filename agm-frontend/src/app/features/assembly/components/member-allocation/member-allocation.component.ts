@@ -119,6 +119,9 @@ export class MemberAllocationComponent implements OnInit {
                   agent: '',
                 });
                 this.selectedMemberNumbers = [];
+                this.memberService.getEligibleMembers().subscribe((res) => {
+                  this.memberService.notifyMemberStatusUpdate(res.data || []);
+                });
               }
             },
             error: (error) => {
@@ -135,6 +138,9 @@ export class MemberAllocationComponent implements OnInit {
           if (response.status === 'OK') {
             this.toastr.success(response.message);
             this.selectedMemberNumbers = []; // Clear selection
+            this.memberService.getEligibleMembers().subscribe((res) => {
+              this.memberService.notifyMemberStatusUpdate(res.data || []);
+            });
           }
         },
         error: (error) => {

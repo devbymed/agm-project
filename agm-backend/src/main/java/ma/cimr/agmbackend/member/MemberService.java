@@ -18,5 +18,7 @@ public interface MemberService {
 
 	void autoAssignMembers();
 
+	void changeAgentForMember(String memberNumber, Long newAgentId);
+
 	Map<String, String> generateDocumentsForMember(Long memberId) throws FileNotFoundException;
 }

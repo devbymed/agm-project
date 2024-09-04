@@ -1,14 +1,19 @@
-import { NgFor, NgIf } from "@angular/common";
+import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { ApiResponse } from "@core/models/api-response.model";
-import { Reason } from "@features/admin/models/reason";
-import { ReasonService } from "@features/admin/services/reason.service";
-import { ButtonComponent } from "@shared/components/button/button.component";
-import { InputComponent } from "@shared/components/form/input/input.component";
-import { Modal } from "flowbite";
-import { ToastrService } from "ngx-toastr";
-import { Subject, takeUntil } from "rxjs";
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { ApiResponse } from '@core/models/api-response.model';
+import { Reason } from '@features/admin/models/reason';
+import { ReasonService } from '@features/admin/services/reason.service';
+import { ButtonComponent } from '@shared/components/button/button.component';
+import { InputComponent } from '@shared/components/form/input/input.component';
+import { Modal } from 'flowbite';
+import { ToastrService } from 'ngx-toastr';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-settings',
@@ -21,13 +26,14 @@ export class SettingsComponent implements OnInit {
   addReasonForm: FormGroup;
   updateReasonForm: FormGroup;
   selectedReason: Reason | null = null;
+  addReasonModal: Modal | null = null;
   editReasonModal: Modal | null = null;
   private destroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
     private reasonService: ReasonService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {
     this.addReasonForm = this.fb.group({
       description: ['', Validators.required],
@@ -44,15 +50,28 @@ export class SettingsComponent implements OnInit {
   }
 
   loadReasons(): void {
-    this.reasonService.getReasons().subscribe((response: ApiResponse<Reason[]>) => {
-      this.reasons = response.data || [];
-    });
+    this.reasonService
+      .getReasons()
+      .subscribe((response: ApiResponse<Reason[]>) => {
+        this.reasons = response.data || [];
+      });
   }
 
   initModals(): void {
     const editReasonModalElement = document.getElementById('editReasonModal');
     if (editReasonModalElement) {
       this.editReasonModal = new Modal(editReasonModalElement);
+    }
+
+    const addReasonModalElement = document.getElementById('addReasonModal');
+    if (addReasonModalElement) {
+      this.addReasonModal = new Modal(addReasonModalElement);
+    }
+  }
+
+  openAddReasonModal(): void {
+    if (this.addReasonModal) {
+      this.addReasonModal.show();
     }
   }
 
@@ -65,6 +84,13 @@ export class SettingsComponent implements OnInit {
     if (this.editReasonModal) {
       this.editReasonModal.show();
     }
+  }
+
+  closeAddReasonModal(): void {
+    if (this.addReasonModal) {
+      this.addReasonModal.hide();
+    }
+    this.addReasonForm.reset();
   }
 
   closeEditReasonModal(): void {
@@ -80,6 +106,9 @@ export class SettingsComponent implements OnInit {
       this.reasonService.createReason(newReason).subscribe(() => {
         this.loadReasons();
         this.addReasonForm.reset();
+        if (this.addReasonModal) {
+          this.addReasonModal.hide();
+        }
       });
     }
   }
@@ -87,7 +116,8 @@ export class SettingsComponent implements OnInit {
   updateReason(): void {
     if (this.selectedReason && this.updateReasonForm.valid) {
       const updatedReason: Reason = this.updateReasonForm.value;
-      this.reasonService.updateReason(this.selectedReason.id, updatedReason)
+      this.reasonService
+        .updateReason(this.selectedReason.id, updatedReason)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (response: ApiResponse<Reason[]>) => {
@@ -98,17 +128,17 @@ export class SettingsComponent implements OnInit {
             }
           },
           error: () => {
-            this.toastr.error('Error updating reason');
+            this.toastr.error('Une erreur est survenue lors de la mise à jour');
           },
         });
     }
   }
 
   deleteReason(id: number): void {
-    this.reasonService.deleteReason(id).subscribe(() => {
+    this.reasonService.deleteReason(id).subscribe((response) => {
+      this.toastr.success(response.message);
       this.loadReasons();
     });
-
   }
 
   ngOnDestroy(): void {

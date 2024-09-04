@@ -28,6 +28,7 @@ public enum ApiExceptionCodes {
 	DOCUMENT_UPLOAD_FAILED("Échec du téléchargement du document", HttpStatus.INTERNAL_SERVER_ERROR),
 	INVALID_DOCUMENT_FORMAT("Format de document invalide", HttpStatus.BAD_REQUEST),
 	MEMBER_NOT_FOUND("Membre non trouvé", HttpStatus.NOT_FOUND),
+	INVALID_MEMBER_STATUS("Statut de membre invalide", HttpStatus.BAD_REQUEST),
 	MEMBERS_NOT_ELIGIBLE("Aucun membre éligible trouvé", HttpStatus.NOT_FOUND),
 	MEMBER_ALREADY_ASSIGNED("Le membre est déjà affecté à un agent", HttpStatus.BAD_REQUEST),
 	NO_ELIGIBLE_MEMBERS_TO_ASSIGN("Aucun membre éligible à affecter", HttpStatus.NOT_FOUND);

@@ -127,6 +127,7 @@ export class MembersListComponent implements OnInit {
     if (this.selectedMember) {
       this.editForm.patchValue(this.selectedMember);
     } else {
+      this.toastr.warning('Veuillez sélectionner un membre à modifier.');
       console.error('Aucun membre sélectionné');
     }
   }
