@@ -1,1 +1,177 @@
-<p>mail-management works!</p>
+<div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
+  <div class="flex flex-col">
+    <div class="mb-6">
+      <button
+        type="button"
+        (click)="openAddReturnedMailModal()"
+        class="inline-flex w-1/2 items-center justify-center rounded-lg bg-primary-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-primary-800 focus:ring-0 sm:w-auto"
+      >
+        <svg
+          class="-ml-1 mr-2 h-5 w-5"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+        Nouveau retour de courrier
+      </button>
+    </div>
+  </div>
+  <div class="flex flex-col">
+    <div class="max-h-[450px] overflow-x-auto overflow-y-auto">
+      <div class="inline-block min-w-full overflow-x-auto align-middle">
+        <div class="overflow-hidden overflow-x-auto shadow">
+          <table
+            class="min-w-full table-auto border-collapse divide-y overflow-x-auto border border-gray-200"
+          >
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                >
+                  N° Adhérent
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                >
+                  Date retour
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap border border-gray-200 p-4 text-left text-xs font-medium tracking-wider text-gray-500"
+                >
+                  Motif
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white">
+              <tr *ngIf="returnedMails.length === 0">
+                <td
+                  colspan="16"
+                  class="border border-gray-200 p-4 text-center text-sm font-normal text-gray-500"
+                >
+                  Aucun résultat trouvé.
+                </td>
+              </tr>
+              <tr *ngFor="let returnedMail of returnedMails; let i = index">
+                <td
+                  class="whitespace-nowrap border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                >
+                  {{ returnedMail.memberNumber }}
+                </td>
+                <td
+                  class="whitespace-nowrap border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                >
+                  {{ returnedMail.returnDate | date: "shortDate" }}
+                </td>
+                <td
+                  class="whitespace-nowrap border border-gray-200 p-4 text-sm font-normal text-gray-500 dark:text-gray-400"
+                >
+                  {{ returnedMail.reason }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="fixed left-0 right-0 top-4 z-50 hidden h-modal items-center justify-center overflow-y-auto overflow-x-hidden sm:h-full md:inset-0"
+  id="addReturnedMailModal"
+  tabindex="-1"
+  aria-hidden="true"
+>
+  <div class="relative h-full w-full max-w-2xl px-4 md:h-auto">
+    <div class="relative rounded-lg bg-white shadow dark:bg-gray-800">
+      <div
+        class="flex items-start justify-between rounded-t border-b p-5 dark:border-gray-700"
+      >
+        <h3 class="text-xl font-semibold dark:text-white">
+          Ajouter nouveau retour de courrier
+        </h3>
+        <button
+          type="button"
+          class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-white"
+          (click)="closeReturnedMailModal()"
+        >
+          <svg
+            class="h-5 w-5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="space-y-6 p-6">
+        <form [formGroup]="addReturnedMailForm" (ngSubmit)="onSubmit()">
+          <div class="mb-5" *ngIf="errorMessage">
+            <app-alert [message]="errorMessage" type="danger"></app-alert>
+          </div>
+          <div class="grid grid-cols-6 gap-6">
+            <div class="col-span-6">
+              <app-input
+                label="N° Adhérent"
+                id="memberNumber"
+                name="memberNumber"
+                [type]="'text'"
+                formControlName="memberNumber"
+                placeholder="N° Adhérent"
+                showRequiredIndicator="true"
+              />
+            </div>
+            <div class="col-span-6">
+              <app-input
+                label="Date retour"
+                id="returnDate"
+                name="returnDate"
+                [type]="'date'"
+                formControlName="returnDate"
+                placeholder="Date retour"
+                showRequiredIndicator="true"
+              />
+            </div>
+            <div class="col-span-6">
+              <app-select
+                label="Motif"
+                id="reasonId"
+                name="reasonId"
+                [options]="reasons"
+                placeholder="Sélectionner un motif"
+                formControlName="reasonId"
+                showRequiredIndicator="true"
+              />
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-2 rounded-b border-gray-200 pt-6 dark:border-gray-700"
+          >
+            <app-button type="submit">Valider</app-button>
+            <!-- <app-button
+              type="button"
+              buttonType="light"
+              (click)="closeReturnedMailModal()"
+              >Annuler</app-button
+            > -->
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

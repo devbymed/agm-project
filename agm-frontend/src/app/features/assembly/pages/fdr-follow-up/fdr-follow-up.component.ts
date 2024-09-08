@@ -190,14 +190,10 @@ export class FdrFollowUpComponent implements OnInit, OnDestroy {
       });
   }
 
-  onFilterOverdueUnclosed(): void {
-    this.closeAllDropdowns();
-    if (this.isFiltered) {
-      // Réafficher toutes les actions
-      this.loadActions();
-      this.isFiltered = false; // Réinitialiser l'état du filtre
-    } else {
-      // Appliquer le filtre pour les actions échues non encore clôturées
+  onFilterOverdueUnclosed(event: Event): void {
+    const isChecked = (event.target as HTMLInputElement).checked;
+
+    if (isChecked) {
       this.actionService.getOverdueUnclosedActions().subscribe({
         next: (response: ApiResponse<Action[]>) => {
           this.actions = response.data || [];
@@ -206,10 +202,10 @@ export class FdrFollowUpComponent implements OnInit, OnDestroy {
         error: (error) => {
           console.error('Error fetching overdue actions:', error);
         },
-        complete: () => {
-          console.log('Fetching overdue actions complete.');
-        },
       });
+    } else {
+      this.loadActions();
+      this.isFiltered = false;
     }
   }
 

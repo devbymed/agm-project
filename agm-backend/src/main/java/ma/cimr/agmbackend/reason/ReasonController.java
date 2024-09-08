@@ -42,7 +42,7 @@ public class ReasonController {
 	@PostMapping
 	public ResponseEntity<ApiResponse> createReason(@Valid @RequestBody ReasonAddRequest reasonAddRequest) {
 		ReasonResponse createdReason = reasonService.createReason(reasonAddRequest);
-		return ApiResponseFormatter.generateResponse(HttpStatus.CREATED, "Motif créé avec succès", createdReason);
+		return ApiResponseFormatter.generateResponse(HttpStatus.OK, "Motif créé avec succès", createdReason);
 	}
 
 	@PatchMapping("/{id}")

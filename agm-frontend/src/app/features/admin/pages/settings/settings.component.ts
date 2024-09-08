@@ -101,19 +101,24 @@ export class SettingsComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.addReasonForm.markAllAsTouched();
     if (this.addReasonForm.valid) {
       const newReason: Reason = this.addReasonForm.value;
-      this.reasonService.createReason(newReason).subscribe(() => {
-        this.loadReasons();
-        this.addReasonForm.reset();
-        if (this.addReasonModal) {
-          this.addReasonModal.hide();
+      this.reasonService.createReason(newReason).subscribe((response) => {
+        if (response.status === 'OK') {
+          this.toastr.success(response.message);
+          this.loadReasons();
+          this.addReasonForm.reset();
+          if (this.addReasonModal) {
+            this.addReasonModal.hide();
+          }
         }
       });
     }
   }
 
   updateReason(): void {
+    this.updateReasonForm.markAllAsTouched();
     if (this.selectedReason && this.updateReasonForm.valid) {
       const updatedReason: Reason = this.updateReasonForm.value;
       this.reasonService

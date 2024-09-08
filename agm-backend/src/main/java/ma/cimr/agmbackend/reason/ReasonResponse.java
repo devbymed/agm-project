@@ -17,7 +17,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonInclude(value = NON_NULL)
 public class ReasonResponse {
-
 	private Long id;
 	private String description;
 }
