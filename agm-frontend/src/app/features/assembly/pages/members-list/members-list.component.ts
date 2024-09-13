@@ -13,6 +13,8 @@ import { MemberService } from '@features/assembly/services/member.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { InputComponent } from '@shared/components/form/input/input.component';
 import { Modal } from 'flowbite';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -173,6 +175,124 @@ export class MembersListComponent implements OnInit {
         },
       });
     }
+  }
+
+  exportPDF(): void {
+    const doc = new jsPDF();
+    // Définir les colonnes que tu veux inclure dans le PDF
+    const columns = [
+      { header: 'N°Adhérent', dataKey: 'memberNumber' },
+      { header: 'Type', dataKey: 'type' },
+      { header: 'Raison sociale', dataKey: 'companyName' },
+      { header: 'Adresse1', dataKey: 'address1' },
+      { header: 'Adresse2', dataKey: 'address2' },
+      { header: 'Ville', dataKey: 'city' },
+      { header: 'Téléphone1', dataKey: 'phone1' },
+      { header: 'Téléphone2', dataKey: 'phone2' },
+      { header: 'Date adhésion', dataKey: 'membershipDate' },
+      { header: 'Effectif', dataKey: 'workforce' },
+      { header: 'Titre', dataKey: 'title' },
+      { header: 'Trimestre DBR', dataKey: 'dbrTrimester' },
+      { header: 'Année DBR', dataKey: 'dbrYear' },
+      { header: 'Trimestre DTR', dataKey: 'dtrTrimester' },
+      { header: 'Année DTR', dataKey: 'dtrYear' },
+    ];
+
+    // Définir les données à inclure explicitement
+    const rows = this.members.map((member) => [
+      member.memberNumber,
+      member.type,
+      member.companyName,
+      member.address1,
+      member.address2,
+      member.city,
+      member.phone1,
+      member.phone2,
+      member.membershipDate,
+      member.workforce,
+      member.title,
+      member.dbrTrimester,
+      member.dbrYear,
+      member.dtrTrimester,
+      member.dtrYear,
+    ]);
+
+    // Utiliser jsPDF AutoTable pour générer le PDF
+    (doc as any).autoTable({
+      head: [columns.map((col) => col.header)], // En-têtes de colonnes
+      body: rows, // Données des membres sans utiliser les index dynamiques
+      theme: 'grid',
+      font: 'Inter',
+      headStyles: {
+        fillColor: [119, 173, 26],
+        textColor: [255, 255, 255],
+      },
+      styles: {
+        fontSize: 5,
+      },
+    });
+
+    doc.save('liste_adhérents.pdf');
+  }
+
+  exportCSV(): void {
+    const headers = [
+      'N° Adhérent',
+      'Type',
+      'Raison sociale',
+      'Adresse 1',
+      'Adresse 2',
+      'Ville',
+      'Téléphone 1',
+      'Téléphone 2',
+      'Date adhésion',
+      'Effectif',
+      'Titre',
+      'Trimestre DBR',
+      'Année DBR',
+      'Trimestre DTR',
+      'Année DTR',
+    ];
+
+    // Créer les lignes du CSV
+    const rows = this.members.map((member) => [
+      member.memberNumber,
+      member.type,
+      member.companyName,
+      member.address1,
+      member.address2,
+      member.city,
+      member.phone1,
+      member.phone2,
+      member.membershipDate,
+      member.workforce,
+      member.title,
+      member.dbrTrimester,
+      member.dbrYear,
+      member.dtrTrimester,
+      member.dtrYear,
+    ]);
+
+    // Générer le contenu du CSV avec un BOM pour UTF-8
+    const csvContent = [
+      '\ufeff' + headers.join(','), // Ajouter le BOM UTF-8 et les en-têtes
+      ...rows.map((e) => e.join(',')), // Ajouter les lignes
+    ].join('\n');
+
+    // Créer un objet Blob avec le contenu CSV
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+
+    // Créer un lien pour télécharger le fichier CSV
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'liste_adhérents.csv');
+    link.style.visibility = 'hidden';
+
+    // Ajouter le lien à la page, le cliquer, puis le supprimer
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
   resetForm(): void {
